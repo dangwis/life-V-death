@@ -3,42 +3,99 @@ using System.Collections;
 
 public class XInput : MonoBehaviour {
 	public static XInput x;
-	public static string XboxA, XboxB, XboxX, XboxY, XboxLStickX, XboxLStickY, XboxRStickX, XboxRStickY, XboxRB, XboxLB, XboxStart, XboxBack, XboxRT, XboxLT;
+	static string pXboxA, pXboxB, pXboxX, pXboxY, pXboxLStickX, pXboxLStickY, pXboxRStickX, pXboxRStickY, pXboxRB, pXboxLB, pXboxStart, pXboxBack, pXboxRT, pXboxLT;
+
+	// Get proper button names
+	static public string XboxA(int PlayerNum) {
+		return "P" + PlayerNum + "_" + pXboxA;
+	}
+
+	static public string XboxB(int PlayerNum) {
+		return "P" + PlayerNum + "_" + pXboxB;
+	}
+
+	static public string XboxX(int PlayerNum) {
+		return "P" + PlayerNum + "_" + pXboxX;
+	}
+
+	static public string XboxY(int PlayerNum) {
+		return "P" + PlayerNum + "_" + pXboxY;
+	}
+
+	static public string XboxLStickX(int PlayerNum) {
+		return "P" + PlayerNum + "_" + pXboxLStickX;
+	}
+
+	static public string XboxLStickY(int PlayerNum) {
+		return "P" + PlayerNum + "_" + pXboxLStickY;
+	}
+
+	static public string XboxRStickX(int PlayerNum) {
+		return "P" + PlayerNum + "_" + pXboxRStickX;
+	}
+
+	static public string XboxRStickY(int PlayerNum) {
+		return "P" + PlayerNum + "_" + pXboxRStickY;
+	}
+
+	static public string XboxRB(int PlayerNum) {
+		return "P" + PlayerNum + "_" + pXboxRB;
+	}
+
+	static public string XboxLB(int PlayerNum) {
+		return "P" + PlayerNum + "_" + pXboxLB;
+	}
+
+	static public string XboxStart(int PlayerNum) {
+		return "P" + PlayerNum + "_" + pXboxStart;
+	}
+
+	static public string XboxBack(int PlayerNum) {
+		return "P" + PlayerNum + "_" + pXboxBack;
+	}
+
+	static public string XboxRT(int PlayerNum) {
+		return "P" + PlayerNum + "_" + pXboxRT;
+	}
+
+	static public string XboxLT(int PlayerNum) {
+		return "P" + PlayerNum + "_" + pXboxLT;
+	}
 
 	// Use this for initialization
 	void Start () {
 		x = this;
 		// Setup Input
 		if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor) {
-			XboxA = "Win_Xbox_A";
-			XboxB = "Win_Xbox_B";
-			XboxX = "Win_Xbox_X";
-			XboxY = "Win_Xbox_Y";
-			XboxLStickX = "Win_Xbox_LStick_X";
-			XboxLStickY = "Win_Xbox_LStick_Y";
-			XboxRStickX = "Win_Xbox_RStick_X";
-			XboxRStickY = "Win_Xbox_RStick_Y";
-			XboxRB = "Win_Xbox_RB";
-			XboxLB = "Win_Xbox_LB";
-			XboxStart = "Win_Xbox_Start";
-			XboxBack = "Win_Xbox_Back";
-			XboxRT = "Win_Xbox_RT";
-			XboxLT = "Win_Xbox_LT";
+			pXboxA = "Win_Xbox_A";
+			pXboxB = "Win_Xbox_B";
+			pXboxX = "Win_Xbox_X";
+			pXboxY = "Win_Xbox_Y";
+			pXboxLStickX = "Win_Xbox_LStick_X";
+			pXboxLStickY = "Win_Xbox_LStick_Y";
+			pXboxRStickX = "Win_Xbox_RStick_X";
+			pXboxRStickY = "Win_Xbox_RStick_Y";
+			pXboxRB = "Win_Xbox_RB";
+			pXboxLB = "Win_Xbox_LB";
+			pXboxStart = "Win_Xbox_Start";
+			pXboxBack = "Win_Xbox_Back";
+			pXboxRT = "Win_Xbox_RT";
+			pXboxLT = "Win_Xbox_LT";
 		} else {
-			XboxA = "Mac_Xbox_A";
-			XboxB = "Mac_Xbox_B";
-			XboxX = "Mac_Xbox_X";
-			XboxY = "Mac_Xbox_Y";
-			XboxLStickX = "Mac_Xbox_LStick_X";
-			XboxLStickY = "Mac_Xbox_LStick_Y";
-			XboxRStickX = "Mac_Xbox_RStick_X";
-			XboxRStickY = "Mac_Xbox_RStick_Y";
-			XboxRB = "Mac_Xbox_RB";
-			XboxLB = "Mac_Xbox_LB";
-			XboxStart = "Mac_Xbox_Start";
-			XboxBack = "Mac_Xbox_Back";
-			XboxRT = "Mac_Xbox_RT";
-			XboxLT = "Mac_Xbox_LT";
+			pXboxA = "Mac_Xbox_A";
+			pXboxB = "Mac_Xbox_B";
+			pXboxX = "Mac_Xbox_X";
+			pXboxY = "Mac_Xbox_Y";
+			pXboxLStickX = "Mac_Xbox_LStick_X";
+			pXboxLStickY = "Mac_Xbox_LStick_Y";
+			pXboxRStickX = "Mac_Xbox_RStick_X";
+			pXboxRStickY = "Mac_Xbox_RStick_Y";
+			pXboxRB = "Mac_Xbox_RB";
+			pXboxLB = "Mac_Xbox_LB";
+			pXboxStart = "Mac_Xbox_Start";
+			pXboxBack = "Mac_Xbox_Back";
+			pXboxRT = "Mac_Xbox_RT";
+			pXboxLT = "Mac_Xbox_LT";
 		}
 	}
 	
@@ -49,13 +106,13 @@ public class XInput : MonoBehaviour {
 	}
 
 	// Get RT and LT Presses
-	public bool RTDown() {
+	public bool RTDown(int PlayerNum) {
 		if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor) {
-			if (Input.GetAxis (XboxRT) > 0.9) {
+			if (Input.GetAxis (XboxRT(PlayerNum)) > 0.9) {
 				return true;
 			}
 		} else {
-			if (Input.GetAxis (XboxRT) > 0.8) {
+			if (Input.GetAxis (XboxRT(PlayerNum)) > 0.8) {
 				return true;
 			}
 		}
@@ -63,13 +120,13 @@ public class XInput : MonoBehaviour {
 		return false;
 	}
 
-	public bool LTDown() {
+	public bool LTDown(int PlayerNum) {
 		if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor) {
-			if (Input.GetAxis (XboxLT) > 0.9) {
+			if (Input.GetAxis (XboxLT(PlayerNum)) > 0.9) {
 				return true;
 			}
 		} else {
-			if (Input.GetAxis (XboxLT) > 0.8) {
+			if (Input.GetAxis (XboxLT(PlayerNum)) > 0.8) {
 				return true;
 			}
 		}
@@ -78,47 +135,49 @@ public class XInput : MonoBehaviour {
 	}
 
 	void DebugInput() {
-		if (Input.GetButtonDown (XboxA)) {
-			Debug.Log (XboxA);
-		}
-		if (Input.GetButtonDown (XboxB)) {
-			Debug.Log (XboxB);
-		}
-		if (Input.GetButtonDown (XboxX)) {
-			Debug.Log (XboxX);
-		}
-		if (Input.GetButtonDown (XboxY)) {
-			Debug.Log (XboxY);
-		}
-		if (Input.GetButtonDown (XboxStart)) {
-			Debug.Log (XboxStart);
-		}
-		if (Input.GetButtonDown (XboxBack)) {
-			Debug.Log (XboxBack);
-		}
-		if (Input.GetButtonDown (XboxLB)) {
-			Debug.Log (XboxLB);
-		}
-		if (Input.GetButtonDown (XboxRB)) {
-			Debug.Log (XboxRB);
-		}
-		if (Input.GetAxis (XboxLStickX) != 0) {
-			Debug.Log (XboxLStickX);
-		}
-		if (Input.GetAxis (XboxLStickY) != 0) {
-			Debug.Log (XboxLStickY);
-		}
-		if (Input.GetAxis (XboxRStickX) != 0) {
-			Debug.Log (XboxRStickX);
-		}
-		if (Input.GetAxis (XboxRStickY) != 0) {
-			Debug.Log (XboxRStickY);
-		}
-		if (RTDown()) {
-			Debug.Log (XboxRT);
-		}
-		if (LTDown()) {
-			Debug.Log (XboxLT);
+		for (int i = 1; i < 4; i++) {
+			if (Input.GetButtonDown (XboxA (i))) {
+				Debug.Log (XboxA (i));
+			}
+			if (Input.GetButtonDown (XboxB (i))) {
+				Debug.Log (XboxB (i));
+			}
+			if (Input.GetButtonDown (XboxX (i))) {
+				Debug.Log (XboxX (i));
+			}
+			if (Input.GetButtonDown (XboxY (i))) {
+				Debug.Log (XboxY (i));
+			}
+			if (Input.GetButtonDown (XboxStart (i))) {
+				Debug.Log (XboxStart (i));
+			}
+			if (Input.GetButtonDown (XboxBack (i))) {
+				Debug.Log (XboxBack (i));
+			}
+			if (Input.GetButtonDown (XboxLB (i))) {
+				Debug.Log (XboxLB (i));
+			}
+			if (Input.GetButtonDown (XboxRB (i))) {
+				Debug.Log (XboxRB (i));
+			}
+			if (Input.GetAxis (XboxLStickX (i)) != 0) {
+				Debug.Log (XboxLStickX (i));
+			}
+			if (Input.GetAxis (XboxLStickY (i)) != 0) {
+				Debug.Log (XboxLStickY (i));
+			}
+			if (Input.GetAxis (XboxRStickX (i)) != 0) {
+				Debug.Log (XboxRStickX (i));
+			}
+			if (Input.GetAxis (XboxRStickY (i)) != 0) {
+				Debug.Log (XboxRStickY (i));
+			}
+			if (RTDown (i)) {
+				Debug.Log (XboxRT (i));
+			}
+			if (LTDown (i)) {
+				Debug.Log (XboxLT (i));
+			}
 		}
 	}
 }
