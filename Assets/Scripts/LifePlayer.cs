@@ -55,11 +55,11 @@ public class LifePlayer : MonoBehaviour {
 
             if (vel.z > 0)
             {
-                new_player_rotation.eulerAngles = new Vector3(0, 0, 90);
+                new_player_rotation.eulerAngles = new Vector3(0, 90, 0);
             }
             else if (vel.z < 0)
             {
-                new_player_rotation.eulerAngles = new Vector3(0, 0, 270);
+                new_player_rotation.eulerAngles = new Vector3(0, 270, 0);
             }
         }
         rigid.velocity = vel;
