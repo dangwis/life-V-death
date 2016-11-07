@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SetupCameras : MonoBehaviour {
 	static public int PlayerCount = 2;
-	static public bool multiDisplay = true;
+	static public bool multiDisplay = false;
 
 	public GameObject DeathCam, LifeCam, LifeObj;
 
