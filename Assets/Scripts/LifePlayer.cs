@@ -65,7 +65,7 @@ public class LifePlayer : MonoBehaviour {
         rigid.velocity = vel;
         this.gameObject.transform.rotation = new_player_rotation;
 
-        if (Input.GetKeyDown(XInput.XboxA(playerNum)) && hasWeapon && (Time.time - lastattacktime > cooldown) )
+		if (Input.GetButtonDown(XInput.XboxA(playerNum)) && hasWeapon && (Time.time - lastattacktime > cooldown) )
         {
             lastattacktime = Time.time;
             if(weapontype == 0)
