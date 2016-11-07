@@ -20,6 +20,8 @@ public class SetupCameras : MonoBehaviour {
 			Camera2.GetComponent<FollowCam> ().FollowObject = Player2;
 
 			Player2.name = "Player 2";
+            Player2.GetComponent<LifePlayer>().playerNum = 2;
+
 
 			if (multiDisplay) {
 				Camera1.GetComponent<Camera> ().targetDisplay = 0;
@@ -44,7 +46,9 @@ public class SetupCameras : MonoBehaviour {
 			Camera3.GetComponent<FollowCam> ().FollowObject = Player3;
 
 			Player2.name = "Player 2";
+            Player2.GetComponent<LifePlayer>().playerNum = 2;
 			Player3.name = "Player 3";
+            Player3.GetComponent<LifePlayer>().playerNum = 3;
 
 			if (multiDisplay) {
 				Camera1.GetComponent<Camera> ().targetDisplay = 0;
@@ -75,8 +79,11 @@ public class SetupCameras : MonoBehaviour {
 			Camera4.GetComponent<FollowCam> ().FollowObject = Player4;
 
 			Player2.name = "Player 2";
+            Player2.GetComponent<LifePlayer>().playerNum = 2;
 			Player3.name = "Player 3";
+            Player3.GetComponent<LifePlayer>().playerNum = 3;
 			Player4.name = "Player 4";
+            Player4.GetComponent<LifePlayer>().playerNum = 4;
 
 			if (multiDisplay) {
 				Camera1.GetComponent<Camera> ().targetDisplay = 0;

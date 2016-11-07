@@ -63,7 +63,7 @@ public class XInput : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		x = this;
 		// Setup Input
 		if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor) {
@@ -102,7 +102,7 @@ public class XInput : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// Debug Input
-		//DebugInput();
+		DebugInput();
 	}
 
 	// Get RT and LT Presses
