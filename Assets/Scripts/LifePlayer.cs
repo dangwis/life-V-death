@@ -30,17 +30,40 @@ public class LifePlayer : MonoBehaviour {
 	void Update () {
         Vector3 vel = rigid.velocity;
         float ret = Input.GetAxis(XInput.XboxLStickX(playerNum));
+
+        Quaternion new_player_rotation = new Quaternion();
+        new_player_rotation.eulerAngles = this.gameObject.transform.rotation.eulerAngles;
+
         if (ret != 0)
         {
 
             vel.x = Input.GetAxis(XInput.XboxLStickX(playerNum)) * speed;
+
+            if(vel.x > 0)
+            {
+                new_player_rotation.eulerAngles = new Vector3(0, 0, 180);
+            }
+            else if(vel.x < 0)
+            {
+                new_player_rotation.eulerAngles = new Vector3(0, 0, 0);
+            }
+
         }
         if(Input.GetAxis(XInput.XboxLStickY(playerNum)) != 0)
         {
             vel.z = Input.GetAxis(XInput.XboxLStickY(playerNum)) * -speed;
+
+            if (vel.z > 0)
+            {
+                new_player_rotation.eulerAngles = new Vector3(0, 0, 90);
+            }
+            else if (vel.z < 0)
+            {
+                new_player_rotation.eulerAngles = new Vector3(0, 0, 270);
+            }
         }
         rigid.velocity = vel;
-
+        this.gameObject.transform.rotation = new_player_rotation;
 
         if (Input.GetKeyDown(XInput.XboxA(playerNum)) && hasWeapon && (Time.time - lastattacktime > cooldown) )
         {
@@ -48,19 +71,19 @@ public class LifePlayer : MonoBehaviour {
             if(weapontype == 0)
             {
                 // hammer attack
-                GameObject weapon_instance = MonoBehaviour.Instantiate(hammer, this.transform.position + new Vector3(0, 0, 2), Quaternion.identity) as GameObject;
+                GameObject weapon_instance = MonoBehaviour.Instantiate(hammer, this.transform.position + this.transform.forward, Quaternion.identity) as GameObject;
             }
             else if(weapontype == 1){
                 // bow
-                GameObject weapon_instance = MonoBehaviour.Instantiate(bow, this.transform.position + new Vector3(0, 0, 2), Quaternion.identity) as GameObject;
-                GameObject weapon_instance2 = MonoBehaviour.Instantiate(arrow, this.transform.position + new Vector3(0, 0, 2), Quaternion.identity) as GameObject;
+                GameObject weapon_instance = MonoBehaviour.Instantiate(bow, this.transform.position + this.transform.forward, Quaternion.identity) as GameObject;
+                GameObject weapon_instance2 = MonoBehaviour.Instantiate(arrow, this.transform.position + this.transform.forward, Quaternion.identity) as GameObject;
 
-                weapon_instance2.GetComponent<Rigidbody>().velocity += new Vector3(0, 0, 10); 
+                weapon_instance2.GetComponent<Rigidbody>().velocity += (10 * this.transform.forward); 
             }
             else if(weapontype == 2)
             {
                 //sword
-                GameObject weapon_instance = MonoBehaviour.Instantiate(sword, this.transform.position + new Vector3(0, 0, 2), Quaternion.identity) as GameObject;
+                GameObject weapon_instance = MonoBehaviour.Instantiate(sword, this.transform.position + this.transform.forward, Quaternion.identity) as GameObject;
             }
         }
 
