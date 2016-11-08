@@ -25,6 +25,10 @@ public class SetupCameras : MonoBehaviour {
 			if (multiDisplay) {
 				Camera0.GetComponent<Camera> ().targetDisplay = 0;
 				Camera1.GetComponent<Camera> ().targetDisplay = 1;
+				
+				if (Display.displays.Length > 1) {
+					Display.displays [1].Activate ();
+				}
 			} else {
 				Camera0.GetComponent<Camera> ().rect = new Rect (0f, 0.2505f, 0.499f, 0.499f);
 				Camera1.GetComponent<Camera> ().rect = new Rect (0.501f, 0.2505f, 0.499f, 0.499f);
@@ -53,6 +57,13 @@ public class SetupCameras : MonoBehaviour {
 				Camera0.GetComponent<Camera> ().targetDisplay = 0;
 				Camera1.GetComponent<Camera> ().targetDisplay = 1;
 				Camera2.GetComponent<Camera> ().targetDisplay = 2;
+
+				if (Display.displays.Length > 1) {
+					Display.displays [1].Activate ();
+				}
+				if (Display.displays.Length > 2) {
+					Display.displays [2].Activate ();
+				}
 			} else {
 				Camera0.GetComponent<Camera> ().rect = new Rect (0f, 0.501f, 0.499f, 0.499f);
 				Camera1.GetComponent<Camera> ().rect = new Rect (0.501f, 0.501f, 0.499f, 0.499f);
@@ -89,6 +100,16 @@ public class SetupCameras : MonoBehaviour {
 				Camera1.GetComponent<Camera> ().targetDisplay = 1;
 				Camera2.GetComponent<Camera> ().targetDisplay = 2;
 				Camera3.GetComponent<Camera> ().targetDisplay = 3;
+
+				if (Display.displays.Length > 1) {
+					Display.displays [1].Activate ();
+				}
+				if (Display.displays.Length > 2) {
+					Display.displays [2].Activate ();
+				}
+				if (Display.displays.Length > 3) {
+					Display.displays [3].Activate ();
+				}
 			} else {
 				Camera0.GetComponent<Camera> ().rect = new Rect (0f, 0.501f, 0.499f, 0.499f);
 				Camera1.GetComponent<Camera> ().rect = new Rect (0.501f, 0.501f, 0.499f, 0.499f);
