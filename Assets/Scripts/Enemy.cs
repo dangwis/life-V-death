@@ -1,14 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Enemy : MonoBehaviour {
 
-	public float movementSpeed;
-
-	protected GameObject[] players;
+	public float movementSpeed = 1f;
+	public float detectionRange = 5f;
 
 	void Awake() {
-		players = GameObject.FindGameObjectsWithTag ("Life");
+
+	}
+
+	protected List<GameObject> DetectPlayers() {
+		// Detect players
+		Collider[] hits = Physics.OverlapSphere(transform.position, detectionRange, LayerMask.GetMask("Life"));
+		List<GameObject> players = new List<GameObject>();
+		foreach (Collider hit in hits) {
+			if (hit.gameObject.tag == "Life") {
+				players.Add (hit.gameObject);
+			}
+		}
+		return players;
 	}
 
 	protected void MoveTowardsObject(GameObject P) {
@@ -20,7 +32,7 @@ public class Enemy : MonoBehaviour {
 		transform.LookAt (P.transform.position);
 	}
 
-	protected GameObject FindClosestPlayer() {
+	protected GameObject FindClosestPlayer(List<GameObject> players) {
 		float best = 0;
 		GameObject bestP = null;
 		foreach (GameObject p in players) {
@@ -31,5 +43,13 @@ public class Enemy : MonoBehaviour {
 			}
 		}
 		return bestP;
+	}
+
+	protected void MeleeAttack(GameObject weapon) {
+		//spawn weapon and perform a simple melee attack
+	}
+
+	protected void RangedAttack(GameObject sourceWeapon, GameObject projectile) {
+		//spawn sourceWeapon and shoot projectile (probably handle projectile firing in a projectile class)
 	}
 }

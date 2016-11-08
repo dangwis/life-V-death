@@ -19,11 +19,16 @@ public class LifePlayer : MonoBehaviour {
 
     public int health = 100;
 
+
     // Use this for initialization
     void Start () {
         rigid = this.transform.GetComponent<Rigidbody>();
         hasWeapon = false;
         lastattacktime = Time.time;
+	}
+
+	void OnDestory() {
+		
 	}
 	
 	// Update is called once per frame
