@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LifePlayer : MonoBehaviour {
 
-    Rigidbody rigid;
+    CharacterController charController;
     public float speed;
     public int playerNum;
     public bool hasWeapon;
@@ -22,7 +22,7 @@ public class LifePlayer : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        rigid = this.transform.GetComponent<Rigidbody>();
+        charController = this.transform.GetComponent<CharacterController>();
         hasWeapon = false;
         lastattacktime = Time.time;
 	}
@@ -33,42 +33,13 @@ public class LifePlayer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Vector3 vel = rigid.velocity;
-        float ret = Input.GetAxis(XInput.XboxLStickX(playerNum));
-
-        Quaternion new_player_rotation = new Quaternion();
-        new_player_rotation.eulerAngles = this.gameObject.transform.rotation.eulerAngles;
-
-        if (ret != 0)
-        {
-
-            vel.x = Input.GetAxis(XInput.XboxLStickX(playerNum)) * speed;
-
-            if(vel.x > 0)
-            {
-                new_player_rotation.eulerAngles = new Vector3(0, 90, 0);
-            }
-            else if(vel.x < 0)
-            {
-                new_player_rotation.eulerAngles = new Vector3(0, -90, 0);
-            }
-
-        }
-        if(Input.GetAxis(XInput.XboxLStickY(playerNum)) != 0)
-        {
-            vel.z = Input.GetAxis(XInput.XboxLStickY(playerNum)) * -speed;
-
-            if (vel.z > 0)
-            {
-                new_player_rotation.eulerAngles = new Vector3(0, 0, 0);
-            }
-            else if (vel.z < 0)
-            {
-                new_player_rotation.eulerAngles = new Vector3(0, 180, 0);
-            }
-        }
-        rigid.velocity = vel;
-        this.gameObject.transform.rotation = new_player_rotation;
+        float Xinput = Input.GetAxis (XInput.XboxLStickX (playerNum));
+		float Yinput = -Input.GetAxis (XInput.XboxLStickY (playerNum));
+		Vector3 movementDir = new Vector3 (Xinput, 0, Yinput).normalized;
+		if (movementDir != Vector3.zero) {
+			charController.SimpleMove (movementDir * speed);
+			transform.rotation = Quaternion.LookRotation (movementDir);
+		}
 
 		if (Input.GetButtonDown(XInput.XboxA(playerNum)) && hasWeapon && (Time.time - lastattacktime > cooldown) )
         {

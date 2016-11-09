@@ -102,7 +102,7 @@ public class XInput : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// Debug Input
-		DebugInput();
+		//DebugInput();
 	}
 
 	// Get RT and LT Presses

@@ -6,9 +6,17 @@ public class Enemy : MonoBehaviour {
 
 	public float movementSpeed = 1f;
 	public float detectionRange = 5f;
+	public float tryAttackRange = 2f;
+	public float maxAttackCooldown = 3f;
+
+	protected float _attackCooldown;
 
 	void Awake() {
+		_attackCooldown = Random.Range (0, maxAttackCooldown);
+	}
 
+	protected virtual void Update() {
+		
 	}
 
 	protected List<GameObject> DetectPlayers() {
@@ -45,8 +53,24 @@ public class Enemy : MonoBehaviour {
 		return bestP;
 	}
 
+	protected virtual void Attack () {
+		// Do nothing by default
+	}
+
+	protected void TryAttack() {
+		//if close enough to a life, lower attack time until 0, then attack
+		RaycastHit hit;
+		if (Physics.SphereCast (transform.position, 3f, transform.forward, out hit, tryAttackRange, LayerMask.GetMask("Life"))) {
+			_attackCooldown -= Time.fixedDeltaTime;
+			if (_attackCooldown < 0) {
+				Attack ();
+			}
+		}
+
+	}
+
 	protected void MeleeAttack(GameObject weapon) {
-		//spawn weapon and perform a simple melee attack
+		//spawn weapon and perform a simple melee attack (probably have weapons contain attack animation)
 	}
 
 	protected void RangedAttack(GameObject sourceWeapon, GameObject projectile) {
