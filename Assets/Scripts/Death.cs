@@ -110,8 +110,7 @@ public class Death : MonoBehaviour {
                 newCamPos = deathCam.transform.position;
                 newCamPos.z += 0.15f;
                 deathCam.transform.position = newCamPos;
-                cursorPos.z = deathCursor.transform.position.z;
-                cursorPos.z += 0.15f;
+                cursorPos.z = deathCam.transform.position.z + 5.3f;
                 deathCursor.transform.position = cursorPos;
                 return false;
             }
@@ -128,8 +127,7 @@ public class Death : MonoBehaviour {
                 newCamPos = deathCam.transform.position;
                 newCamPos.z -= 0.15f;
                 deathCam.transform.position = newCamPos;
-                cursorPos.z = deathCursor.transform.position.z;
-                cursorPos.z -= 0.15f;
+                cursorPos.z = deathCam.transform.position.z - 5.3f;
                 deathCursor.transform.position = cursorPos;
                 return false;
             }
@@ -146,8 +144,7 @@ public class Death : MonoBehaviour {
                 newCamPos = deathCam.transform.position;
                 newCamPos.x -= 0.15f;
                 deathCam.transform.position = newCamPos;
-                cursorPos.x = deathCursor.transform.position.x;
-                cursorPos.x -= 0.15f;
+                cursorPos.x = deathCam.transform.position.x - 6.7f;
                 deathCursor.transform.position = cursorPos;
                 return false;
             }
@@ -164,8 +161,7 @@ public class Death : MonoBehaviour {
                 newCamPos = deathCam.transform.position;
                 newCamPos.x += 0.15f;
                 deathCam.transform.position = newCamPos;
-                cursorPos.x = deathCursor.transform.position.x;
-                cursorPos.x += 0.15f;
+                cursorPos.x = deathCam.transform.position.x + 6.7f;
                 deathCursor.transform.position = cursorPos;
                 return false;
             }
