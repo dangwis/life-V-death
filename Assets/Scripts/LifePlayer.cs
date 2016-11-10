@@ -80,22 +80,32 @@ public class LifePlayer : MonoBehaviour {
     }
 
     void SwordAttack() {
+        if (attackFinishing) return;
+        sword.layer = 10;
         weaponTime += Time.fixedDeltaTime;
-        sword.transform.localRotation = Quaternion.Lerp(swordStart, Quaternion.Euler(0, -20, -90), 6 * weaponTime);
+        sword.transform.localRotation = Quaternion.Lerp(swordStart, Quaternion.Euler(0, -20, -90), 10 * weaponTime);
         if (sword.transform.localRotation == Quaternion.Euler(0, -20, -90)) {
-            attacking = false;
-           sword.transform.localRotation = swordStart;
-            weaponTime = 0;
+            attackFinishing = true;
+            sword.layer = 8;
+            Invoke("FinishSword", 0.2f);
         }
+    }
+
+    void FinishSword() {
+        attacking = false;
+        attackFinishing = false;
+        sword.transform.localRotation = swordStart;
+        weaponTime = 0;
     }
 
     void HammerAttack() {
         if (attackFinishing) return;
-
+        hammer.layer = 10;
         weaponTime += Time.fixedDeltaTime;
         hammer.transform.localRotation = Quaternion.Lerp(hammerStart, Quaternion.Euler(0, 0, 90), 10f * Mathf.Pow(weaponTime, 8));
         if (hammer.transform.localRotation == Quaternion.Euler(0, 0, 90)) {
             attackFinishing = true;
+            hammer.layer = 8;
             Invoke("FinishHammer", 0.25f);
         }
     }
