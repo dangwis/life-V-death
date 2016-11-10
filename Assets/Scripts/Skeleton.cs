@@ -44,7 +44,6 @@ public class Skeleton : Enemy {
 	}
 
 	void Move() {
-		
 		if (movementDet < 0.3f) {
 			//move randomly
 			// TODO: handle archer
@@ -60,8 +59,10 @@ public class Skeleton : Enemy {
 			if (!(skeletonType == Type.Archer && Vector3.Distance (transform.position, targetPlayer.transform.position) <= minArcherDistance))
 				MoveTowardsObject (targetPlayer);
 		} else {
-			// stay stationary, look at player
-			transform.LookAt(targetPlayer.transform.position);
+            // stay stationary, look at player
+            if (targetPlayer != null) {
+                transform.LookAt(targetPlayer.transform.position);
+            }
 			rigid.velocity = Vector3.zero;
 		}
 		changeMovementTimer -= Time.fixedDeltaTime;

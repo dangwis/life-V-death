@@ -7,17 +7,27 @@ public class LifePlayer : MonoBehaviour {
     public float speed;
     public int playerNum;
     public bool hasWeapon;
+    public bool canPickupWeapon;
+    public int pickupType = 0;
     public int weapontype = 0;
+    public GameObject weaponPickupObj;
+    public bool attacking = false;
+    public bool attackFinishing = false;
 
     public GameObject sword;
+    public Quaternion swordStart;
+    public GameObject arrowPrefab;
     public GameObject arrow;
     public GameObject bow;
+    public Quaternion bowStart;
     public GameObject hammer;
+    public Quaternion hammerStart;
 
     public float cooldown = 1.5f;
     private float lastattacktime;
 
     public int health = 100;
+    public float weaponTime = 0;
 
 
     // Use this for initialization
@@ -25,14 +35,96 @@ public class LifePlayer : MonoBehaviour {
         charController = this.transform.GetComponent<CharacterController>();
         hasWeapon = false;
         lastattacktime = Time.time;
+        sword = transform.Find("Weapon Sword").gameObject;
+        swordStart = sword.transform.localRotation;
+        hammer = transform.Find("Weapon Hammer").gameObject;
+        hammerStart = hammer.transform.localRotation;
+        bow = transform.Find("Weapon Bow").gameObject;
+        arrow = bow.transform.Find("Arrow").gameObject;
+        bowStart = bow.transform.localRotation;
+        sword.SetActive(false);
+        hammer.SetActive(false);
+        bow.SetActive(false);
+        arrow.SetActive(false);
 	}
 
 	void OnDestory() {
 		
 	}
 	
+    void Update() {
+        // Picking up your weapon
+        if (Input.GetButtonDown(XInput.XboxA(playerNum)) && canPickupWeapon && !hasWeapon && weapontype == 0) {
+            Destroy (weaponPickupObj);
+            hasWeapon = true;
+            canPickupWeapon = false;
+            weapontype = pickupType;
+            switch (weapontype) {
+                case 1:
+                    sword.SetActive(true);
+                    break;
+                case 2:
+                    hammer.SetActive(true);
+                    break;
+                case 3:
+                    bow.SetActive(true);
+                    arrow.SetActive(true);
+                    break;
+            }
+        }
+
+        // Attack Handlers
+        if (XInput.x.RTDown(playerNum) && hasWeapon && !attacking) {
+            attacking = true;
+        }
+    }
+
+    void SwordAttack() {
+        weaponTime += Time.fixedDeltaTime;
+        sword.transform.localRotation = Quaternion.Lerp(swordStart, Quaternion.Euler(0, -20, -90), 6 * weaponTime);
+        if (sword.transform.localRotation == Quaternion.Euler(0, -20, -90)) {
+            attacking = false;
+           sword.transform.localRotation = swordStart;
+            weaponTime = 0;
+        }
+    }
+
+    void HammerAttack() {
+        if (attackFinishing) return;
+
+        weaponTime += Time.fixedDeltaTime;
+        hammer.transform.localRotation = Quaternion.Lerp(hammerStart, Quaternion.Euler(0, 0, 90), 10f * Mathf.Pow(weaponTime, 8));
+        if (hammer.transform.localRotation == Quaternion.Euler(0, 0, 90)) {
+            attackFinishing = true;
+            Invoke("FinishHammer", 0.25f);
+        }
+    }
+
+    void FinishHammer() {
+        attacking = false;
+        attackFinishing = false;
+        hammer.transform.localRotation = hammerStart;
+        weaponTime = 0;
+    }
+
+    void BowAttack() {
+        if (attackFinishing) return;
+        attackFinishing = true;
+        GameObject go = Instantiate<GameObject>(arrowPrefab);
+        go.transform.position = bow.transform.position;
+        go.transform.rotation = bow.transform.rotation;
+        arrow.SetActive(false);
+        Invoke("FinishBow", 0.5f);
+    }
+
+    void FinishBow() {
+        attackFinishing = false;
+        attacking = false;
+        arrow.SetActive(true);
+    }
+
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         float Xinput = Input.GetAxis (XInput.XboxLStickX (playerNum));
 		float Yinput = -Input.GetAxis (XInput.XboxLStickY (playerNum));
 		Vector3 movementDir = new Vector3 (Xinput, 0, Yinput).normalized;
@@ -41,55 +133,48 @@ public class LifePlayer : MonoBehaviour {
 			transform.rotation = Quaternion.LookRotation (movementDir);
 		}
 
-		if (Input.GetButtonDown(XInput.XboxA(playerNum)) && hasWeapon && (Time.time - lastattacktime > cooldown) )
-        {
-            lastattacktime = Time.time;
-            if(weapontype == 0)
-            {
-                // hammer attack
-                GameObject weapon_instance = MonoBehaviour.Instantiate(hammer, this.transform.position + this.transform.forward, Quaternion.identity) as GameObject;
-            }
-            else if(weapontype == 1){
-                // bow
-                GameObject weapon_instance = MonoBehaviour.Instantiate(bow, this.transform.position + this.transform.forward, Quaternion.identity) as GameObject;
-                GameObject weapon_instance2 = MonoBehaviour.Instantiate(arrow, this.transform.position + this.transform.forward, Quaternion.identity) as GameObject;
-
-                weapon_instance2.GetComponent<Rigidbody>().velocity += (10 * this.transform.forward); 
-            }
-            else if(weapontype == 2)
-            {
-                //sword
-                GameObject weapon_instance = MonoBehaviour.Instantiate(sword, this.transform.position + this.transform.forward, Quaternion.identity) as GameObject;
+        // Call attack handlers
+        if (attacking) {
+            switch (weapontype) {
+                case 1:
+                    SwordAttack();
+                    break;
+                case 2:
+                    HammerAttack();
+                    break;
+                case 3:
+                    BowAttack();
+                    break;
             }
         }
-
 	}
 
-    void OnCollisionEnter(Collision coll)
-    {
-        GameObject go = coll.gameObject;
-        if(go.tag == "PowerUp")
-        {
+    void OnTriggerEnter(Collider col) {
+        if(col.tag == "PowerUp") {
             hasWeapon = true;
-            Destroy(go.gameObject);
+            Destroy(col.gameObject);
+        } else if (col.tag == "Sword" && !hasWeapon) {
+            canPickupWeapon = true;
+            pickupType = 1;
+            weaponPickupObj = col.gameObject;
+        } else if (col.tag == "Hammer" && !hasWeapon) {
+            canPickupWeapon = true;
+            pickupType = 2;
+            weaponPickupObj = col.gameObject;
+        } else if (col.tag == "Bow" && !hasWeapon) {
+            canPickupWeapon = true;
+            pickupType = 3;
+            weaponPickupObj = col.gameObject;
         }
-        else if (go.tag == "Hammer")
-        {
-            hasWeapon = true;
-            Destroy(go.gameObject);
-            weapontype = 0;
-        }
-        else if (go.tag == "Bow")
-        {
-            hasWeapon = true;
-            Destroy(go.gameObject);
-            weapontype = 1;
-        }
-        else if (go.tag == "Sword")
-        {
-            hasWeapon = true;
-            Destroy(go.gameObject);
-            weapontype = 2;
+    }
+
+    void OnTriggerExit(Collider col) {
+        if (col.tag == "Hammer") {
+            canPickupWeapon = false;
+        } else if (col.tag == "Bow") {
+            canPickupWeapon = false;
+        } else if (col.tag == "Sword") {
+            canPickupWeapon = false;
         }
     }
 }
