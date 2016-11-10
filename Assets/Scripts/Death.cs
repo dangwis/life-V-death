@@ -22,24 +22,24 @@ public class Death : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //float x = Input.GetAxis("Mouse X");
-        //float y = Input.GetAxis("Mouse Y");
-        float x = 0, y = 0;
+        float x = Input.GetAxis("Mouse X");
+        float y = Input.GetAxis("Mouse Y");
+
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            x = 0.15f;
+            
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            x = -0.15f;
+           
         }
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            y = 0.15f;
+           
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            y = -0.15f;
+           
         }
         cursorPos = deathCursor.transform.position;
         
@@ -61,28 +61,49 @@ public class Death : MonoBehaviour {
 
     bool IsOnDeathCam(Vector3 cursorPos)
     {
-        Vector3 result = cursorPos;
-        result.y = result.z;
-        result = deathCam.WorldToViewportPoint(result);
         bool ret = true;
         Vector3 newCamPos;
-        if (result.x >= 0.81f || result.x <= 0.19f)
+        if (SetupCameras.multiDisplay)
         {
-            float xDif = cursorPos.x - deathCursor.transform.position.x;
-            newCamPos = deathCam.transform.position;
-            newCamPos.x += xDif;
-            deathCam.transform.position = newCamPos;
-            deathCursor.transform.position = cursorPos;
-            ret = false;
+            if (cursorPos.x > deathCam.transform.position.x + 7f || cursorPos.x < deathCam.transform.position.x - 7f)
+            {
+                float xDif = cursorPos.x - deathCursor.transform.position.x;
+                newCamPos = deathCam.transform.position;
+                newCamPos.x += xDif;
+                deathCam.transform.position = newCamPos;
+                deathCursor.transform.position = cursorPos;
+                ret = false;
+            }
+            if (cursorPos.z > deathCam.transform.position.z + 5.5f || cursorPos.z < deathCam.transform.position.z - 5.5f)
+            {
+                float zDif = cursorPos.z - deathCursor.transform.position.z;
+                newCamPos = deathCam.transform.position;
+                newCamPos.z += zDif;
+                deathCam.transform.position = newCamPos;
+                deathCursor.transform.position = cursorPos;
+                ret = false;
+            }
         }
-        if(result.y >= 0.99f || result.y <= 0.01f)
+        else
         {
-            float zDif = cursorPos.z - deathCursor.transform.position.z;
-            newCamPos = deathCam.transform.position;
-            newCamPos.z += zDif;
-            deathCam.transform.position = newCamPos;
-            deathCursor.transform.position = cursorPos;
-            ret = false;
+            if (cursorPos.x > deathCam.transform.position.x + 7f || cursorPos.x < deathCam.transform.position.x - 7f)
+            {
+                float xDif = cursorPos.x - deathCursor.transform.position.x;
+                newCamPos = deathCam.transform.position;
+                newCamPos.x += xDif;
+                deathCam.transform.position = newCamPos;
+                deathCursor.transform.position = cursorPos;
+                ret = false;
+            }
+            if(cursorPos.z > deathCam.transform.position.z + 5.5f || cursorPos.z < deathCam.transform.position.z - 5.5f)
+            {
+                float zDif = cursorPos.z - deathCursor.transform.position.z;
+                newCamPos = deathCam.transform.position;
+                newCamPos.z += zDif;
+                deathCam.transform.position = newCamPos;
+                deathCursor.transform.position = cursorPos;
+                ret = false;
+            }
         }
         return ret;
     }
