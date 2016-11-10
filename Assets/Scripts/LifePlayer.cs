@@ -136,12 +136,18 @@ public class LifePlayer : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
         float Xinput = Input.GetAxis (XInput.XboxLStickX (playerNum));
-		float Yinput = -Input.GetAxis (XInput.XboxLStickY (playerNum));
+        float Yinput = -Input.GetAxis(XInput.XboxLStickY(playerNum));
 		Vector3 movementDir = new Vector3 (Xinput, 0, Yinput).normalized;
 		if (movementDir != Vector3.zero) {
 			charController.SimpleMove (movementDir * speed);
 			transform.rotation = Quaternion.LookRotation (movementDir);
 		}
+        Xinput = Input.GetAxis(XInput.XboxRStickX(playerNum));
+        Yinput = -Input.GetAxis(XInput.XboxRStickY(playerNum));
+        if (Xinput != 0 || Yinput != 0) {
+            Vector3 lookDir = new Vector3(Xinput, 0, Yinput).normalized;
+            transform.rotation = Quaternion.LookRotation(lookDir);
+        }
 
         // Call attack handlers
         if (attacking) {
