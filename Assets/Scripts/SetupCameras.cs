@@ -4,18 +4,20 @@ using System.Collections;
 public class SetupCameras : MonoBehaviour {
 	static public int PlayerCount = 2;
 	static public bool multiDisplay = false;
+    public Vector3 playerStart;
+    public Vector3 deathCamStart;
 
 	public GameObject DeathCam, LifeCam, LifeObj;
 
 	void Start () {
-		GameObject Camera0 = Instantiate (DeathCam), Camera1, Camera2, Camera3, Player1, Player2, Player3;
+		GameObject Camera0 = (GameObject)Instantiate (DeathCam, deathCamStart, DeathCam.transform.rotation), Camera1, Camera2, Camera3, Player1, Player2, Player3;
 		Camera0.name = "Camera 0";
 		switch (PlayerCount) {
 		case 2:
 			Camera1 = Instantiate (LifeCam, Camera0.transform.position, Camera0.transform.rotation) as GameObject;
 			Camera1.name = "Camera 1";
 
-			Player1 = Instantiate (LifeObj, LifeObj.transform.position + Vector3.right * 3f, LifeObj.transform.rotation) as GameObject;
+			Player1 = Instantiate (LifeObj, playerStart + Vector3.right * 3f, LifeObj.transform.rotation) as GameObject;
 			Camera1.GetComponent<FollowCam> ().FollowObject = Player1;
 
 			Player1.name = "Player 1";
@@ -42,10 +44,10 @@ public class SetupCameras : MonoBehaviour {
 			Camera1.name = "Camera 1";
 			Camera2.name = "Camera 2";
 
-			Player1 = Instantiate (LifeObj, LifeObj.transform.position + Vector3.right * 3f, LifeObj.transform.rotation) as GameObject;
+			Player1 = Instantiate (LifeObj, playerStart + Vector3.right * 3f, LifeObj.transform.rotation) as GameObject;
 			Camera1.GetComponent<FollowCam> ().FollowObject = Player1;
 
-			Player2 = Instantiate (LifeObj, Player1.transform.position + Vector3.right * 3f, Player1.transform.rotation) as GameObject;
+			Player2 = Instantiate (LifeObj, playerStart + Vector3.right * 6f, Player1.transform.rotation) as GameObject;
 			Camera2.GetComponent<FollowCam> ().FollowObject = Player2;
 
 			Player1.name = "Player 1";
@@ -79,13 +81,13 @@ public class SetupCameras : MonoBehaviour {
 			Camera2.name = "Camera 2";
 			Camera3.name = "Camera 3";
 
-			Player1 = Instantiate (LifeObj, LifeObj.transform.position + Vector3.right * 3f, LifeObj.transform.rotation) as GameObject;
+			Player1 = Instantiate (LifeObj, playerStart + Vector3.right * 3f, LifeObj.transform.rotation) as GameObject;
 			Camera1.GetComponent<FollowCam> ().FollowObject = Player1;
 
-			Player2 = Instantiate (LifeObj, Player1.transform.position + Vector3.right * 3f, Player1.transform.rotation) as GameObject;
+			Player2 = Instantiate (LifeObj, playerStart + Vector3.right * 6f, Player1.transform.rotation) as GameObject;
 			Camera2.GetComponent<FollowCam> ().FollowObject = Player2;
 
-			Player3 = Instantiate (LifeObj, Player2.transform.position + Vector3.right * 3f, Player2.transform.rotation) as GameObject;
+			Player3 = Instantiate (LifeObj, playerStart + Vector3.right * 9f, Player2.transform.rotation) as GameObject;
 			Camera3.GetComponent<FollowCam> ().FollowObject = Player3;
 
 			Player1.name = "Player 1";

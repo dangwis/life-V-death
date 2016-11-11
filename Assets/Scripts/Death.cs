@@ -19,6 +19,9 @@ public class Death : MonoBehaviour {
         Cursor.lockState = lockState;
         Cursor.visible = false;
         deathCursor = Instantiate(deathCursor);
+        Vector3 tempPos = GameObject.Find("Static Objects").GetComponent<SetupCameras>().deathCamStart;
+        tempPos.y = 5.6f;
+        cursorPos = tempPos;
         deathCursor.transform.position = cursorPos;
         Debug.Log(deathCam.rect.x);
         Debug.Log(deathCam.rect.y);
