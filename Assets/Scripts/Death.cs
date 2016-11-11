@@ -11,7 +11,7 @@ public class Death : MonoBehaviour {
     public float movementSpeed;
     public Camera deathCam;
 
-    bool scrollingL, scrollingR, scrollingU, scrollingD;
+    public bool scrollingL, scrollingR, scrollingU, scrollingD;
 
 	// Use this for initialization
 	void Start () {
@@ -99,11 +99,10 @@ public class Death : MonoBehaviour {
         bool ret = true;
         Vector3 newCamPos;
         if (scrollingU)
-        {
+        {       
             if(cursorPos.z < deathCursor.transform.position.z)
             {
                 scrollingU = false;
-                return ret;
             }
             else
             {
@@ -112,15 +111,14 @@ public class Death : MonoBehaviour {
                 deathCam.transform.position = newCamPos;
                 cursorPos.z = deathCam.transform.position.z + 5.3f;
                 deathCursor.transform.position = cursorPos;
-                return false;
+                ret = false;
             }
         }
-        else if (scrollingD)
-        {
+        if (scrollingD)
+        {          
             if (cursorPos.z > deathCursor.transform.position.z)
             {
                 scrollingD = false;
-                return ret;
             }
             else
             {
@@ -129,15 +127,15 @@ public class Death : MonoBehaviour {
                 deathCam.transform.position = newCamPos;
                 cursorPos.z = deathCam.transform.position.z - 5.3f;
                 deathCursor.transform.position = cursorPos;
-                return false;
+                ret = false;
             }
         }
-        else if (scrollingL)
-        {
+        if (scrollingL)
+        { 
+
             if (cursorPos.x > deathCursor.transform.position.x)
             {
                 scrollingL = false;
-                return ret;
             }
             else
             {
@@ -146,15 +144,14 @@ public class Death : MonoBehaviour {
                 deathCam.transform.position = newCamPos;
                 cursorPos.x = deathCam.transform.position.x - 6.7f;
                 deathCursor.transform.position = cursorPos;
-                return false;
+                ret = false;
             }
         }
-        else if (scrollingR)
+        if (scrollingR)
         {
             if (cursorPos.x < deathCursor.transform.position.x)
             {
                 scrollingR = false;
-                return ret;
             }
             else
             {
@@ -163,33 +160,29 @@ public class Death : MonoBehaviour {
                 deathCam.transform.position = newCamPos;
                 cursorPos.x = deathCam.transform.position.x + 6.7f;
                 deathCursor.transform.position = cursorPos;
-                return false;
+                ret = false;
             }
         }
-        else
+
+        if (cursorPos.x > deathCam.transform.position.x + 7f)
         {
-            if (cursorPos.x > deathCam.transform.position.x + 7f || cursorPos.x < deathCam.transform.position.x - 7f)
-            {
-                float xDif = cursorPos.x - deathCursor.transform.position.x;
-                newCamPos = deathCam.transform.position;
-                newCamPos.x += xDif;
-                deathCam.transform.position = newCamPos;
-                deathCursor.transform.position = cursorPos;
-                ret = false;
-                if (cursorPos.x > deathCam.transform.position.x) scrollingR = true;
-                else if (cursorPos.x < deathCam.transform.position.x) scrollingL = true;
-            }
-            if (cursorPos.z > deathCam.transform.position.z + 5.5f || cursorPos.z < deathCam.transform.position.z - 5.5f)
-            {
-                float zDif = cursorPos.z - deathCursor.transform.position.z;
-                newCamPos = deathCam.transform.position;
-                newCamPos.z += zDif;
-                deathCam.transform.position = newCamPos;
-                deathCursor.transform.position = cursorPos;
-                ret = false;
-                if (cursorPos.z > deathCam.transform.position.z) scrollingU = true;
-                else if (cursorPos.z < deathCam.transform.position.z) scrollingD = true;
-            }
+            ret = false;
+            scrollingR = true;
+        }
+        if (cursorPos.x < deathCam.transform.position.x - 7f)
+        {
+            ret = false;
+            scrollingL = true;
+        }
+        if (cursorPos.z > deathCam.transform.position.z + 5.5f)
+        {
+            ret = false;
+            scrollingU = true;      
+        }
+        if (cursorPos.z < deathCam.transform.position.z - 5.5f)
+        {
+            ret = false;
+            scrollingD = true;
         }
         return ret;
     }
