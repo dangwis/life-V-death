@@ -86,6 +86,7 @@ public class Death : MonoBehaviour {
     {
         if (Input.GetMouseButtonDown(0))
         {
+            DeathCursor.S.OnClick();
             Vector3 screenPoint = Camera.main.WorldToScreenPoint(cursorPos);
             Ray ray = Camera.main.ScreenPointToRay(screenPoint);
             RaycastHit hit;
@@ -95,6 +96,10 @@ public class Death : MonoBehaviour {
                     hit.collider.gameObject.GetComponent<Rigidbody>().useGravity = true;
             }
         }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            DeathCursor.S.OnRelease();
+        }
     }
 
     bool IsOnDeathCam(Vector3 cursorPos)
@@ -102,8 +107,8 @@ public class Death : MonoBehaviour {
         bool ret = true;
         Vector3 newCamPos;
         if (scrollingU)
-        {       
-            if(cursorPos.z < deathCursor.transform.position.z)
+        {
+            if (Input.GetAxis("Mouse Y") < 0)
             {
                 scrollingU = false;
             }
@@ -112,14 +117,14 @@ public class Death : MonoBehaviour {
                 newCamPos = deathCam.transform.position;
                 newCamPos.z += 0.15f;
                 deathCam.transform.position = newCamPos;
-                cursorPos.z = deathCam.transform.position.z + 5.3f;
+                cursorPos.z = deathCam.transform.position.z + 5.4f;
                 deathCursor.transform.position = cursorPos;
                 ret = false;
             }
         }
         if (scrollingD)
-        {          
-            if (cursorPos.z > deathCursor.transform.position.z)
+        {
+            if (Input.GetAxis("Mouse Y") > 0)
             {
                 scrollingD = false;
             }
@@ -128,15 +133,16 @@ public class Death : MonoBehaviour {
                 newCamPos = deathCam.transform.position;
                 newCamPos.z -= 0.15f;
                 deathCam.transform.position = newCamPos;
-                cursorPos.z = deathCam.transform.position.z - 5.3f;
+                cursorPos.z = deathCam.transform.position.z - 5f;
                 deathCursor.transform.position = cursorPos;
                 ret = false;
             }
+            
         }
         if (scrollingL)
-        { 
+        {
 
-            if (cursorPos.x > deathCursor.transform.position.x)
+            if (Input.GetAxis("Mouse X") > 0)
             {
                 scrollingL = false;
             }
@@ -152,7 +158,7 @@ public class Death : MonoBehaviour {
         }
         if (scrollingR)
         {
-            if (cursorPos.x < deathCursor.transform.position.x)
+            if (Input.GetAxis("Mouse X") < 0)
             {
                 scrollingR = false;
             }
@@ -161,28 +167,28 @@ public class Death : MonoBehaviour {
                 newCamPos = deathCam.transform.position;
                 newCamPos.x += 0.15f;
                 deathCam.transform.position = newCamPos;
-                cursorPos.x = deathCam.transform.position.x + 6.7f;
+                cursorPos.x = deathCam.transform.position.x + 6.5f;
                 deathCursor.transform.position = cursorPos;
                 ret = false;
             }
         }
 
-        if (cursorPos.x > deathCam.transform.position.x + 7f)
+        if (cursorPos.x > deathCam.transform.position.x + 6.5f)
         {
             ret = false;
             scrollingR = true;
         }
-        if (cursorPos.x < deathCam.transform.position.x - 7f)
+        if (cursorPos.x < deathCam.transform.position.x - 6.7f)
         {
             ret = false;
             scrollingL = true;
         }
-        if (cursorPos.z > deathCam.transform.position.z + 5.5f)
+        if (cursorPos.z > deathCam.transform.position.z + 5.4f)
         {
             ret = false;
             scrollingU = true;      
         }
-        if (cursorPos.z < deathCam.transform.position.z - 5.5f)
+        if (cursorPos.z < deathCam.transform.position.z - 5f)
         {
             ret = false;
             scrollingD = true;
