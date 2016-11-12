@@ -8,32 +8,32 @@ public class Death : MonoBehaviour {
     public CursorLockMode lockState;
     public Vector3 cursorPos;
     public GameObject deathCursor;
+    public GameObject skeletonPrefab;
+    public GameObject damageTrapPrefab;
+    public GameObject placementObjPrefab;
+    public Material ableToPlace, notAbleToPlace;
     public float movementSpeed;
     public Camera deathCam;
+
+    bool place;
+    GameObject placement;
     AbilityType activeAbility;
-    Enemies spawningEnemy;
-    TrapType placingTrap;
+    Placing currentPlacing;
 
     public bool scrollingL, scrollingR, scrollingU, scrollingD;
 
     public enum AbilityType
     {
         Interact,
-        Spawn,
-        PlaceTrap
+        Place
     }
 
-    public enum Enemies
+    public enum Placing
     {
         Skeleton,
         Minotaur,
-        ThirdOne
-    }
-
-    public enum TrapType
-    {
-        StopMovement,
         Damage,
+        Slow,
         Teleport
     }
 
@@ -59,7 +59,12 @@ public class Death : MonoBehaviour {
 	void Update () {
 
         ChooseAbility();
+        if(activeAbility == AbilityType.Place)
+        {
+            ShowPlacement();
+        }
         CheckClicks();
+
 
         float x = Input.GetAxis("Mouse X");
         float y = Input.GetAxis("Mouse Y");
@@ -111,13 +116,36 @@ public class Death : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
         {
             DeathCursor.S.OnClick();
-            Vector3 screenPoint = Camera.main.WorldToScreenPoint(cursorPos);
-            Ray ray = Camera.main.ScreenPointToRay(screenPoint);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (activeAbility == AbilityType.Interact)
             {
-                if (hit.collider.tag == "Clickable")
-                    hit.collider.gameObject.GetComponent<Rigidbody>().useGravity = true;
+                Vector3 screenPoint = Camera.main.WorldToScreenPoint(cursorPos);
+                Ray ray = Camera.main.ScreenPointToRay(screenPoint);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.collider.tag == "Clickable")
+                        hit.collider.gameObject.GetComponent<Rigidbody>().useGravity = true;
+                }
+            }
+            else if(activeAbility == AbilityType.Place)
+            {
+                if (place)
+                {
+                    if(currentPlacing == Placing.Damage)
+                    {
+                        GameObject trap = Instantiate(damageTrapPrefab);
+                        trap.transform.position = placement.transform.position;
+                        Destroy(placement.gameObject); ;
+                        activeAbility = AbilityType.Interact;
+                    }
+                    else if(currentPlacing == Placing.Skeleton)
+                    {
+                        EmenySkel skel = Instantiate(skeletonPrefab).GetComponent<EmenySkel>();
+                        skel.transform.position = placement.transform.position;
+                        Destroy(placement.gameObject); ;
+                        activeAbility = AbilityType.Interact;
+                    }
+                }
             }
         }
         else if (Input.GetMouseButtonUp(0))
@@ -126,11 +154,47 @@ public class Death : MonoBehaviour {
         }
     }
 
+    void ShowPlacement()
+    {
+        Vector3 screenPoint = Camera.main.WorldToScreenPoint(cursorPos);
+        Ray ray = Camera.main.ScreenPointToRay(screenPoint);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            Vector3 pos = hit.collider.gameObject.transform.position;
+            pos.y += 1;
+            placement.transform.position = pos;
+
+            if (hit.collider.tag == "Floor")
+            {
+                placement.GetComponent<Renderer>().material = ableToPlace;
+                place = true;
+            }
+            else
+            {
+                placement.GetComponent<Renderer>().material = notAbleToPlace;
+                place = false;
+            }
+        }
+    }
+
     void ChooseAbility()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-
+            activeAbility = AbilityType.Interact;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            activeAbility = AbilityType.Place;
+            currentPlacing = Placing.Damage;
+            placement = Instantiate(placementObjPrefab);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            activeAbility = AbilityType.Place;
+            currentPlacing = Placing.Skeleton;
+            placement = Instantiate(placementObjPrefab);
         }
     }
 
