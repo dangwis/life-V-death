@@ -140,7 +140,7 @@ public class Death : MonoBehaviour {
                     }
                     else if(currentPlacing == Placing.Skeleton)
                     {
-                        EmenySkel skel = Instantiate(skeletonPrefab).GetComponent<EmenySkel>();
+                        EnemySkel skel = Instantiate(skeletonPrefab).GetComponent<EnemySkel>();
                         skel.transform.position = placement.transform.position;
                         Destroy(placement.gameObject); ;
                         activeAbility = AbilityType.Interact;
