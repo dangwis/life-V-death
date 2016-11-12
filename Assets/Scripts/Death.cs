@@ -10,8 +10,32 @@ public class Death : MonoBehaviour {
     public GameObject deathCursor;
     public float movementSpeed;
     public Camera deathCam;
+    AbilityType activeAbility;
+    Enemies spawningEnemy;
+    TrapType placingTrap;
 
     public bool scrollingL, scrollingR, scrollingU, scrollingD;
+
+    public enum AbilityType
+    {
+        Interact,
+        Spawn,
+        PlaceTrap
+    }
+
+    public enum Enemies
+    {
+        Skeleton,
+        Minotaur,
+        ThirdOne
+    }
+
+    public enum TrapType
+    {
+        StopMovement,
+        Damage,
+        Teleport
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -23,8 +47,7 @@ public class Death : MonoBehaviour {
         tempPos.y = 5.6f;
         cursorPos = tempPos;
         deathCursor.transform.position = cursorPos;
-        Debug.Log(deathCam.rect.x);
-        Debug.Log(deathCam.rect.y);
+        activeAbility = AbilityType.Interact;
         scrollingL = false;
         scrollingR = false;
         scrollingU = false;
@@ -35,6 +58,7 @@ public class Death : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        ChooseAbility();
         CheckClicks();
 
         float x = Input.GetAxis("Mouse X");
@@ -99,6 +123,14 @@ public class Death : MonoBehaviour {
         else if (Input.GetMouseButtonUp(0))
         {
             DeathCursor.S.OnRelease();
+        }
+    }
+
+    void ChooseAbility()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+
         }
     }
 
