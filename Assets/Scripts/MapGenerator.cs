@@ -17,7 +17,6 @@ public class MapGenerator : MonoBehaviour {
         using (lineReader) {
             do {
                 line = lineReader.ReadLine();
-                Debug.Log(line);
                 if (line != null) {
                     for (int i = 0; i < line.Length; ++i) {
                         tilePos.x = i;

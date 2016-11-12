@@ -5,7 +5,9 @@ using System.Collections.Generic;
 // Basic swordsman & archer
 public class Skeleton : Enemy {
 
-	public enum Type {
+    /*
+	
+    public enum Type {
 		Swordsman, Archer
 	}
 
@@ -20,30 +22,32 @@ public class Skeleton : Enemy {
 	private Rigidbody rigid;
 	private GameObject targetPlayer;
 
+    */
+
 	// Use this for initialization
-	void Start () {
+	/*void Start () {
 		rigid = GetComponent<Rigidbody> ();
 		ChangeMove ();
 		if (skeletonType == Type.Archer) {
 			tryAttackRange = minArcherDistance + 2f;
 		}
-	}
+	}*/
 	
 	// Update is called once per frame
-	protected override void Update () {
+	/*protected override void Update () {
 		base.Update ();
-		if (DetectPlayers ().Count != 0) {
-			Move ();
-			TryAttack ();
-		}
-	}
+		//if (DetectPlayers ().Count != 0) {
+			//Move ();
+			//TryAttack ();
+		//}
+	}*/
 
 	//called by parent from TryAttack(), DO NOT CALL MANUALLY!
-	protected override void Attack() {
+	/*protected override void Attack() {
 		print ("Attack!");
-	}
+	}*/
 
-	void Move() {
+	/*void Move() {
 		if (movementDet < 0.3f) {
 			//move randomly
 			// TODO: handle archer
@@ -69,16 +73,14 @@ public class Skeleton : Enemy {
 		if (changeMovementTimer < 0) {
 			ChangeMove ();
 		}
-	}
+	}*/
 
-	void ChangeMove() {
+	/*void ChangeMove() {
 		// move in either a random direction, towards a player, or remain stationary
 		movementDet = Random.value;
 		//movementDet = 0.6f;
 		randMovementDirection = new Vector3 (Random.value, 0, Random.value);
-		targetPlayer = FindClosestPlayer (DetectPlayers ());
+		//targetPlayer = FindClosestPlayer (DetectPlayers ());
 		changeMovementTimer = Random.Range (mintimeBetweenMovementStateChange, maxtimeBetweenMovementStateChange);
-	}
-
-
+	}*/
 }
