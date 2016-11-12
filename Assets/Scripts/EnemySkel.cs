@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class EmenySkel : MonoBehaviour {
+public class EnemySkel : MonoBehaviour {
 
     public float detectRange = 5f;
     public float attackRange = 1f;
