@@ -141,7 +141,7 @@ public class Death : MonoBehaviour {
                     else if(currentPlacing == Placing.Skeleton)
                     {
                         EnemySkel skel = Instantiate(skeletonPrefab).GetComponent<EnemySkel>();
-                        skel.transform.position = placement.transform.position;
+                        skel.transform.position = placement.transform.position + new Vector3(0,1.6f,0);
                         Destroy(placement.gameObject); ;
                         activeAbility = AbilityType.Interact;
                     }
@@ -183,18 +183,25 @@ public class Death : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             activeAbility = AbilityType.Interact;
+            if (placement != null) {
+                Destroy(placement);
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
+            if (activeAbility == AbilityType.Interact) {
+                placement = Instantiate(placementObjPrefab);
+            }
             activeAbility = AbilityType.Place;
             currentPlacing = Placing.Damage;
-            placement = Instantiate(placementObjPrefab);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
+            if (activeAbility == AbilityType.Interact) {
+                placement = Instantiate(placementObjPrefab);
+            }
             activeAbility = AbilityType.Place;
             currentPlacing = Placing.Skeleton;
-            placement = Instantiate(placementObjPrefab);
         }
     }
 
