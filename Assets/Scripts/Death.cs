@@ -123,8 +123,10 @@ public class Death : MonoBehaviour {
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit))
                 {
-                    if (hit.collider.tag == "Clickable")
-                        hit.collider.gameObject.GetComponent<Rigidbody>().useGravity = true;
+                    if (hit.collider.tag == "Clickable") {
+                        hit.collider.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+                        hit.collider.gameObject.transform.Find("Sprite").GetComponent<SpriteRenderer>().enabled = false;
+                    }
                 }
             }
             else if(activeAbility == AbilityType.Place)
