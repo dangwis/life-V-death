@@ -15,6 +15,8 @@ public class Death : MonoBehaviour {
     public Material ableToPlace, notAbleToPlace;
     public float movementSpeed;
     public Camera deathCam;
+    public float totalMana;
+    float manaLeft;
 
     bool place;
     GameObject placement;
@@ -53,7 +55,7 @@ public class Death : MonoBehaviour {
         scrollingR = false;
         scrollingU = false;
         scrollingD = false;
-        
+        manaLeft = totalMana;
     }
 	
 	// Update is called once per frame
@@ -136,24 +138,55 @@ public class Death : MonoBehaviour {
                 {
                     if(currentPlacing == Placing.Damage)
                     {
-                        GameObject trap = Instantiate(damageTrapPrefab);
-                        trap.transform.position = placement.transform.position;
-                        Destroy(placement.gameObject); ;
-                        activeAbility = AbilityType.Interact;
+                        if (manaLeft >= 25f)
+                        {
+                            manaLeft -= 25f;
+                            GameObject trap = Instantiate(damageTrapPrefab);
+                            trap.transform.position = placement.transform.position;
+                            Destroy(placement.gameObject);
+                            activeAbility = AbilityType.Interact;
+                        }
+                        else
+                        {
+                            //show that not enough mana somehow
+                            Destroy(placement.gameObject);
+                            activeAbility = AbilityType.Interact;
+                        }
+                        
                     }
                     else if(currentPlacing == Placing.Skeleton)
                     {
-                        EnemySkel skel = Instantiate(skeletonPrefab).GetComponent<EnemySkel>();
-                        skel.transform.position = placement.transform.position + new Vector3(0,1.6f,0);
-                        Destroy(placement.gameObject);
-                        activeAbility = AbilityType.Interact;
+                        if (manaLeft >= 35)
+                        {
+                            manaLeft -= 35;
+                            EnemySkel skel = Instantiate(skeletonPrefab).GetComponent<EnemySkel>();
+                            skel.transform.position = placement.transform.position + new Vector3(0, 1.6f, 0);
+                            Destroy(placement.gameObject);
+                            activeAbility = AbilityType.Interact;
+                        }
+                        else
+                        {
+                            //show that not enough mana
+                            Destroy(placement.gameObject);
+                            activeAbility = AbilityType.Interact;
+                        }
                     }
                     else if(currentPlacing == Placing.Minotaur)
                     {
-                        EnemyMin min = Instantiate(minotaurPrefab).GetComponent<EnemyMin>();
-                        min.transform.position = placement.transform.position;
-                        Destroy(placement.gameObject);
-                        activeAbility = AbilityType.Interact;
+                        if (manaLeft >= 40)
+                        {
+                            manaLeft -= 40;
+                            EnemyMin min = Instantiate(minotaurPrefab).GetComponent<EnemyMin>();
+                            min.transform.position = placement.transform.position;
+                            Destroy(placement.gameObject);
+                            activeAbility = AbilityType.Interact;
+                        }
+                        else
+                        {
+                            //show that not enough mana
+                            Destroy(placement.gameObject);
+                            activeAbility = AbilityType.Interact;
+                        }
                     }
                 }
             }
