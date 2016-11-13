@@ -11,6 +11,7 @@ public class Death : MonoBehaviour {
     public GameObject skeletonPrefab;
     public GameObject damageTrapPrefab;
     public GameObject placementObjPrefab;
+    public GameObject minotaurPrefab;
     public Material ableToPlace, notAbleToPlace;
     public float movementSpeed;
     public Camera deathCam;
@@ -142,7 +143,14 @@ public class Death : MonoBehaviour {
                     {
                         EnemySkel skel = Instantiate(skeletonPrefab).GetComponent<EnemySkel>();
                         skel.transform.position = placement.transform.position + new Vector3(0,1.6f,0);
-                        Destroy(placement.gameObject); ;
+                        Destroy(placement.gameObject);
+                        activeAbility = AbilityType.Interact;
+                    }
+                    else if(currentPlacing == Placing.Minotaur)
+                    {
+                        EnemyMin min = Instantiate(minotaurPrefab).GetComponent<EnemyMin>();
+                        min.transform.position = placement.transform.position;
+                        Destroy(placement.gameObject);
                         activeAbility = AbilityType.Interact;
                     }
                 }
@@ -202,6 +210,15 @@ public class Death : MonoBehaviour {
             }
             activeAbility = AbilityType.Place;
             currentPlacing = Placing.Skeleton;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            if (activeAbility == AbilityType.Interact)
+            {
+                placement = Instantiate(placementObjPrefab);
+            }
+            activeAbility = AbilityType.Place;
+            currentPlacing = Placing.Minotaur;
         }
     }
 
