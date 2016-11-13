@@ -181,6 +181,8 @@ public class LifePlayer : MonoBehaviour {
             canPickupWeapon = true;
             pickupType = 3;
             weaponPickupObj = col.gameObject;
+        } else if (col.tag == "LifeFountain") {
+            Debug.Log("You found the fountain of youth!");
         }
     }
 
