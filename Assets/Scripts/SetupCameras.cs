@@ -6,11 +6,13 @@ public class SetupCameras : MonoBehaviour {
 	static public bool multiDisplay = false;
     public Vector3 playerStart;
     public Vector3 deathCamStart;
+    public Canvas deathUI;
 
 	public GameObject DeathCam, LifeCam, LifeObj;
 
 	void Start () {
 		GameObject Camera0 = (GameObject)Instantiate (DeathCam, deathCamStart, DeathCam.transform.rotation), Camera1, Camera2, Camera3, Player1, Player2, Player3;
+        
 		Camera0.name = "Camera 0";
 		switch (PlayerCount) {
 		case 2:
