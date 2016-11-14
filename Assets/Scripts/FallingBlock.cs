@@ -48,8 +48,8 @@ public class FallingBlock : MonoBehaviour {
             if (go.tag == "Life")
             {
                 go.GetComponent<LifePlayer>().health -= damageToPlayer;
+                go.GetComponent<LifePlayer>().state = 2;
                 Destroy(this.gameObject);
-                Debug.Log("damaged!");
             }
         }
     }

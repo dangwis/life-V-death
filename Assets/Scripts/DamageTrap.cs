@@ -22,6 +22,7 @@ public class DamageTrap : MonoBehaviour {
         if(go.tag == "Life")
         {
             go.GetComponent<LifePlayer>().health -= damageDealt;
+            go.GetComponent<LifePlayer>().state = 2;
             animate.Play("Anim_TrapNeedle_Show");
         }
     }
