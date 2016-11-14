@@ -103,7 +103,6 @@ public class EnemyMin : MonoBehaviour {
 
             // Bounce back
             Vector3 vec = transform.position;
-            Debug.Log(vec);
             if (RunDir.x == -1) { // Bounce right
                 vec.x += 1f;
             } else if (RunDir.x == 1) { // Bounce left
@@ -114,7 +113,6 @@ public class EnemyMin : MonoBehaviour {
                 vec.z -= 1f;
             }
             transform.position = vec;
-            Debug.Log(vec);
         }
     }
 }
