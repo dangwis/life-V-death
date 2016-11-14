@@ -12,13 +12,17 @@ public class Death : MonoBehaviour {
     public GameObject damageTrapPrefab;
     public GameObject placementObjPrefab;
     public GameObject minotaurPrefab;
+    public GameObject teleporterPrefab;
     public Material ableToPlace, notAbleToPlace;
+    public Material firstTeleporterPlace;
     public float movementSpeed;
     public Camera deathCam;
     public float totalMana;
     public float timeToRegen, manaRegenRate;
     float manaLeft;
     float timeSinceLastUse;
+
+    Vector3 teleportIntermediary;
 
     bool place;
     GameObject placement;
@@ -202,6 +206,29 @@ public class Death : MonoBehaviour {
                             activeAbility = AbilityType.Interact;
                         }
                     }
+                    else if(currentPlacing == Placing.Teleport1)
+                    {
+                        teleportIntermediary = placement.transform.position;
+                        currentPlacing = Placing.Teleport2;
+                    }
+                    else if(currentPlacing == Placing.Teleport2)
+                    {
+                        if (manaLeft >= 40)
+                        {
+                            UseMana(40);
+                            TeleportPad tp = Instantiate(teleporterPrefab).GetComponent<TeleportPad>();
+                            tp.transform.position = teleportIntermediary;
+                            tp.endingUpPosition = placement.transform.position;
+                            activeAbility = AbilityType.Interact;
+                            Destroy(placement.gameObject);
+                        }
+                        else
+                        {
+                            //show that not enough mana
+                            Destroy(placement.gameObject);
+                            activeAbility = AbilityType.Interact;
+                        }
+                    }
                 }
             }
         }
@@ -228,10 +255,16 @@ public class Death : MonoBehaviour {
             Vector3 pos = hit.collider.gameObject.transform.position;
             pos.y += 1;
             placement.transform.position = pos;
-
             if (hit.collider.tag == "Floor")
             {
-                placement.GetComponent<Renderer>().material = ableToPlace;
+                if (currentPlacing == Placing.Teleport1)
+                {
+                    placement.GetComponent<Renderer>().material = firstTeleporterPlace;
+                }
+                else
+                {
+                    placement.GetComponent<Renderer>().material = ableToPlace;
+                }
                 place = true;
             }
             else

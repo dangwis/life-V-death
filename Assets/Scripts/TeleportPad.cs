@@ -3,13 +3,15 @@ using System.Collections;
 
 public class TeleportPad : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public Vector3 endingUpPosition;
+
+	void OnTriggerEnter(Collider coll)
+    {
+        GameObject go = coll.gameObject;
+        if (go.tag == "Life")
+        {
+            go.transform.position = endingUpPosition;
+            Destroy(this.gameObject);
+        }
+    }
 }
