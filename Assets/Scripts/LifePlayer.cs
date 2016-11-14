@@ -190,7 +190,7 @@ public class LifePlayer : MonoBehaviour {
                     break;
             }
         }
-	}
+    }
 
     void OnTriggerEnter(Collider col) {
         if (col.tag == "PowerUp") {
@@ -216,6 +216,7 @@ public class LifePlayer : MonoBehaviour {
         } else if (col.tag == "Minotaur" && col.gameObject.layer == 12 && state != 2 && state != 3) {
             state = 2;
             health -= 30;
+            Debug.Log("Test");
         }
     }
 
@@ -267,7 +268,7 @@ public class LifePlayer : MonoBehaviour {
                 case 2: // hit
                     lifeAnimator.SetInteger("State", 2);
                     Invoke("GotHit", 0.33f);
-                    Invoke("SetDamage", 1f);
+                    Invoke("SetDamage", 1.5f);
                     canTakeDamage = false;
                     ShowDamage();
                     break;

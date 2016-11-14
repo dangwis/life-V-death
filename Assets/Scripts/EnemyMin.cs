@@ -12,6 +12,7 @@ public class EnemyMin : MonoBehaviour {
     Vector3 RunDir;
     bool canRun = false;
     bool isRunning = false;
+    public float health = 6f;
 
     // Use this for initialization
     void Start () {
@@ -21,6 +22,10 @@ public class EnemyMin : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+        if (health <= 0 && state != 2) {
+            state = 2;
+        }
+
         // Check if can run
         List<GameObject> nearby = Enemy.DetectPlayers(this.gameObject, detectRange);
 
@@ -66,6 +71,10 @@ public class EnemyMin : MonoBehaviour {
         }
     }
 
+    void FinishDeath() {
+        Destroy(this.gameObject);
+    }
+
     public int state {
         get { return _state; }
         set {
@@ -82,6 +91,7 @@ public class EnemyMin : MonoBehaviour {
                     break;
                 case 2: // death
                     minAnimator.SetInteger("State", 2);
+                    Invoke("FinishDeath", 3f);
                     break;
             }
             _state = value;
@@ -94,6 +104,15 @@ public class EnemyMin : MonoBehaviour {
 
     void SetIsRunning() {
         isRunning = true;
+    }
+
+    void ShowDamage() {
+        transform.Find("mesh_1").GetComponent<Renderer>().material.color = new Color(1f, 0f, 0f, 1f);
+        Invoke("FinishDamage", 0.5f);
+    }
+
+    void FinishDamage() {
+        transform.Find("mesh_1").GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, 1f);
     }
 
     void OnCollisionEnter(Collision col) {
@@ -113,6 +132,19 @@ public class EnemyMin : MonoBehaviour {
                 vec.z -= 1f;
             }
             transform.position = vec;
+        }
+
+        if (col.gameObject.layer == 10 && state != 2) {
+            // collision with lifeweapon
+            if (col.gameObject.tag == "Arrow") {
+                health--;
+            } else if (col.gameObject.tag == "Hammer") {
+                health -= 3;
+            } else if (col.gameObject.tag == "Sword") {
+                health -= 1.5f;
+            }
+
+            ShowDamage();
         }
     }
 }
