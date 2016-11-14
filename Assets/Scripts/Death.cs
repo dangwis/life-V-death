@@ -16,7 +16,9 @@ public class Death : MonoBehaviour {
     public float movementSpeed;
     public Camera deathCam;
     public float totalMana;
+    public float timeToRegen, manaRegenRate;
     float manaLeft;
+    float timeSinceLastUse;
 
     bool place;
     GameObject placement;
@@ -37,7 +39,8 @@ public class Death : MonoBehaviour {
         Minotaur,
         Damage,
         Slow,
-        Teleport
+        Teleport1,
+        Teleport2
     }
 
 	// Use this for initialization
@@ -56,6 +59,7 @@ public class Death : MonoBehaviour {
         scrollingU = false;
         scrollingD = false;
         manaLeft = totalMana;
+        timeSinceLastUse = Time.time;
     }
 	
 	// Update is called once per frame
@@ -67,7 +71,7 @@ public class Death : MonoBehaviour {
             ShowPlacement();
         }
         CheckClicks();
-
+        RegenMana();
 
         float x = Input.GetAxis("Mouse X");
         float y = Input.GetAxis("Mouse Y");
@@ -114,6 +118,17 @@ public class Death : MonoBehaviour {
         
 	}
 
+    void RegenMana()
+    {
+        if(Time.time - timeSinceLastUse > timeToRegen)
+        {
+            if(manaLeft < totalMana)
+            {
+                manaLeft += manaRegenRate;
+            }
+        }
+    }
+
     void CheckClicks()
     {
         if (Input.GetMouseButtonDown(0))
@@ -139,7 +154,7 @@ public class Death : MonoBehaviour {
                     {
                         if (manaLeft >= 25f)
                         {
-                            manaLeft -= 25f;
+                            UseMana(25f);
                             GameObject trap = Instantiate(damageTrapPrefab);
                             trap.transform.position = placement.transform.position;
                             Destroy(placement.gameObject);
@@ -157,7 +172,7 @@ public class Death : MonoBehaviour {
                     {
                         if (manaLeft >= 35)
                         {
-                            manaLeft -= 35;
+                            UseMana(35f);
                             EnemySkel skel = Instantiate(skeletonPrefab).GetComponent<EnemySkel>();
                             skel.transform.position = placement.transform.position + new Vector3(0, 1.6f, 0);
                             Destroy(placement.gameObject);
@@ -174,7 +189,7 @@ public class Death : MonoBehaviour {
                     {
                         if (manaLeft >= 40)
                         {
-                            manaLeft -= 40;
+                            UseMana(40f);
                             EnemyMin min = Instantiate(minotaurPrefab).GetComponent<EnemyMin>();
                             min.transform.position = placement.transform.position;
                             Destroy(placement.gameObject);
@@ -194,6 +209,13 @@ public class Death : MonoBehaviour {
         {
             DeathCursor.S.OnRelease();
         }
+    }
+
+    void UseMana(float manaCost)
+    {
+        manaLeft -= manaCost;
+        timeSinceLastUse = Time.time;
+
     }
 
     void ShowPlacement()
@@ -246,6 +268,15 @@ public class Death : MonoBehaviour {
             currentPlacing = Placing.Skeleton;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            if (activeAbility == AbilityType.Interact)
+            {
+                placement = Instantiate(placementObjPrefab);
+            }
+            activeAbility = AbilityType.Place;
+            currentPlacing = Placing.Minotaur;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             if (activeAbility == AbilityType.Interact)
             {
