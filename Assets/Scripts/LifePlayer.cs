@@ -213,7 +213,6 @@ public class LifePlayer : MonoBehaviour {
         } else if (col.tag == "Skeleton" && col.gameObject.layer == 12 && state != 2 && state != 3) {
             state = 2;
             health -= 20;
-            Debug.Log("test");
         } else if (col.tag == "Minotaur" && col.gameObject.layer == 12 && state != 2 && state != 3) {
             state = 2;
             health -= 30;
@@ -258,8 +257,6 @@ public class LifePlayer : MonoBehaviour {
         set {
             if (value == _state) return;
 
-            Debug.Log(value);
-
             switch (value) {
                 case 0: // idle
                     lifeAnimator.SetInteger("State", 0);
@@ -269,7 +266,6 @@ public class LifePlayer : MonoBehaviour {
                     break;
                 case 2: // hit
                     lifeAnimator.SetInteger("State", 2);
-                    Debug.Log("Fuckl");
                     Invoke("GotHit", 0.33f);
                     Invoke("SetDamage", 1f);
                     canTakeDamage = false;
