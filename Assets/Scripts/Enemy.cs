@@ -36,11 +36,11 @@ public class Enemy : MonoBehaviour {
 	}
 
 	public static GameObject FindClosestPlayer(GameObject enemy, List<GameObject> players) {
-		float best = 0;
+		float best = 999999999;
 		GameObject bestP = null;
 		foreach (GameObject p in players) {
 			float dist = Vector3.Distance (enemy.transform.position, p.transform.position);
-			if (dist > best) {
+			if (dist < best) {
 				best = dist;
 				bestP = p;
 			}

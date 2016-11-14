@@ -12,11 +12,17 @@ public class Death : MonoBehaviour {
     public GameObject damageTrapPrefab;
     public GameObject placementObjPrefab;
     public GameObject minotaurPrefab;
+    public GameObject teleporterPrefab;
     public Material ableToPlace, notAbleToPlace;
+    public Material firstTeleporterPlace;
     public float movementSpeed;
     public Camera deathCam;
     public float totalMana;
+    public float timeToRegen, manaRegenRate;
     float manaLeft;
+    float timeSinceLastUse;
+
+    Vector3 teleportIntermediary;
 
     bool place;
     GameObject placement;
@@ -37,7 +43,8 @@ public class Death : MonoBehaviour {
         Minotaur,
         Damage,
         Slow,
-        Teleport
+        Teleport1,
+        Teleport2
     }
 
 	// Use this for initialization
@@ -56,6 +63,7 @@ public class Death : MonoBehaviour {
         scrollingU = false;
         scrollingD = false;
         manaLeft = totalMana;
+        timeSinceLastUse = Time.time;
     }
 	
 	// Update is called once per frame
@@ -67,7 +75,7 @@ public class Death : MonoBehaviour {
             ShowPlacement();
         }
         CheckClicks();
-
+        RegenMana();
 
         float x = Input.GetAxis("Mouse X");
         float y = Input.GetAxis("Mouse Y");
@@ -114,6 +122,17 @@ public class Death : MonoBehaviour {
         
 	}
 
+    void RegenMana()
+    {
+        if(Time.time - timeSinceLastUse > timeToRegen)
+        {
+            if(manaLeft < totalMana)
+            {
+                manaLeft += manaRegenRate;
+            }
+        }
+    }
+
     void CheckClicks()
     {
         if (Input.GetMouseButtonDown(0))
@@ -139,7 +158,7 @@ public class Death : MonoBehaviour {
                     {
                         if (manaLeft >= 25f)
                         {
-                            manaLeft -= 25f;
+                            UseMana(25f);
                             GameObject trap = Instantiate(damageTrapPrefab);
                             trap.transform.position = placement.transform.position;
                             Destroy(placement.gameObject);
@@ -157,7 +176,7 @@ public class Death : MonoBehaviour {
                     {
                         if (manaLeft >= 35)
                         {
-                            manaLeft -= 35;
+                            UseMana(35f);
                             EnemySkel skel = Instantiate(skeletonPrefab).GetComponent<EnemySkel>();
                             skel.transform.position = placement.transform.position + new Vector3(0, 1.6f, 0);
                             Destroy(placement.gameObject);
@@ -174,11 +193,34 @@ public class Death : MonoBehaviour {
                     {
                         if (manaLeft >= 40)
                         {
-                            manaLeft -= 40;
+                            UseMana(40f);
                             EnemyMin min = Instantiate(minotaurPrefab).GetComponent<EnemyMin>();
                             min.transform.position = placement.transform.position;
                             Destroy(placement.gameObject);
                             activeAbility = AbilityType.Interact;
+                        }
+                        else
+                        {
+                            //show that not enough mana
+                            Destroy(placement.gameObject);
+                            activeAbility = AbilityType.Interact;
+                        }
+                    }
+                    else if(currentPlacing == Placing.Teleport1)
+                    {
+                        teleportIntermediary = placement.transform.position;
+                        currentPlacing = Placing.Teleport2;
+                    }
+                    else if(currentPlacing == Placing.Teleport2)
+                    {
+                        if (manaLeft >= 40)
+                        {
+                            UseMana(40);
+                            TeleportPad tp = Instantiate(teleporterPrefab).GetComponent<TeleportPad>();
+                            tp.transform.position = teleportIntermediary;
+                            tp.endingUpPosition = placement.transform.position;
+                            activeAbility = AbilityType.Interact;
+                            Destroy(placement.gameObject);
                         }
                         else
                         {
@@ -196,6 +238,13 @@ public class Death : MonoBehaviour {
         }
     }
 
+    void UseMana(float manaCost)
+    {
+        manaLeft -= manaCost;
+        timeSinceLastUse = Time.time;
+
+    }
+
     void ShowPlacement()
     {
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(cursorPos);
@@ -206,10 +255,16 @@ public class Death : MonoBehaviour {
             Vector3 pos = hit.collider.gameObject.transform.position;
             pos.y += 1;
             placement.transform.position = pos;
-
             if (hit.collider.tag == "Floor")
             {
-                placement.GetComponent<Renderer>().material = ableToPlace;
+                if (currentPlacing == Placing.Teleport1)
+                {
+                    placement.GetComponent<Renderer>().material = firstTeleporterPlace;
+                }
+                else
+                {
+                    placement.GetComponent<Renderer>().material = ableToPlace;
+                }
                 place = true;
             }
             else
@@ -253,6 +308,15 @@ public class Death : MonoBehaviour {
             }
             activeAbility = AbilityType.Place;
             currentPlacing = Placing.Minotaur;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            if (activeAbility == AbilityType.Interact)
+            {
+                placement = Instantiate(placementObjPrefab);
+            }
+            activeAbility = AbilityType.Place;
+            currentPlacing = Placing.Teleport1;
         }
     }
 

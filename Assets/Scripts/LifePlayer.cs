@@ -13,6 +13,7 @@ public class LifePlayer : MonoBehaviour {
     public GameObject weaponPickupObj;
     public bool attacking = false;
     public bool attackFinishing = false;
+    public Animator lifeAnimator;
 
     public GameObject sword;
     public Quaternion swordStart;
@@ -28,7 +29,9 @@ public class LifePlayer : MonoBehaviour {
 
     public int health = 100;
     public float weaponTime = 0;
-
+    public int _state = 0;
+    public bool canTakeDamage = true;
+    public Material playerMat;
 
     // Use this for initialization
     void Start () {
@@ -46,6 +49,7 @@ public class LifePlayer : MonoBehaviour {
         hammer.SetActive(false);
         bow.SetActive(false);
         arrow.SetActive(false);
+        lifeAnimator = transform.Find("body").GetComponent<Animator>();
 	}
 
 	void OnDestory() {
@@ -53,6 +57,13 @@ public class LifePlayer : MonoBehaviour {
 	}
 	
     void Update() {
+        if (state == 2 || state == 3) {
+            if (health <= 0) {
+                state = 3;
+            }
+            return;
+        }
+
         // Picking up your weapon
         if (Input.GetButtonDown(XInput.XboxA(playerNum)) && canPickupWeapon && !hasWeapon && weapontype == 0) {
             Destroy (weaponPickupObj);
@@ -76,6 +87,15 @@ public class LifePlayer : MonoBehaviour {
         // Attack Handlers
         if (XInput.x.RTDown(playerNum) && hasWeapon && !attacking) {
             attacking = true;
+        }
+
+        // Set state
+        if (state != 3 && state != 4) {
+            if (Mathf.Abs(Input.GetAxis(XInput.XboxLStickX(playerNum))) > 0.1f || Mathf.Abs(Input.GetAxis(XInput.XboxLStickY(playerNum))) > 0.1f) {
+                state = 1;
+            } else {
+                state = 0;
+            }
         }
     }
 
@@ -135,6 +155,13 @@ public class LifePlayer : MonoBehaviour {
 
 	// Update is called once per frame
 	void FixedUpdate () {
+        if (state == 2 || state == 3) {
+            if (health <= 0) {
+                state = 3;
+            }
+            return;
+        }
+
         float Xinput = Input.GetAxis (XInput.XboxLStickX (playerNum));
         float Yinput = -Input.GetAxis(XInput.XboxLStickY(playerNum));
 		Vector3 movementDir = new Vector3 (Xinput, 0, Yinput).normalized;
@@ -163,10 +190,10 @@ public class LifePlayer : MonoBehaviour {
                     break;
             }
         }
-	}
+    }
 
     void OnTriggerEnter(Collider col) {
-        if(col.tag == "PowerUp") {
+        if (col.tag == "PowerUp") {
             hasWeapon = true;
             Destroy(col.gameObject);
         } else if (col.tag == "Sword" && !hasWeapon) {
@@ -183,6 +210,13 @@ public class LifePlayer : MonoBehaviour {
             weaponPickupObj = col.gameObject;
         } else if (col.tag == "LifeFountain") {
             Debug.Log("You found the fountain of youth!");
+        } else if (col.tag == "Skeleton" && col.gameObject.layer == 12 && state != 2 && state != 3) {
+            state = 2;
+            health -= 20;
+        } else if (col.tag == "Minotaur" && col.gameObject.layer == 12 && state != 2 && state != 3) {
+            state = 2;
+            health -= 30;
+            Debug.Log("Test");
         }
     }
 
@@ -193,6 +227,57 @@ public class LifePlayer : MonoBehaviour {
             canPickupWeapon = false;
         } else if (col.tag == "Sword") {
             canPickupWeapon = false;
+        }
+    }
+
+    void GotHit() {
+        if (state != 3) {
+            state = 0;
+        }
+    }
+    
+    void SetDamage() {
+        canTakeDamage = true;
+    }
+
+    void ShowDamage() {
+        transform.Find("body").transform.Find("mesh_1").GetComponent<Renderer>().material.color = new Color(1f, 0f, 0f, 1f);
+        Invoke("FinishDamage", 0.5f);
+    }
+
+    void FinishDamage() {
+        transform.Find("body").transform.Find("mesh_1").GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, 1f);
+    }
+
+    void Death() {
+        Destroy(this.gameObject);
+    }
+
+    public int state {
+        get { return _state; }
+        set {
+            if (value == _state) return;
+
+            switch (value) {
+                case 0: // idle
+                    lifeAnimator.SetInteger("State", 0);
+                    break;
+                case 1: // walking
+                    lifeAnimator.SetInteger("State", 1);
+                    break;
+                case 2: // hit
+                    lifeAnimator.SetInteger("State", 2);
+                    Invoke("GotHit", 0.33f);
+                    Invoke("SetDamage", 1.5f);
+                    canTakeDamage = false;
+                    ShowDamage();
+                    break;
+                case 3: // death
+                    lifeAnimator.SetInteger("State", 3);
+                    Invoke("Death", 3f);
+                    break;
+            }
+            _state = value;
         }
     }
 }
