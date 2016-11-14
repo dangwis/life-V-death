@@ -7,13 +7,17 @@ public class SetupCameras : MonoBehaviour {
     public Vector3 playerStart;
     public Vector3 deathCamStart;
     public Canvas deathUI;
+	public Canvas lifeUI;
 
 	public GameObject DeathCam, LifeCam, LifeObj;
 
 	void Start () {
 		GameObject Camera0 = (GameObject)Instantiate (DeathCam, deathCamStart, DeathCam.transform.rotation), Camera1, Camera2, Camera3, Player1, Player2, Player3;
-        
+		Canvas deathOverlay = Instantiate (deathUI);
+		deathOverlay.worldCamera = Camera0.GetComponent<Camera> ();
+		deathOverlay.planeDistance = 1;
 		Camera0.name = "Camera 0";
+		Canvas lifeOverlay = Instantiate (lifeUI);
 		switch (PlayerCount) {
 		case 2:
 			Camera1 = Instantiate (LifeCam, Camera0.transform.position, Camera0.transform.rotation) as GameObject;
@@ -25,6 +29,9 @@ public class SetupCameras : MonoBehaviour {
 			Player1.name = "Player 1";
             Player1.GetComponent<LifePlayer>().playerNum = 1;
 
+			lifeOverlay.worldCamera = Camera1.GetComponent<Camera> ();
+			lifeOverlay.planeDistance = 1;
+			lifeOverlay.GetComponent<LifeHUD> ().player = Player1.GetComponent<LifePlayer>();
 
 			if (multiDisplay) {
 				Camera0.GetComponent<Camera> ().targetDisplay = 0;
@@ -56,6 +63,14 @@ public class SetupCameras : MonoBehaviour {
             Player1.GetComponent<LifePlayer>().playerNum = 1;
 			Player2.name = "Player 2";
             Player2.GetComponent<LifePlayer>().playerNum = 2;
+
+			lifeOverlay.worldCamera = Camera1.GetComponent<Camera> ();
+			lifeOverlay.planeDistance = 1;
+			lifeOverlay.GetComponent<LifeHUD> ().player = Player1.GetComponent<LifePlayer>();
+			lifeOverlay = Instantiate (lifeUI);
+			lifeOverlay.worldCamera = Camera2.GetComponent<Camera> ();
+			lifeOverlay.planeDistance = 1;
+			lifeOverlay.GetComponent<LifeHUD> ().player = Player2.GetComponent<LifePlayer>();
 
 			if (multiDisplay) {
 				Camera0.GetComponent<Camera> ().targetDisplay = 0;
@@ -93,11 +108,23 @@ public class SetupCameras : MonoBehaviour {
 			Camera3.GetComponent<FollowCam> ().FollowObject = Player3;
 
 			Player1.name = "Player 1";
-            Player1.GetComponent<LifePlayer>().playerNum = 1;
+			Player1.GetComponent<LifePlayer> ().playerNum = 1;
 			Player2.name = "Player 2";
-            Player2.GetComponent<LifePlayer>().playerNum = 2;
+			Player2.GetComponent<LifePlayer> ().playerNum = 2;
 			Player3.name = "Player 3";
-            Player3.GetComponent<LifePlayer>().playerNum = 3;
+			Player3.GetComponent<LifePlayer> ().playerNum = 3;
+
+			lifeOverlay.worldCamera = Camera1.GetComponent<Camera> ();
+			lifeOverlay.planeDistance = 1;
+			lifeOverlay.GetComponent<LifeHUD> ().player = Player1.GetComponent<LifePlayer>();
+			lifeOverlay = Instantiate (lifeUI);
+			lifeOverlay.worldCamera = Camera2.GetComponent<Camera> ();
+			lifeOverlay.planeDistance = 1;
+			lifeOverlay.GetComponent<LifeHUD> ().player = Player2.GetComponent<LifePlayer>();
+			lifeOverlay = Instantiate (lifeUI);
+			lifeOverlay.worldCamera = Camera3.GetComponent<Camera> ();
+			lifeOverlay.planeDistance = 1;
+			lifeOverlay.GetComponent<LifeHUD> ().player = Player3.GetComponent<LifePlayer>();
 
 			if (multiDisplay) {
 				Camera0.GetComponent<Camera> ().targetDisplay = 0;

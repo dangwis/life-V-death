@@ -19,7 +19,7 @@ public class Death : MonoBehaviour {
     public Camera deathCam;
     public float totalMana;
     public float timeToRegen, manaRegenRate;
-    float manaLeft;
+    public float manaLeft;
     float timeSinceLastUse;
 
     Vector3 teleportIntermediary;
