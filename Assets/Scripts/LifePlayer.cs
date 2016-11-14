@@ -210,10 +210,10 @@ public class LifePlayer : MonoBehaviour {
             weaponPickupObj = col.gameObject;
         } else if (col.tag == "LifeFountain") {
             Debug.Log("You found the fountain of youth!");
-        } else if (col.tag == "Skeleton" && col.gameObject.layer == 12 && state != 2 && state != 3) {
+        } else if (col.tag == "Skeleton" && col.gameObject.layer == 13 && state != 2 && state != 3) {
             state = 2;
             health -= 20;
-        } else if (col.tag == "Minotaur" && col.gameObject.layer == 12 && state != 2 && state != 3) {
+        } else if (col.tag == "Minotaur" && col.gameObject.layer == 13 && state != 2 && state != 3) {
             state = 2;
             health -= 30;
             Debug.Log("Test");

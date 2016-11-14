@@ -11,72 +11,70 @@ public class MapGenerator : MonoBehaviour {
     public GameObject TileDeadFountain;
     public GameObject TileLivingFountain;
     public GameObject TileFallingBlock;
+    public TextAsset textFile;
 
     List<Vector3> fountainPositions = new List<Vector3>();
 
 	// Use this for initialization
-	void Awake () {
+	void Start () {
         string line;
-        StreamReader lineReader = new StreamReader("Assets/Materials/MapDef.txt", Encoding.Default);
         Vector3 tilePos = Vector3.zero;
 
-        using (lineReader) {
-            do {
-                line = lineReader.ReadLine();
-                if (line != null) {
-                    for (int i = 0; i < line.Length; ++i) {
-                        tilePos.x = i;
-                        switch (line[i]) {
-                            case ('G'): // Ground
-                                Instantiate(TileFloor, tilePos, Quaternion.identity);
-                                break;
-                            case ('W'): // Wall
-                                Instantiate(TileWall, tilePos, Quaternion.identity);
-                                break;
-                            case ('U'): // Torch facing up
-                                Instantiate(TileFloor, tilePos, Quaternion.identity);
-                                Instantiate(TileTorch, tilePos, Quaternion.Euler(0, 0, 0));
-                                break;
-                            case ('D'): // Torch facing down
-                                Instantiate(TileFloor, tilePos, Quaternion.identity);
-                                Instantiate(TileTorch, tilePos, Quaternion.Euler(0, 180, 0));
-                                break;
-                            case ('L'): // Torch facing left
-                                Instantiate(TileFloor, tilePos, Quaternion.identity);
-                                Instantiate(TileTorch, tilePos, Quaternion.Euler(0, 270, 0));
-                                break;
-                            case ('R'): // Torch facing right
-                                Instantiate(TileFloor, tilePos, Quaternion.identity);
-                                Instantiate(TileTorch, tilePos, Quaternion.Euler(0, 90, 0));
-                                break;
-                            case ('F'): // Fountain location
-                                fountainPositions.Add(tilePos);
-                                break;
-                            case ('N'): // Nothing
-                                break;
-                            case ('B'): // Falling block
-                                Instantiate(TileFloor, tilePos, Quaternion.identity);
-                                Instantiate(TileFallingBlock, tilePos, Quaternion.identity);
-                                break;
-                        }
+        string[] lines = textFile.text.Split("\n"[0]);
+
+        for (int j = 0; j < lines.Length; j++) {
+            line = lines[j];
+            if (line != null) {
+                for (int i = 0; i < line.Length; ++i) {
+                    tilePos.x = i;
+                    switch (line[i]) {
+                        case ('G'): // Ground
+                            Instantiate(TileFloor, tilePos, Quaternion.identity);
+                            break;
+                        case ('W'): // Wall
+                            Instantiate(TileWall, tilePos, Quaternion.identity);
+                            break;
+                        case ('U'): // Torch facing up
+                            Instantiate(TileFloor, tilePos, Quaternion.identity);
+                            Instantiate(TileTorch, tilePos, Quaternion.Euler(0, 0, 0));
+                            break;
+                        case ('D'): // Torch facing down
+                            Instantiate(TileFloor, tilePos, Quaternion.identity);
+                            Instantiate(TileTorch, tilePos, Quaternion.Euler(0, 180, 0));
+                            break;
+                        case ('L'): // Torch facing left
+                            Instantiate(TileFloor, tilePos, Quaternion.identity);
+                            Instantiate(TileTorch, tilePos, Quaternion.Euler(0, 270, 0));
+                            break;
+                        case ('R'): // Torch facing right
+                            Instantiate(TileFloor, tilePos, Quaternion.identity);
+                            Instantiate(TileTorch, tilePos, Quaternion.Euler(0, 90, 0));
+                            break;
+                        case ('F'): // Fountain location
+                            fountainPositions.Add(tilePos);
+                            break;
+                        case ('N'): // Nothing
+                            break;
+                        case ('B'): // Falling block
+                            Instantiate(TileFloor, tilePos, Quaternion.identity);
+                            Instantiate(TileFallingBlock, tilePos, Quaternion.identity);
+                            break;
                     }
                 }
-                tilePos.z--;
             }
-            while (line != null);
+            tilePos.z--;
+        }
 
-            lineReader.Close();
+        // Spawn 1 living fountain and the rest dead
+        int livingFountain = Random.Range(0, fountainPositions.Count);
 
-            // Spawn 1 living fountain and the rest dead
-            int livingFountain = Random.Range(0, fountainPositions.Count);
-
-            for (int i = 0; i < fountainPositions.Count; i++) {
-                if (i == livingFountain) {
-                    Instantiate(TileLivingFountain, fountainPositions[i], Quaternion.identity);
-                } else {
-                    Instantiate(TileDeadFountain, fountainPositions[i], Quaternion.identity);
-                }
+        for (int i = 0; i < fountainPositions.Count; i++) {
+            if (i == livingFountain) {
+                Instantiate(TileLivingFountain, fountainPositions[i], Quaternion.identity);
+            } else {
+                Instantiate(TileDeadFountain, fountainPositions[i], Quaternion.identity);
             }
         }
+        
     }
 }
