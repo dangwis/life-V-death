@@ -283,7 +283,7 @@ public class Death : MonoBehaviour {
                 placement = Instantiate(placementObjPrefab);
             }
             activeAbility = AbilityType.Place;
-            currentPlacing = Placing.Minotaur;
+            currentPlacing = Placing.Teleport1;
         }
     }
 
