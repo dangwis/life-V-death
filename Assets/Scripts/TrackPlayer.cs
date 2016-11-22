@@ -35,7 +35,9 @@ public class TrackPlayer : MonoBehaviour {
 		vec.z = 0;
 
 		if (map.GetComponent<RectTransform> ().rect.width != map.GetComponent<RectTransform> ().rect.height) {
-			map.GetComponent<FixRatio> ().Fix ();
+			if (map.GetComponent<FixRatio> () != null) {
+				map.GetComponent<FixRatio> ().Fix ();
+			}
 		}
 
 		trans.transform.localPosition = vec;

@@ -25,7 +25,7 @@ public class ControlFog : MonoBehaviour {
 	void Update () {
 		for (int i = 0; i < FogOfWar.xVal; ++i) {
 			for (int j = 0; j < FogOfWar.yVal; j++) {
-				if (!FogOfWar.fog [i, j]) {
+				if (FogOfWar.fog [i, j]) {
 					transform.Find ("" + (i * 10 + j)).gameObject.SetActive (false);
 				}
 			}
