@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class LifePlayer : MonoBehaviour {
 
-    CharacterController charController;
+	CharacterController charController;
     public float speed;
     public int playerNum;
     public bool hasWeapon;
