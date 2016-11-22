@@ -257,17 +257,17 @@ public class Death : MonoBehaviour {
             Vector3 pos = hit.collider.gameObject.transform.position;
             pos.y += 0.5f;
             placement.transform.position = pos;
-            if (hit.collider.tag == "Floor" && NotNearLife(placement))
-            {
-                if (currentPlacing == Placing.Teleport1)
-                {
-                    placement.GetComponent<Renderer>().material = firstTeleporterPlace;
-                }
-                else
-                {
-                    placement.GetComponent<Renderer>().material = ableToPlace;
-                }
-                place = true;
+            if (hit.collider.tag == "Floor" && NotNearTag(placement, "Life", 3f) && NotNearTag(placement, "Trap", 0.5f))
+            {    
+                    if (currentPlacing == Placing.Teleport1)
+                    {
+                        placement.GetComponent<Renderer>().material = firstTeleporterPlace;
+                    }
+                    else
+                    {
+                        placement.GetComponent<Renderer>().material = ableToPlace;
+                    }
+                    place = true;
             }
             else
             {
@@ -277,12 +277,13 @@ public class Death : MonoBehaviour {
         }
     }
 
-    bool NotNearLife(GameObject place)
+
+    bool NotNearTag(GameObject place, string tag, float distance)
     {
-        Collider[] lifePlayer = Physics.OverlapSphere(place.transform.position, 3f);
-        for (int i = 0; i < lifePlayer.Length; i++)
+        Collider[] tagged = Physics.OverlapSphere(place.transform.position, distance);
+        for (int i = 0; i < tagged.Length; i++)
         {
-            if (lifePlayer[i].tag == "Life")
+            if (tagged[i].tag == tag)
             {
                 return false;
             }
