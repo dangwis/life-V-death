@@ -34,6 +34,11 @@ public class LifePlayer : MonoBehaviour {
     public bool canTakeDamage = true;
     public Material playerMat;
 
+    bool disarming;
+    public float disarmTime;
+    float disarmTimeStart;
+    GameObject disarmingTrap;
+
     // Use this for initialization
     void Start () {
         charController = this.transform.GetComponent<CharacterController>();
@@ -51,6 +56,7 @@ public class LifePlayer : MonoBehaviour {
         bow.SetActive(false);
         arrow.SetActive(false);
         lifeAnimator = transform.Find("body").GetComponent<Animator>();
+        disarming = false;
 	}
 
 	void OnDestory() {
@@ -85,8 +91,42 @@ public class LifePlayer : MonoBehaviour {
             }
         }
 
+        if (Input.GetButton(XInput.XboxA(playerNum)))
+        {
+
+            if (!disarming)
+            {
+                disarmingTrap = IsNearTrap();
+
+                if (disarmingTrap != null)
+                {
+                    disarmTimeStart = Time.time;
+                    disarming = true;
+                    Debug.Log("disarming");
+                }
+                else
+                {
+                    Debug.Log("not near trap");
+                }        
+            }
+            else if(Vector3.Distance(disarmingTrap.transform.position, transform.position) > 1.5f)
+            {
+                if(Time.time - disarmTimeStart >= disarmTime)
+                {
+                    disarmingTrap.GetComponent<DamageTrap>().Disarm();
+                    disarming = false;
+                    Debug.Log("Disarmed");
+                }
+            }
+            else
+            {
+                disarming = false;
+                Debug.Log("Don't walk away");
+            }
+        }
+
         // Attack Handlers
-        if (XInput.x.RTDown(playerNum) && hasWeapon && !attacking) {
+        if (XInput.x.RTDown(playerNum) && hasWeapon && !attacking && !disarming) {
             attacking = true;
         }
 
@@ -98,6 +138,20 @@ public class LifePlayer : MonoBehaviour {
                 state = 0;
             }
         }
+    }
+
+    GameObject IsNearTrap()
+    {
+        Collider[] traps = Physics.OverlapSphere(this.transform.position, 1f);
+        for (int i = 0; i < traps.Length; i++)
+        {
+            if (traps[i].tag == "Trap")
+            {
+                if(traps[i].GetComponent<DamageTrap>().armed)
+                    return traps[i].gameObject;
+            }
+        }
+        return null;
     }
 
     void SwordAttack() {

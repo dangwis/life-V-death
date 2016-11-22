@@ -21,6 +21,8 @@ public class Death : MonoBehaviour {
     public float timeToRegen, manaRegenRate;
     public float manaLeft;
     float timeSinceLastUse;
+    public float _1080pWidth, _1080pHeight;
+    public float scrollSpeed;
 
     Vector3 teleportIntermediary;
 
@@ -83,25 +85,25 @@ public class Death : MonoBehaviour {
         Vector3 newCamPos = deathCam.transform.position;
         cursorPos = deathCursor.transform.position;
 
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-            newCamPos.x += 0.15f;
-            cursorPos.x += 0.15f;
+            newCamPos.x += scrollSpeed;
+            cursorPos.x += scrollSpeed;
         }
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
-            newCamPos.x -= 0.15f;
-            cursorPos.x -= 0.15f;
+            newCamPos.x -= scrollSpeed;
+            cursorPos.x -= scrollSpeed;
         }
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
         {
-            newCamPos.z += 0.15f;
-            cursorPos.z += 0.15f;
+            newCamPos.z += scrollSpeed;
+            cursorPos.z += scrollSpeed;
         }
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
         {
-            newCamPos.z -= 0.15f;
-            cursorPos.z -= 0.15f;
+            newCamPos.z -= scrollSpeed;
+            cursorPos.z -= scrollSpeed;
         }
 
         deathCursor.transform.position = cursorPos;
@@ -253,19 +255,19 @@ public class Death : MonoBehaviour {
         if (Physics.Raycast(ray, out hit))
         {
             Vector3 pos = hit.collider.gameObject.transform.position;
-            pos.y += 1;
+            pos.y += 0.5f;
             placement.transform.position = pos;
-            if (hit.collider.tag == "Floor")
-            {
-                if (currentPlacing == Placing.Teleport1)
-                {
-                    placement.GetComponent<Renderer>().material = firstTeleporterPlace;
-                }
-                else
-                {
-                    placement.GetComponent<Renderer>().material = ableToPlace;
-                }
-                place = true;
+            if (hit.collider.tag == "Floor" && NotNearTag(placement, "Life", 3f) && NotNearTag(placement, "Trap", 0.5f))
+            {    
+                    if (currentPlacing == Placing.Teleport1)
+                    {
+                        placement.GetComponent<Renderer>().material = firstTeleporterPlace;
+                    }
+                    else
+                    {
+                        placement.GetComponent<Renderer>().material = ableToPlace;
+                    }
+                    place = true;
             }
             else
             {
@@ -273,6 +275,20 @@ public class Death : MonoBehaviour {
                 place = false;
             }
         }
+    }
+
+
+    bool NotNearTag(GameObject place, string tag, float distance)
+    {
+        Collider[] tagged = Physics.OverlapSphere(place.transform.position, distance);
+        for (int i = 0; i < tagged.Length; i++)
+        {
+            if (tagged[i].tag == tag)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     void ChooseAbility()
@@ -333,9 +349,9 @@ public class Death : MonoBehaviour {
             else
             {
                 newCamPos = deathCam.transform.position;
-                newCamPos.z += 0.15f;
+                newCamPos.z += scrollSpeed;
                 deathCam.transform.position = newCamPos;
-                cursorPos.z = deathCam.transform.position.z + 5.4f;
+                cursorPos.z = deathCam.transform.position.z + _1080pHeight;
                 deathCursor.transform.position = cursorPos;
                 ret = false;
             }
@@ -349,9 +365,9 @@ public class Death : MonoBehaviour {
             else
             {
                 newCamPos = deathCam.transform.position;
-                newCamPos.z -= 0.15f;
+                newCamPos.z -= scrollSpeed;
                 deathCam.transform.position = newCamPos;
-                cursorPos.z = deathCam.transform.position.z - 5f;
+                cursorPos.z = deathCam.transform.position.z - _1080pHeight + 0.3f;
                 deathCursor.transform.position = cursorPos;
                 ret = false;
             }
@@ -367,9 +383,9 @@ public class Death : MonoBehaviour {
             else
             {
                 newCamPos = deathCam.transform.position;
-                newCamPos.x -= 0.15f;
+                newCamPos.x -= scrollSpeed;
                 deathCam.transform.position = newCamPos;
-                cursorPos.x = deathCam.transform.position.x - 6.7f;
+                cursorPos.x = deathCam.transform.position.x - _1080pWidth;
                 deathCursor.transform.position = cursorPos;
                 ret = false;
             }
@@ -383,30 +399,30 @@ public class Death : MonoBehaviour {
             else
             {
                 newCamPos = deathCam.transform.position;
-                newCamPos.x += 0.15f;
+                newCamPos.x += scrollSpeed;
                 deathCam.transform.position = newCamPos;
-                cursorPos.x = deathCam.transform.position.x + 6.5f;
+                cursorPos.x = deathCam.transform.position.x + _1080pWidth - 0.4f;
                 deathCursor.transform.position = cursorPos;
                 ret = false;
             }
         }
 
-        if (cursorPos.x > deathCam.transform.position.x + 6.5f)
+        if (cursorPos.x > deathCam.transform.position.x + _1080pWidth - 0.2f)
         {
             ret = false;
             scrollingR = true;
         }
-        if (cursorPos.x < deathCam.transform.position.x - 6.7f)
+        if (cursorPos.x < deathCam.transform.position.x - _1080pWidth)
         {
             ret = false;
             scrollingL = true;
         }
-        if (cursorPos.z > deathCam.transform.position.z + 5.4f)
+        if (cursorPos.z > deathCam.transform.position.z + _1080pHeight)
         {
             ret = false;
             scrollingU = true;      
         }
-        if (cursorPos.z < deathCam.transform.position.z - 5f)
+        if (cursorPos.z < deathCam.transform.position.z - _1080pHeight + 0.3f)
         {
             ret = false;
             scrollingD = true;
