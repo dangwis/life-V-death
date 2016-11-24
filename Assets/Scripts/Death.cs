@@ -10,7 +10,8 @@ public class Death : MonoBehaviour {
     public GameObject deathCursor;
     public GameObject skeletonPrefab;
     public GameObject damageTrapPrefab;
-    public GameObject placementObjPrefab;
+    public GameObject trapPlacementPrefab;
+    public GameObject enemyPlacementPrefab;
     public GameObject minotaurPrefab;
     public GameObject teleporterPrefab;
     public Material ableToPlace, notAbleToPlace;
@@ -263,6 +264,11 @@ public class Death : MonoBehaviour {
                     {
                         placement.GetComponent<Renderer>().material = firstTeleporterPlace;
                     }
+                    else if(currentPlacing == Placing.Damage)
+                    {
+                        placement.transform.Find("Needle").GetComponent<Renderer>().material = ableToPlace;
+                        placement.transform.Find("Trap_Needle").GetComponent<Renderer>().material = ableToPlace;
+                    }
                     else
                     {
                         placement.GetComponent<Renderer>().material = ableToPlace;
@@ -271,7 +277,15 @@ public class Death : MonoBehaviour {
             }
             else
             {
-                placement.GetComponent<Renderer>().material = notAbleToPlace;
+                if (currentPlacing == Placing.Damage)
+                {
+                    placement.transform.Find("Needle").GetComponent<Renderer>().material = notAbleToPlace;
+                    placement.transform.Find("Trap_Needle").GetComponent<Renderer>().material = notAbleToPlace;
+                }
+                else
+                {
+                    placement.GetComponent<Renderer>().material = notAbleToPlace;
+                }
                 place = false;
             }
         }
@@ -303,7 +317,12 @@ public class Death : MonoBehaviour {
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             if (activeAbility == AbilityType.Interact) {
-                placement = Instantiate(placementObjPrefab);
+                placement = Instantiate(trapPlacementPrefab);
+            }
+            else
+            {
+                Destroy(placement.gameObject);
+                placement = Instantiate(trapPlacementPrefab);
             }
             activeAbility = AbilityType.Place;
             currentPlacing = Placing.Damage;
@@ -311,7 +330,12 @@ public class Death : MonoBehaviour {
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             if (activeAbility == AbilityType.Interact) {
-                placement = Instantiate(placementObjPrefab);
+                placement = Instantiate(enemyPlacementPrefab);
+            }
+            else
+            {
+                Destroy(placement.gameObject);
+                placement = Instantiate(enemyPlacementPrefab);
             }
             activeAbility = AbilityType.Place;
             currentPlacing = Placing.Skeleton;
@@ -320,7 +344,12 @@ public class Death : MonoBehaviour {
         {
             if (activeAbility == AbilityType.Interact)
             {
-                placement = Instantiate(placementObjPrefab);
+                placement = Instantiate(enemyPlacementPrefab);
+            }
+            else
+            {
+                Destroy(placement.gameObject);
+                placement = Instantiate(enemyPlacementPrefab);
             }
             activeAbility = AbilityType.Place;
             currentPlacing = Placing.Minotaur;
@@ -329,7 +358,12 @@ public class Death : MonoBehaviour {
         {
             if (activeAbility == AbilityType.Interact)
             {
-                placement = Instantiate(placementObjPrefab);
+                placement = Instantiate(enemyPlacementPrefab);
+            }
+            else
+            {
+                Destroy(placement.gameObject);
+                placement = Instantiate(enemyPlacementPrefab);
             }
             activeAbility = AbilityType.Place;
             currentPlacing = Placing.Teleport1;
