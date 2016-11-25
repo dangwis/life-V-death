@@ -12,6 +12,7 @@ public class Death : MonoBehaviour {
     public GameObject damageTrapPrefab;
     public GameObject trapPlacementPrefab;
     public GameObject enemyPlacementPrefab;
+    public GameObject teleportPlacementPrefab;
     public GameObject minotaurPrefab;
     public GameObject teleporterPrefab;
     public Material ableToPlace, notAbleToPlace;
@@ -358,12 +359,12 @@ public class Death : MonoBehaviour {
         {
             if (activeAbility == AbilityType.Interact)
             {
-                placement = Instantiate(enemyPlacementPrefab);
+                placement = Instantiate(teleportPlacementPrefab);
             }
             else
             {
                 Destroy(placement.gameObject);
-                placement = Instantiate(enemyPlacementPrefab);
+                placement = Instantiate(teleportPlacementPrefab);
             }
             activeAbility = AbilityType.Place;
             currentPlacing = Placing.Teleport1;
