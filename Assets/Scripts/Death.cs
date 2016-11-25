@@ -223,6 +223,7 @@ public class Death : MonoBehaviour {
                             TeleportPad tp = Instantiate(teleporterPrefab).GetComponent<TeleportPad>();
                             tp.transform.position = teleportIntermediary;
                             tp.endingUpPosition = placement.transform.position;
+                            tp.ShowEndPos();
                             activeAbility = AbilityType.Interact;
                             Destroy(placement.gameObject);
                         }
