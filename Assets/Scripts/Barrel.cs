@@ -10,16 +10,25 @@ public class Barrel : MonoBehaviour {
     void OnCollisionEnter(Collision coll)
     {
         GameObject go = coll.gameObject;
-        if(go.tag == "Arrow" || go.tag == "Sword" || go.tag == "Hammer")
+        if(go.tag == "Arrow")
         {
-            if (Random.value > percentChance)
-            {
-                GameObject hp = Instantiate(healthPowerPrefab);
-                hp.transform.position = transform.position;
-                hp.GetComponent<HealthPowerup>().healthToRestore = healthRegen;
-            }
-            Destroy(this.gameObject);
+			DestoryBarrel ();
         }
+		if (go.tag == "Sword" || go.tag == "Hammer") {
+			if (go.transform.parent.GetComponent<LifePlayer> ().attacking) {
+				DestoryBarrel ();
+			}
+		}
         
     }
+
+	void DestoryBarrel() {
+		if (Random.value > percentChance)
+		{
+			GameObject hp = Instantiate(healthPowerPrefab);
+			hp.transform.position = transform.position;
+			hp.GetComponent<HealthPowerup>().healthToRestore = healthRegen;
+		}
+		Destroy(this.gameObject);
+	}
 }
