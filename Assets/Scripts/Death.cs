@@ -13,8 +13,10 @@ public class Death : MonoBehaviour {
     public GameObject trapPlacementPrefab;
     public GameObject enemyPlacementPrefab;
     public GameObject teleportPlacementPrefab;
+    public GameObject gruntPlacementPrefab;
     public GameObject minotaurPrefab;
     public GameObject teleporterPrefab;
+    public GameObject gruntSpawnPrefab;
     public Material ableToPlace, notAbleToPlace;
     public Material firstTeleporterPlace;
     public float movementSpeed;
@@ -38,6 +40,7 @@ public class Death : MonoBehaviour {
     Placing currentPlacing;
 
     public bool scrollingL, scrollingR, scrollingU, scrollingD;
+    bool wEnabled, sEnabled, aEnabled, dEnabled;
 
     public enum AbilityType
     {
@@ -49,6 +52,7 @@ public class Death : MonoBehaviour {
     {
         Skeleton,
         Minotaur,
+        GruntSpawn,
         Damage,
         Slow,
         Teleport1,
@@ -66,10 +70,11 @@ public class Death : MonoBehaviour {
         cursorPos = tempPos;
         deathCursor.transform.position = cursorPos;
         activeAbility = AbilityType.Interact;
-        scrollingL = false;
-        scrollingR = false;
-        scrollingU = false;
-        scrollingD = false;
+        SetAllScrollsFalse();
+        wEnabled = true;
+        sEnabled = true;
+        aEnabled = true;
+        dEnabled = true;
         curBigEn = 0;
         curTrap = 0;
         curSpawner = 0;
@@ -94,22 +99,22 @@ public class Death : MonoBehaviour {
         Vector3 newCamPos = deathCam.transform.position;
         cursorPos = deathCursor.transform.position;
 
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D) && dEnabled)
         {
             newCamPos.x += scrollSpeed;
             cursorPos.x += scrollSpeed;
         }
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) && aEnabled)
         {
             newCamPos.x -= scrollSpeed;
             cursorPos.x -= scrollSpeed;
         }
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W) && wEnabled)
         {
             newCamPos.z += scrollSpeed;
             cursorPos.z += scrollSpeed;
         }
-        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S) && sEnabled)
         {
             newCamPos.z -= scrollSpeed;
             cursorPos.z -= scrollSpeed;
@@ -126,12 +131,74 @@ public class Death : MonoBehaviour {
             cursorPos.z = cursorPos.z + y * movementSpeed;
         }
 
+        
+
         if (IsOnDeathCam(cursorPos))
         {
             deathCursor.transform.position = cursorPos;
         }
-        
-	}
+
+        if (deathCursor.transform.position.x > 85)
+        {
+            Vector3 curbound = deathCursor.transform.position;
+            curbound.x = 85;
+            deathCursor.transform.position = curbound;
+            SetAllScrollsFalse();
+            dEnabled = false;
+        }
+        else if(deathCursor.transform.position.x != 85)
+        {
+            dEnabled = true;
+        }
+
+        if (deathCursor.transform.position.x < 0)
+        {
+            Vector3 curbound = deathCursor.transform.position;
+            curbound.x = 0;
+            deathCursor.transform.position = curbound;
+            SetAllScrollsFalse();
+            aEnabled = false;
+        }
+        else if (deathCursor.transform.position.x != 0)
+        {
+            aEnabled = true;
+        }
+
+        if (deathCursor.transform.position.z > 0)
+        {
+            Vector3 curbound = deathCursor.transform.position;
+            curbound.z = 0;
+            deathCursor.transform.position = curbound;
+            SetAllScrollsFalse();
+            wEnabled = false;
+        }
+        else if (deathCursor.transform.position.z != 0)
+        {
+            wEnabled = true;
+        }
+
+        if (deathCursor.transform.position.z < -85)
+        {
+            Vector3 curbound = deathCursor.transform.position;
+            curbound.z = -85;
+            deathCursor.transform.position = curbound;
+            SetAllScrollsFalse();
+            sEnabled = false;
+        }
+        else if (deathCursor.transform.position.z != -85)
+        {
+            sEnabled = true;
+        }
+
+    }
+
+    void SetAllScrollsFalse()
+    {
+        scrollingR = false;
+        scrollingU = false;
+        scrollingL = false;
+        scrollingD = false;
+    }
 
     void RegenMana()
     {
@@ -180,6 +247,24 @@ public class Death : MonoBehaviour {
             {
                 if (place)
                 {
+                    if(currentPlacing == Placing.GruntSpawn)
+                    {
+                        if (manaLeft >= 50f && curSpawner < totalSpawnerAllowed)
+                        {
+                            UseMana(50f);
+                            GameObject spawn = Instantiate(gruntSpawnPrefab);
+                            spawn.transform.position = placement.transform.position;
+                            Destroy(placement.gameObject);
+                            activeAbility = AbilityType.Interact;
+                            curSpawner++;
+                        }
+                        else
+                        {
+                            //show that not enough mana somehow
+                            Destroy(placement.gameObject);
+                            activeAbility = AbilityType.Interact;
+                        }
+                    }
                     if(currentPlacing == Placing.Damage)
                     {
                         if (manaLeft >= 25f && curTrap < totalTrapAllowed)
@@ -286,20 +371,16 @@ public class Death : MonoBehaviour {
             Vector3 pos = hit.collider.gameObject.transform.position;
             pos.y += 0.5f;
             placement.transform.position = pos;
-            if (hit.collider.tag == "Floor" && NotNearTag(placement, "Life", 3f) && NotNearTag(placement, "Trap", 0.5f))
+            if (hit.collider.tag == "Floor" && NotNearTag(placement, "Life", 3f) && NotNearTag(placement, "Trap", 0.5f) && NotNearTag(placement, "Wall", 0.5f))
             {    
                     if (currentPlacing == Placing.Teleport1)
                     {
                         placement.GetComponent<Renderer>().material = firstTeleporterPlace;
                     }
-                    else if(currentPlacing == Placing.Teleport2)
+                    else if(currentPlacing == Placing.Damage || currentPlacing == Placing.GruntSpawn)
                     {
-                        placement.GetComponent<Renderer>().material = ableToPlace;
-                    }
-                    else if(currentPlacing == Placing.Damage)
-                    {
-                        placement.transform.Find("Needle").GetComponent<Renderer>().material = ableToPlace;
-                        placement.transform.Find("Trap_Needle").GetComponent<Renderer>().material = ableToPlace;
+                        foreach (Transform child in placement.transform)
+                            child.GetComponent<Renderer>().material = ableToPlace;
                     }
                     else
                     {
@@ -309,10 +390,10 @@ public class Death : MonoBehaviour {
             }
             else
             {
-                if (currentPlacing == Placing.Damage)
+                if (currentPlacing == Placing.Damage || currentPlacing == Placing.GruntSpawn)
                 {
-                    placement.transform.Find("Needle").GetComponent<Renderer>().material = notAbleToPlace;
-                    placement.transform.Find("Trap_Needle").GetComponent<Renderer>().material = notAbleToPlace;
+                    foreach (Transform child in placement.transform)
+                        child.GetComponent<Renderer>().material = notAbleToPlace;
                 }
                 else
                 {
@@ -341,15 +422,33 @@ public class Death : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            if (activeAbility == AbilityType.Interact)
+            {
+                placement = Instantiate(gruntPlacementPrefab);
+                activeAbility = AbilityType.Place;
+                currentPlacing = Placing.GruntSpawn;
+            }
+            else if (activeAbility == AbilityType.Place && currentPlacing == Placing.GruntSpawn)
+            {
+                activeAbility = AbilityType.Interact;
+                Destroy(placement.gameObject);
+            }
+            else
+            {
+                Destroy(placement.gameObject);
+                placement = Instantiate(gruntPlacementPrefab);
+                activeAbility = AbilityType.Place;
+                currentPlacing = Placing.GruntSpawn;
+            }
 			DeathHUD.inst.selectAbility (1);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             if (activeAbility == AbilityType.Interact) {
                 placement = Instantiate(trapPlacementPrefab);
                 activeAbility = AbilityType.Place;
                 currentPlacing = Placing.Damage;
-				DeathHUD.inst.selectAbility (2);
+				DeathHUD.inst.selectAbility (4);
             }
             else if(activeAbility == AbilityType.Place && currentPlacing == Placing.Damage)
             {
@@ -363,18 +462,18 @@ public class Death : MonoBehaviour {
                 placement = Instantiate(trapPlacementPrefab);
                 activeAbility = AbilityType.Place;
                 currentPlacing = Placing.Damage;
-				DeathHUD.inst.selectAbility (2);
+				DeathHUD.inst.selectAbility (4);
             }
             
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             if (activeAbility == AbilityType.Interact)
             {
                 placement = Instantiate(enemyPlacementPrefab);
                 activeAbility = AbilityType.Place;
                 currentPlacing = Placing.Skeleton;
-				DeathHUD.inst.selectAbility (3);
+				DeathHUD.inst.selectAbility (2);
             }
             else if (activeAbility == AbilityType.Place && currentPlacing == Placing.Skeleton)
             {
@@ -388,17 +487,17 @@ public class Death : MonoBehaviour {
                 placement = Instantiate(enemyPlacementPrefab);
                 activeAbility = AbilityType.Place;
                 currentPlacing = Placing.Skeleton;
-				DeathHUD.inst.selectAbility (3);
+				DeathHUD.inst.selectAbility (2);
             }
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             if (activeAbility == AbilityType.Interact)
             {
                 placement = Instantiate(enemyPlacementPrefab);
                 activeAbility = AbilityType.Place;
                 currentPlacing = Placing.Minotaur;
-				DeathHUD.inst.selectAbility (4);
+				DeathHUD.inst.selectAbility (3);
             }
             else if (activeAbility == AbilityType.Place && currentPlacing == Placing.Minotaur)
             {
@@ -412,7 +511,7 @@ public class Death : MonoBehaviour {
                 placement = Instantiate(enemyPlacementPrefab);
                 activeAbility = AbilityType.Place;
                 currentPlacing = Placing.Minotaur;
-				DeathHUD.inst.selectAbility (4);
+				DeathHUD.inst.selectAbility (3);
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))

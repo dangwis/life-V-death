@@ -18,20 +18,20 @@ public class FogOfWar : MonoBehaviour {
 		GameObject p1 = GameObject.Find ("Player 1"), p2 = GameObject.Find ("Player 2"), p3 = GameObject.Find ("Player 3");
 		int x = 0, y = 0;
 		if (p1 != null) {
-			x = (int)(p1.transform.position.x / 74 * (xVal));
-			y = (int)((- p1.transform.position.z / 74) * (yVal));
+			x = (int)(p1.transform.position.x / 85 * (xVal));
+			y = (int)((- p1.transform.position.z / 85) * (yVal));
 
 			fog [x, y] = true;
 		}
 		if (p2 != null) {
-			x = (int)(p2.transform.position.x / 74 * xVal);
-			y = (int)((- p2.transform.position.z / 74) * yVal);
+			x = (int)(p2.transform.position.x / 85 * xVal);
+			y = (int)((- p2.transform.position.z / 85) * yVal);
 
 			fog [x, y] = true;
 		}
 		if (p3 != null) {
-			x = (int)(p3.transform.position.x / 74 * xVal);
-			y = (int)((- p3.transform.position.z / 74) * yVal);
+			x = (int)(p3.transform.position.x / 85 * xVal);
+			y = (int)((- p3.transform.position.z / 85) * yVal);
 
 			fog [x, y] = true;
 		}
