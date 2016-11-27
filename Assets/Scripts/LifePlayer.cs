@@ -279,7 +279,9 @@ public class LifePlayer : MonoBehaviour {
         } else if (col.tag == "Minotaur" && col.gameObject.layer == 13 && state != 2 && state != 3) {
             state = 2;
             health -= 20;
-            Debug.Log("Test");
+        } else if (col.tag == "Grunt" && col.gameObject.layer == 13 && state != 2 && state != 3) {
+            state = 2;
+            health -= 15;
         }
     }
 
