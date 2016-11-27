@@ -25,6 +25,10 @@ public class Death : MonoBehaviour {
     float timeSinceLastUse;
     public float _1080pWidth, _1080pHeight;
     public float scrollSpeed;
+    public int totalTrapAllowed;
+    public int totalBigEnemyAllowed;
+    public int totalSpawnerAllowed;
+    int curTrap, curBigEn, curSpawner;
 
     Vector3 teleportIntermediary;
 
@@ -66,6 +70,9 @@ public class Death : MonoBehaviour {
         scrollingR = false;
         scrollingU = false;
         scrollingD = false;
+        curBigEn = 0;
+        curTrap = 0;
+        curSpawner = 0;
         manaLeft = totalMana;
         timeSinceLastUse = Time.time;
     }
@@ -137,6 +144,21 @@ public class Death : MonoBehaviour {
         }
     }
 
+    public void DecrementBigEnemy()
+    {
+        curBigEn--;
+    }
+
+    public void DecrementTrap()
+    {
+        curTrap--;
+    }
+
+    public void DecrementSpawner()
+    {
+        curSpawner--;
+    }
+
     void CheckClicks()
     {
         if (Input.GetMouseButtonDown(0))
@@ -160,13 +182,14 @@ public class Death : MonoBehaviour {
                 {
                     if(currentPlacing == Placing.Damage)
                     {
-                        if (manaLeft >= 25f)
+                        if (manaLeft >= 25f && curTrap < totalTrapAllowed)
                         {
                             UseMana(25f);
                             GameObject trap = Instantiate(damageTrapPrefab);
                             trap.transform.position = placement.transform.position;
                             Destroy(placement.gameObject);
                             activeAbility = AbilityType.Interact;
+                            curTrap++;
                         }
                         else
                         {
@@ -178,13 +201,14 @@ public class Death : MonoBehaviour {
                     }
                     else if(currentPlacing == Placing.Skeleton)
                     {
-                        if (manaLeft >= 35)
+                        if (manaLeft >= 35 && curBigEn < totalBigEnemyAllowed)
                         {
                             UseMana(35f);
                             EnemySkel skel = Instantiate(skeletonPrefab).GetComponent<EnemySkel>();
                             skel.transform.position = placement.transform.position + new Vector3(0, 1.6f, 0);
                             Destroy(placement.gameObject);
                             activeAbility = AbilityType.Interact;
+                            curBigEn++;
                         }
                         else
                         {
@@ -195,13 +219,14 @@ public class Death : MonoBehaviour {
                     }
                     else if(currentPlacing == Placing.Minotaur)
                     {
-                        if (manaLeft >= 40)
+                        if (manaLeft >= 40 && curBigEn < totalBigEnemyAllowed)
                         {
                             UseMana(40f);
                             EnemyMin min = Instantiate(minotaurPrefab).GetComponent<EnemyMin>();
                             min.transform.position = placement.transform.position;
                             Destroy(placement.gameObject);
                             activeAbility = AbilityType.Interact;
+                            curBigEn++;
                         }
                         else
                         {
@@ -217,7 +242,7 @@ public class Death : MonoBehaviour {
                     }
                     else if(currentPlacing == Placing.Teleport2)
                     {
-                        if (manaLeft >= 40)
+                        if (manaLeft >= 40 && curTrap < totalTrapAllowed)
                         {
                             UseMana(40);
                             TeleportPad tp = Instantiate(teleporterPrefab).GetComponent<TeleportPad>();
@@ -226,6 +251,7 @@ public class Death : MonoBehaviour {
                             tp.ShowEndPos();
                             activeAbility = AbilityType.Interact;
                             Destroy(placement.gameObject);
+                            curTrap++;
                         }
                         else
                         {

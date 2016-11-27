@@ -72,6 +72,7 @@ public class EnemyMin : MonoBehaviour {
     }
 
     void FinishDeath() {
+        Death.S.DecrementBigEnemy();
         Destroy(this.gameObject);
     }
 

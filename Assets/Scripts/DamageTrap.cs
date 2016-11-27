@@ -45,6 +45,7 @@ public class DamageTrap : MonoBehaviour {
     public void Disarm()
     {
         armed = false;
+        Death.S.DecrementTrap();
         this.gameObject.transform.Find("Trap_Needle").gameObject.layer = 0;
     }
 }

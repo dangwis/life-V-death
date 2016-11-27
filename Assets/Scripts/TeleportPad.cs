@@ -19,6 +19,7 @@ public class TeleportPad : MonoBehaviour {
         if (go.tag == "Life")
         {
             go.transform.position = endingUpPosition;
+            Death.S.DecrementTrap();
             Destroy(endingObj);
             Destroy(this.gameObject);
         }

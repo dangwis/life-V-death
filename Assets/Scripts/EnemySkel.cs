@@ -91,6 +91,7 @@ public class EnemySkel : MonoBehaviour {
     }
 
     void StartDeath() {
+        Death.S.DecrementBigEnemy();
         Destroy(this.gameObject);
     }
 

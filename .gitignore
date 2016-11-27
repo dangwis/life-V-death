@@ -35,3 +35,5 @@ sysinfo.txt
 *.unitypackage
 .DS_Store
 thumbs.db
+ProjectSettings/ProjectSettings-DangleAngus-2.asset
+ProjectSettings/ProjectVersion-DangleAngus.txt
