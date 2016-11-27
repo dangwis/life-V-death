@@ -86,13 +86,16 @@ public class LifePlayer : MonoBehaviour {
             switch (weapontype) {
                 case 1:
                     sword.SetActive(true);
+                    RemovePopupNotification();
                     break;
                 case 2:
                     hammer.SetActive(true);
+                    RemovePopupNotification();
                     break;
                 case 3:
                     bow.SetActive(true);
                     arrow.SetActive(true);
+                    RemovePopupNotification();
                     break;
             }
         }
@@ -258,9 +261,11 @@ public class LifePlayer : MonoBehaviour {
             }
         }
 
-		//keep popup upright
-		activePopup.transform.rotation = popupNotificationPrefab.transform.rotation;
-		activePopup.transform.position = popupPosition;
+        //keep popup upright
+        if (activePopup != null) {
+            activePopup.transform.rotation = popupNotificationPrefab.transform.rotation;
+            activePopup.transform.position = popupPosition;
+        }
     }
 
 	public void ShowPopupNotification(string txt) {
