@@ -35,6 +35,7 @@ public class LifePlayer : MonoBehaviour {
     public Material playerMat;
 
     bool disarming;
+    bool releasedRT;
     public float disarmTime;
     float disarmTimeStart;
     GameObject disarmingTrap;
@@ -57,6 +58,7 @@ public class LifePlayer : MonoBehaviour {
         arrow.SetActive(false);
         lifeAnimator = transform.Find("body").GetComponent<Animator>();
         disarming = false;
+        releasedRT = true;
 	}
 
 	void OnDestory() {
@@ -126,12 +128,18 @@ public class LifePlayer : MonoBehaviour {
         }
 
         // Attack Handlers
-        if (XInput.x.RTDown(playerNum) && hasWeapon && !attacking && !disarming) {
+        if (XInput.x.RTDown(playerNum) && hasWeapon && !attacking && !disarming && releasedRT) {
             attacking = true;
+            releasedRT = false;
+        }
+        if (!XInput.x.RTDown(playerNum) && hasWeapon && !releasedRT)
+        {
+            Debug.Log("Released");
+            releasedRT = true;
         }
 
         // Set state
-        if (state != 3 && state != 4) {
+            if (state != 3 && state != 4) {
             if (Mathf.Abs(Input.GetAxis(XInput.XboxLStickX(playerNum))) > 0.1f || Mathf.Abs(Input.GetAxis(XInput.XboxLStickY(playerNum))) > 0.1f) {
                 state = 1;
             } else {
@@ -267,10 +275,10 @@ public class LifePlayer : MonoBehaviour {
             Debug.Log("You found the fountain of youth!");
         } else if (col.tag == "Skeleton" && col.gameObject.layer == 13 && state != 2 && state != 3) {
             state = 2;
-            health -= 20;
+            health -= 10;
         } else if (col.tag == "Minotaur" && col.gameObject.layer == 13 && state != 2 && state != 3) {
             state = 2;
-            health -= 30;
+            health -= 20;
             Debug.Log("Test");
         }
     }
