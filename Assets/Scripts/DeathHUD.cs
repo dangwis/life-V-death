@@ -6,6 +6,7 @@ public class DeathHUD : MonoBehaviour {
 	public static DeathHUD inst;
 
 	public Slider manaSlider;
+	public GameObject[] selectionImages;
 
 	// Use this for initialization
 	void Start () {
@@ -28,5 +29,17 @@ public class DeathHUD : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		manaSlider.value = Death.S.manaLeft;
+
+	}
+
+	public void selectAbility(int num) {
+		deselectAllAbilities ();
+		selectionImages [num - 1].SetActive(true);
+	}
+
+	public void deselectAllAbilities() {
+		foreach (GameObject I in selectionImages) {
+			I.SetActive(false);
+		}
 	}
 }
