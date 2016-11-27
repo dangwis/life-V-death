@@ -14,6 +14,7 @@ public class HealthPowerup : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		transform.Rotate (Vector3.up * Time.fixedDeltaTime * rotationSpeed);
+		transform.Rotate (Vector3.forward * Time.fixedDeltaTime * rotationSpeed);
 	}
 
 	void OnTriggerEnter(Collider coll) {
