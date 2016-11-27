@@ -378,13 +378,13 @@ public class Death : MonoBehaviour {
             }
 			DeathHUD.inst.selectAbility (1);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             if (activeAbility == AbilityType.Interact) {
                 placement = Instantiate(trapPlacementPrefab);
                 activeAbility = AbilityType.Place;
                 currentPlacing = Placing.Damage;
-				DeathHUD.inst.selectAbility (2);
+				DeathHUD.inst.selectAbility (4);
             }
             else if(activeAbility == AbilityType.Place && currentPlacing == Placing.Damage)
             {
@@ -398,18 +398,18 @@ public class Death : MonoBehaviour {
                 placement = Instantiate(trapPlacementPrefab);
                 activeAbility = AbilityType.Place;
                 currentPlacing = Placing.Damage;
-				DeathHUD.inst.selectAbility (2);
+				DeathHUD.inst.selectAbility (4);
             }
             
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             if (activeAbility == AbilityType.Interact)
             {
                 placement = Instantiate(enemyPlacementPrefab);
                 activeAbility = AbilityType.Place;
                 currentPlacing = Placing.Skeleton;
-				DeathHUD.inst.selectAbility (3);
+				DeathHUD.inst.selectAbility (2);
             }
             else if (activeAbility == AbilityType.Place && currentPlacing == Placing.Skeleton)
             {
@@ -423,17 +423,17 @@ public class Death : MonoBehaviour {
                 placement = Instantiate(enemyPlacementPrefab);
                 activeAbility = AbilityType.Place;
                 currentPlacing = Placing.Skeleton;
-				DeathHUD.inst.selectAbility (3);
+				DeathHUD.inst.selectAbility (2);
             }
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             if (activeAbility == AbilityType.Interact)
             {
                 placement = Instantiate(enemyPlacementPrefab);
                 activeAbility = AbilityType.Place;
                 currentPlacing = Placing.Minotaur;
-				DeathHUD.inst.selectAbility (4);
+				DeathHUD.inst.selectAbility (3);
             }
             else if (activeAbility == AbilityType.Place && currentPlacing == Placing.Minotaur)
             {
@@ -447,7 +447,7 @@ public class Death : MonoBehaviour {
                 placement = Instantiate(enemyPlacementPrefab);
                 activeAbility = AbilityType.Place;
                 currentPlacing = Placing.Minotaur;
-				DeathHUD.inst.selectAbility (4);
+				DeathHUD.inst.selectAbility (3);
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
