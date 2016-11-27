@@ -25,6 +25,10 @@ public class LifePlayer : MonoBehaviour {
     public GameObject hammer;
     public Quaternion hammerStart;
 
+	public GameObject popupNotificationPrefab;
+	private GameObject activePopup;
+	private Vector3 popupPosition;
+
     public float cooldown = 1.5f;
     private float lastattacktime;
 
@@ -253,7 +257,26 @@ public class LifePlayer : MonoBehaviour {
                     break;
             }
         }
+
+		//keep popup upright
+		activePopup.transform.rotation = popupNotificationPrefab.transform.rotation;
+		activePopup.transform.position = popupPosition;
     }
+
+	public void ShowPopupNotification(string txt) {
+		Vector3 pos = transform.position;
+		pos.y = 6;
+		pos.z += 2;
+		Destroy (activePopup);
+		activePopup = Instantiate (popupNotificationPrefab, pos, popupNotificationPrefab.transform.rotation, transform) as GameObject;
+		activePopup.transform.FindChild ("Panel").FindChild ("Text").GetComponent<TextMesh> ().text = txt;
+		popupPosition = pos;
+	}
+
+	void RemovePopupNotification() {
+		Debug.Log ("remove popup");
+		Destroy (activePopup);
+	}
 
     void OnTriggerEnter(Collider col) {
         if (col.tag == "PowerUp") {
@@ -263,14 +286,17 @@ public class LifePlayer : MonoBehaviour {
             canPickupWeapon = true;
             pickupType = 1;
             weaponPickupObj = col.gameObject;
+			ShowPopupNotification ("Press A to pick up Sword");
         } else if (col.tag == "Hammer" && !hasWeapon) {
             canPickupWeapon = true;
             pickupType = 2;
             weaponPickupObj = col.gameObject;
+			ShowPopupNotification ("Press A to pick up Hammer");
         } else if (col.tag == "Bow" && !hasWeapon) {
             canPickupWeapon = true;
             pickupType = 3;
             weaponPickupObj = col.gameObject;
+			ShowPopupNotification ("Press A to pick up Bow");
         } else if (col.tag == "LifeFountain") {
             Debug.Log("You found the fountain of youth!");
         } else if (col.tag == "Skeleton" && col.gameObject.layer == 13 && state != 2 && state != 3) {
@@ -288,10 +314,13 @@ public class LifePlayer : MonoBehaviour {
     void OnTriggerExit(Collider col) {
         if (col.tag == "Hammer") {
             canPickupWeapon = false;
+			RemovePopupNotification ();
         } else if (col.tag == "Bow") {
             canPickupWeapon = false;
+			RemovePopupNotification ();
         } else if (col.tag == "Sword") {
             canPickupWeapon = false;
+			RemovePopupNotification ();
         }
     }
 
