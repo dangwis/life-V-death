@@ -24,6 +24,8 @@ public class GruntSpawn : MonoBehaviour {
 	}
 
 	void SpawnEnemy() {
-		GameObject grunt = Instantiate (gruntPrefab, transform.position, transform.rotation) as GameObject;
+        Vector3 spawnpos = transform.position;
+        spawnpos.z += 2f;
+		GameObject grunt = Instantiate (gruntPrefab, spawnpos, transform.rotation) as GameObject;
 	}
 }

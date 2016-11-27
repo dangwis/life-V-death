@@ -13,8 +13,10 @@ public class Death : MonoBehaviour {
     public GameObject trapPlacementPrefab;
     public GameObject enemyPlacementPrefab;
     public GameObject teleportPlacementPrefab;
+    public GameObject gruntPlacementPrefab;
     public GameObject minotaurPrefab;
     public GameObject teleporterPrefab;
+    public GameObject gruntSpawnPrefab;
     public Material ableToPlace, notAbleToPlace;
     public Material firstTeleporterPlace;
     public float movementSpeed;
@@ -49,6 +51,7 @@ public class Death : MonoBehaviour {
     {
         Skeleton,
         Minotaur,
+        GruntSpawn,
         Damage,
         Slow,
         Teleport1,
@@ -180,6 +183,24 @@ public class Death : MonoBehaviour {
             {
                 if (place)
                 {
+                    if(currentPlacing == Placing.GruntSpawn)
+                    {
+                        if (manaLeft >= 50f && curSpawner < totalSpawnerAllowed)
+                        {
+                            UseMana(50f);
+                            GameObject spawn = Instantiate(gruntSpawnPrefab);
+                            spawn.transform.position = placement.transform.position;
+                            Destroy(placement.gameObject);
+                            activeAbility = AbilityType.Interact;
+                            curSpawner++;
+                        }
+                        else
+                        {
+                            //show that not enough mana somehow
+                            Destroy(placement.gameObject);
+                            activeAbility = AbilityType.Interact;
+                        }
+                    }
                     if(currentPlacing == Placing.Damage)
                     {
                         if (manaLeft >= 25f && curTrap < totalTrapAllowed)
@@ -286,20 +307,16 @@ public class Death : MonoBehaviour {
             Vector3 pos = hit.collider.gameObject.transform.position;
             pos.y += 0.5f;
             placement.transform.position = pos;
-            if (hit.collider.tag == "Floor" && NotNearTag(placement, "Life", 3f) && NotNearTag(placement, "Trap", 0.5f))
+            if (hit.collider.tag == "Floor" && NotNearTag(placement, "Life", 3f) && NotNearTag(placement, "Trap", 0.5f) && NotNearTag(placement, "Wall", 0.5f))
             {    
                     if (currentPlacing == Placing.Teleport1)
                     {
                         placement.GetComponent<Renderer>().material = firstTeleporterPlace;
                     }
-                    else if(currentPlacing == Placing.Teleport2)
+                    else if(currentPlacing == Placing.Damage || currentPlacing == Placing.GruntSpawn)
                     {
-                        placement.GetComponent<Renderer>().material = ableToPlace;
-                    }
-                    else if(currentPlacing == Placing.Damage)
-                    {
-                        placement.transform.Find("Needle").GetComponent<Renderer>().material = ableToPlace;
-                        placement.transform.Find("Trap_Needle").GetComponent<Renderer>().material = ableToPlace;
+                        foreach (Transform child in placement.transform)
+                            child.GetComponent<Renderer>().material = ableToPlace;
                     }
                     else
                     {
@@ -309,10 +326,10 @@ public class Death : MonoBehaviour {
             }
             else
             {
-                if (currentPlacing == Placing.Damage)
+                if (currentPlacing == Placing.Damage || currentPlacing == Placing.GruntSpawn)
                 {
-                    placement.transform.Find("Needle").GetComponent<Renderer>().material = notAbleToPlace;
-                    placement.transform.Find("Trap_Needle").GetComponent<Renderer>().material = notAbleToPlace;
+                    foreach (Transform child in placement.transform)
+                        child.GetComponent<Renderer>().material = notAbleToPlace;
                 }
                 else
                 {
@@ -341,7 +358,24 @@ public class Death : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            
+            if (activeAbility == AbilityType.Interact)
+            {
+                placement = Instantiate(gruntPlacementPrefab);
+                activeAbility = AbilityType.Place;
+                currentPlacing = Placing.GruntSpawn;
+            }
+            else if (activeAbility == AbilityType.Place && currentPlacing == Placing.GruntSpawn)
+            {
+                activeAbility = AbilityType.Interact;
+                Destroy(placement.gameObject);
+            }
+            else
+            {
+                Destroy(placement.gameObject);
+                placement = Instantiate(gruntPlacementPrefab);
+                activeAbility = AbilityType.Place;
+                currentPlacing = Placing.GruntSpawn;
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
