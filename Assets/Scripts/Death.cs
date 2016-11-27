@@ -40,6 +40,7 @@ public class Death : MonoBehaviour {
     Placing currentPlacing;
 
     public bool scrollingL, scrollingR, scrollingU, scrollingD;
+    bool wEnabled, sEnabled, aEnabled, dEnabled;
 
     public enum AbilityType
     {
@@ -69,10 +70,11 @@ public class Death : MonoBehaviour {
         cursorPos = tempPos;
         deathCursor.transform.position = cursorPos;
         activeAbility = AbilityType.Interact;
-        scrollingL = false;
-        scrollingR = false;
-        scrollingU = false;
-        scrollingD = false;
+        SetAllScrollsFalse();
+        wEnabled = true;
+        sEnabled = true;
+        aEnabled = true;
+        dEnabled = true;
         curBigEn = 0;
         curTrap = 0;
         curSpawner = 0;
@@ -97,22 +99,22 @@ public class Death : MonoBehaviour {
         Vector3 newCamPos = deathCam.transform.position;
         cursorPos = deathCursor.transform.position;
 
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D) && dEnabled)
         {
             newCamPos.x += scrollSpeed;
             cursorPos.x += scrollSpeed;
         }
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) && aEnabled)
         {
             newCamPos.x -= scrollSpeed;
             cursorPos.x -= scrollSpeed;
         }
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W) && wEnabled)
         {
             newCamPos.z += scrollSpeed;
             cursorPos.z += scrollSpeed;
         }
-        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S) && sEnabled)
         {
             newCamPos.z -= scrollSpeed;
             cursorPos.z -= scrollSpeed;
@@ -129,12 +131,74 @@ public class Death : MonoBehaviour {
             cursorPos.z = cursorPos.z + y * movementSpeed;
         }
 
+        
+
         if (IsOnDeathCam(cursorPos))
         {
             deathCursor.transform.position = cursorPos;
         }
-        
-	}
+
+        if (deathCursor.transform.position.x > 85)
+        {
+            Vector3 curbound = deathCursor.transform.position;
+            curbound.x = 85;
+            deathCursor.transform.position = curbound;
+            SetAllScrollsFalse();
+            dEnabled = false;
+        }
+        else if(deathCursor.transform.position.x != 85)
+        {
+            dEnabled = true;
+        }
+
+        if (deathCursor.transform.position.x < 0)
+        {
+            Vector3 curbound = deathCursor.transform.position;
+            curbound.x = 0;
+            deathCursor.transform.position = curbound;
+            SetAllScrollsFalse();
+            aEnabled = false;
+        }
+        else if (deathCursor.transform.position.x != 0)
+        {
+            aEnabled = true;
+        }
+
+        if (deathCursor.transform.position.z > 0)
+        {
+            Vector3 curbound = deathCursor.transform.position;
+            curbound.z = 0;
+            deathCursor.transform.position = curbound;
+            SetAllScrollsFalse();
+            wEnabled = false;
+        }
+        else if (deathCursor.transform.position.z != 0)
+        {
+            wEnabled = true;
+        }
+
+        if (deathCursor.transform.position.z < -85)
+        {
+            Vector3 curbound = deathCursor.transform.position;
+            curbound.z = -85;
+            deathCursor.transform.position = curbound;
+            SetAllScrollsFalse();
+            sEnabled = false;
+        }
+        else if (deathCursor.transform.position.z != -85)
+        {
+            sEnabled = true;
+        }
+
+    }
+
+    void SetAllScrollsFalse()
+    {
+        scrollingR = false;
+        scrollingU = false;
+        scrollingL = false;
+        scrollingD = false;
+    }
 
     void RegenMana()
     {
