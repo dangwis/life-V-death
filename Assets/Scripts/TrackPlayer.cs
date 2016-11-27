@@ -30,8 +30,8 @@ public class TrackPlayer : MonoBehaviour {
 
 		Vector3 vec = trackObj.transform.position;
 
-		vec.x = vec.x / 74 * map.GetComponent<RectTransform>().rect.width;
-		vec.y = map.GetComponent<RectTransform>().rect.height + vec.z / 74 * map.GetComponent<RectTransform>().rect.height;
+		vec.x = vec.x / 85 * map.GetComponent<RectTransform>().rect.width;
+		vec.y = map.GetComponent<RectTransform>().rect.height + vec.z / 85 * map.GetComponent<RectTransform>().rect.height;
 		vec.z = 0;
 
 		if (map.GetComponent<RectTransform> ().rect.width != map.GetComponent<RectTransform> ().rect.height) {
