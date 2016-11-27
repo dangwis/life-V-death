@@ -11,6 +11,7 @@ public class TeleportPad : MonoBehaviour {
     {
         endingObj = Instantiate(endingPosPrefab);
         endingObj.transform.position = endingUpPosition;
+    
     }
 
 	void OnTriggerEnter(Collider coll)

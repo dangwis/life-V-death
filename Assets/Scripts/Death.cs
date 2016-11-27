@@ -292,6 +292,10 @@ public class Death : MonoBehaviour {
                     {
                         placement.GetComponent<Renderer>().material = firstTeleporterPlace;
                     }
+                    else if(currentPlacing == Placing.Teleport2)
+                    {
+                        placement.GetComponent<Renderer>().material = ableToPlace;
+                    }
                     else if(currentPlacing == Placing.Damage)
                     {
                         placement.transform.Find("Needle").GetComponent<Renderer>().material = ableToPlace;
@@ -337,64 +341,91 @@ public class Death : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            activeAbility = AbilityType.Interact;
-            if (placement != null) {
-                Destroy(placement);
-            }
+            
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             if (activeAbility == AbilityType.Interact) {
                 placement = Instantiate(trapPlacementPrefab);
+                activeAbility = AbilityType.Place;
+                currentPlacing = Placing.Damage;
+            }
+            else if(activeAbility == AbilityType.Place && currentPlacing == Placing.Damage)
+            {
+                activeAbility = AbilityType.Interact;
+                Destroy(placement.gameObject);
             }
             else
             {
                 Destroy(placement.gameObject);
                 placement = Instantiate(trapPlacementPrefab);
+                activeAbility = AbilityType.Place;
+                currentPlacing = Placing.Damage;
             }
-            activeAbility = AbilityType.Place;
-            currentPlacing = Placing.Damage;
+            
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            if (activeAbility == AbilityType.Interact) {
+            if (activeAbility == AbilityType.Interact)
+            {
                 placement = Instantiate(enemyPlacementPrefab);
+                activeAbility = AbilityType.Place;
+                currentPlacing = Placing.Skeleton;
+            }
+            else if (activeAbility == AbilityType.Place && currentPlacing == Placing.Skeleton)
+            {
+                activeAbility = AbilityType.Interact;
+                Destroy(placement.gameObject);
             }
             else
             {
                 Destroy(placement.gameObject);
                 placement = Instantiate(enemyPlacementPrefab);
+                activeAbility = AbilityType.Place;
+                currentPlacing = Placing.Skeleton;
             }
-            activeAbility = AbilityType.Place;
-            currentPlacing = Placing.Skeleton;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             if (activeAbility == AbilityType.Interact)
             {
                 placement = Instantiate(enemyPlacementPrefab);
+                activeAbility = AbilityType.Place;
+                currentPlacing = Placing.Minotaur;
+            }
+            else if (activeAbility == AbilityType.Place && currentPlacing == Placing.Minotaur)
+            {
+                activeAbility = AbilityType.Interact;
+                Destroy(placement.gameObject);
             }
             else
             {
                 Destroy(placement.gameObject);
                 placement = Instantiate(enemyPlacementPrefab);
+                activeAbility = AbilityType.Place;
+                currentPlacing = Placing.Minotaur;
             }
-            activeAbility = AbilityType.Place;
-            currentPlacing = Placing.Minotaur;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             if (activeAbility == AbilityType.Interact)
             {
                 placement = Instantiate(teleportPlacementPrefab);
+                activeAbility = AbilityType.Place;
+                currentPlacing = Placing.Teleport1;
+            }
+            else if (activeAbility == AbilityType.Place && (currentPlacing == Placing.Teleport1 || currentPlacing == Placing.Teleport2))
+            {
+                activeAbility = AbilityType.Interact;
+                Destroy(placement.gameObject);
             }
             else
             {
                 Destroy(placement.gameObject);
                 placement = Instantiate(teleportPlacementPrefab);
+                activeAbility = AbilityType.Place;
+                currentPlacing = Placing.Teleport1;
             }
-            activeAbility = AbilityType.Place;
-            currentPlacing = Placing.Teleport1;
         }
     }
 
