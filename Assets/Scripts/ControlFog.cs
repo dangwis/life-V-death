@@ -14,7 +14,11 @@ public class ControlFog : MonoBehaviour {
 				go.transform.localRotation = Quaternion.identity;
 				//go.transform.position = Vector3.zero;
 				go.transform.localPosition= Vector3.zero;
-				go.transform.localScale = new Vector3 (0.5f, 0.5f, 1f);
+                //if (SetupCameras.multiDisplay) {
+                    //go.transform.localScale = new Vector3(1f, 1f, 1f);
+                //} else {
+                    go.transform.localScale = new Vector3(0.6f, 0.6f, 1f);
+                //}
 				go.name = "" + (i * 10 + j);
 			}
 		}

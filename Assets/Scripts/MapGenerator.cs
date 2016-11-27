@@ -12,6 +12,7 @@ public class MapGenerator : MonoBehaviour {
     public GameObject TileLivingFountain;
     public GameObject TileFallingBlock;
     public TextAsset textFile;
+    public static int fountLoc;
 
     List<Vector3> fountainPositions = new List<Vector3>();
 
@@ -67,6 +68,7 @@ public class MapGenerator : MonoBehaviour {
 
         // Spawn 1 living fountain and the rest dead
         int livingFountain = Random.Range(0, fountainPositions.Count);
+        fountLoc = livingFountain;
 
         for (int i = 0; i < fountainPositions.Count; i++) {
             if (i == livingFountain) {
