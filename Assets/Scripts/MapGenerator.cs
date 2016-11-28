@@ -64,6 +64,7 @@ public class MapGenerator : MonoBehaviour {
                             Instantiate(TileFallingBlock, tilePos, Quaternion.identity);
                             break;
                         case ('P'): // Pregame Wall
+                            Instantiate(TileFloor, tilePos, Quaternion.identity);
                             Instantiate(TilePregame, tilePos, Quaternion.identity);
                             break;
                         case ('C'): // Crate Tile
