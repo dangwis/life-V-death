@@ -28,6 +28,7 @@ public class DamageTrap : MonoBehaviour {
             go.GetComponent<LifePlayer>().health -= damageDealt;
             go.GetComponent<LifePlayer>().state = 2;
             showing = true;
+            this.gameObject.transform.Find("Trap_Needle").gameObject.layer = 0;
             animate.Play("Anim_TrapNeedle_Show");
         }
     }
