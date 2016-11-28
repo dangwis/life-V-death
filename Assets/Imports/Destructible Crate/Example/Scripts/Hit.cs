@@ -29,18 +29,26 @@ public class Hit : MonoBehaviour {
     }
 
     void DestroyIt(){
-		if(DestroyedObject) {
-			Instantiate(DestroyedObject, transform.position, transform.rotation);
-		}
+        if (DestroyedObject != null)
+        {
+            if (DestroyedObject)
+            {
+                Instantiate(DestroyedObject, transform.position, transform.rotation);
+            }
+        }
 		Destroy(gameObject);
 	}
 
     void DestoryBarrel() {
-        if (Random.value > percentChance) {
-            Instantiate(DestroyedObject, transform.position, transform.rotation);
-            GameObject hp = Instantiate(healthPowerPrefab);
-            hp.transform.position = transform.position;
-            hp.GetComponent<HealthPowerup>().healthToRestore = healthRegen;
+        if (DestroyedObject != null)
+        {
+            if (Random.value > percentChance)
+            {
+                Instantiate(DestroyedObject, transform.position, transform.rotation);
+                GameObject hp = Instantiate(healthPowerPrefab);
+                hp.transform.position = transform.position;
+                hp.GetComponent<HealthPowerup>().healthToRestore = healthRegen;
+            }
         }
         Destroy(this.gameObject);
     }

@@ -14,6 +14,7 @@ public class EnemyGrunt : MonoBehaviour {
     public GameObject sword;
     public CapsuleCollider swordCollider;
 
+    public GruntSpawn mySpawn;
 	public GameObject popupNotificationPrefab;
 	private GameObject activePopup; //health bar
 	private Vector3 popupPosition;
@@ -26,6 +27,11 @@ public class EnemyGrunt : MonoBehaviour {
 		ShowPopupNotification ("", true);
 		UpdatePopupNotification ("", 1);
 		maxHealth = health;
+    }
+
+    public void setSpawn(GruntSpawn spawn)
+    {
+        mySpawn = spawn;
     }
 
     void FixedUpdate() {
@@ -108,7 +114,10 @@ public class EnemyGrunt : MonoBehaviour {
     }
 
     void StartDeath() {
-        Death.S.DecrementBigEnemy();
+        if(mySpawn != null)
+        {
+            mySpawn.DecrementSpawned();
+        }       
 		RemovePopupNotification ();
         Destroy(this.gameObject);
     }
