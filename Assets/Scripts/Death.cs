@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Death : MonoBehaviour {
 
@@ -33,13 +34,15 @@ public class Death : MonoBehaviour {
     public int totalBigEnemyAllowed;
     public int totalSpawnerAllowed;
     public int curTrap, curBigEn, curSpawner;
-
+    public Dictionary<Placing, float> abilityMana;
     Vector3 teleportIntermediary;
 
     bool place;
     GameObject placement;
     AbilityType activeAbility;
     Placing currentPlacing;
+    
+
 
     public bool scrollingL, scrollingR, scrollingU, scrollingD;
     bool wEnabled, sEnabled, aEnabled, dEnabled;
@@ -75,7 +78,7 @@ public class Death : MonoBehaviour {
         deathCam.transform.position = tempPos;
         deathCursor.transform.position = cursorPos;
         activeAbility = AbilityType.Interact;
-        SetAllScrollsFalse();
+        SetAllScrollsFalse();       
         wEnabled = true;
         sEnabled = true;
         aEnabled = true;
@@ -85,6 +88,7 @@ public class Death : MonoBehaviour {
         curSpawner = 0;
         manaLeft = totalMana;
         timeSinceLastUse = Time.time;
+        setUpMana();
     }
 	
 	// Update is called once per frame
@@ -195,6 +199,18 @@ public class Death : MonoBehaviour {
             sEnabled = true;
         }
 
+    }
+
+    void setUpMana()
+    {
+        abilityMana = new Dictionary<Placing, float>();
+        abilityMana[Placing.Damage] = 25f;
+        abilityMana[Placing.Skeleton] = 35f;
+        abilityMana[Placing.Minotaur] = 35f;
+        abilityMana[Placing.Slow] = 30f;
+        abilityMana[Placing.GruntSpawn] = 50f;
+        abilityMana[Placing.Teleport1] = 40f;
+        abilityMana[Placing.Teleport2] = 40f;
     }
 
     void SetAllScrollsFalse()
@@ -311,9 +327,9 @@ public class Death : MonoBehaviour {
                     }
                     else if(currentPlacing == Placing.Minotaur)
                     {
-                        if (manaLeft >= 40 && curBigEn < totalBigEnemyAllowed)
+                        if (manaLeft >= 35 && curBigEn < totalBigEnemyAllowed)
                         {
-                            UseMana(40f);
+                            UseMana(35f);
 							EnemyMin min = Instantiate(minotaurPrefab).transform.FindChild("Minotaur").GetComponent<EnemyMin>();
                             min.transform.position = placement.transform.position;
                             Destroy(placement.gameObject);
@@ -399,7 +415,8 @@ public class Death : MonoBehaviour {
             Vector3 pos = hit.collider.gameObject.transform.position;
             pos.y += 0.5f;
             placement.transform.position = pos;
-            if (hit.collider.tag == "Floor" && NotNearTag(placement, "Life", 3f) && NotNearTag(placement, "Trap", 0.5f) && NotNearTag(placement, "Wall", 0.5f))
+            if (abilityMana[currentPlacing] <= manaLeft && hit.collider.tag == "Floor" && NotNearTag(placement, "Life", 3f) && NotNearTag(placement, "Trap", 0.5f) 
+                && NotNearTag(placement, "Wall", 0.5f))
             {
                 if (!GameManager.S.gameStart && WithinStartingRoom(pos))
                 {
