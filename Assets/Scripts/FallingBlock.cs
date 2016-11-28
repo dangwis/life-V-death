@@ -32,7 +32,7 @@ public class FallingBlock : MonoBehaviour {
     public void DropBlocks()
     {
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
-        transform.Find("Sprite").GetComponent<SpriteRenderer>().enabled = false;
+        
         Collider[] otherBlocks = Physics.OverlapSphere(this.transform.position, 2f);
         for(int i = 0; i < otherBlocks.Length; i++)
         {
@@ -46,7 +46,6 @@ public class FallingBlock : MonoBehaviour {
     void DropOthers()
     {
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
-        transform.Find("Sprite").GetComponent<SpriteRenderer>().enabled = false;
     }
 
     void OnCollisionEnter(Collision coll)
