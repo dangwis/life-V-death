@@ -372,12 +372,27 @@ public class Death : MonoBehaviour {
             pos.y += 0.5f;
             placement.transform.position = pos;
             if (hit.collider.tag == "Floor" && NotNearTag(placement, "Life", 3f) && NotNearTag(placement, "Trap", 0.5f) && NotNearTag(placement, "Wall", 0.5f))
-            {    
+            {
+                if (!GameManager.S.gameStart && WithinStartingRoom(pos))
+                {
+                    if (currentPlacing == Placing.Damage || currentPlacing == Placing.GruntSpawn)
+                    {
+                        foreach (Transform child in placement.transform)
+                            child.GetComponent<Renderer>().material = notAbleToPlace;
+                    }
+                    else
+                    {
+                        placement.GetComponent<Renderer>().material = notAbleToPlace;
+                    }
+                    place = false;
+                }
+                else
+                {
                     if (currentPlacing == Placing.Teleport1)
                     {
                         placement.GetComponent<Renderer>().material = firstTeleporterPlace;
                     }
-                    else if(currentPlacing == Placing.Damage || currentPlacing == Placing.GruntSpawn)
+                    else if (currentPlacing == Placing.Damage || currentPlacing == Placing.GruntSpawn)
                     {
                         foreach (Transform child in placement.transform)
                             child.GetComponent<Renderer>().material = ableToPlace;
@@ -387,6 +402,7 @@ public class Death : MonoBehaviour {
                         placement.GetComponent<Renderer>().material = ableToPlace;
                     }
                     place = true;
+                }
             }
             else
             {
@@ -404,6 +420,12 @@ public class Death : MonoBehaviour {
         }
     }
 
+    bool WithinStartingRoom(Vector3 pos)
+    {
+        if (pos.x > 50 || pos.x < 32) return false;
+        if (pos.z < -50 || pos.z > -32) return false;
+        return true;
+    }
 
     bool NotNearTag(GameObject place, string tag, float distance)
     {
