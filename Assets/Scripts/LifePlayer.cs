@@ -260,12 +260,11 @@ public class LifePlayer : MonoBehaviour {
                     break;
             }
         }
-
-        //keep popup upright
-        if (activePopup != null) {
-            activePopup.transform.rotation = popupNotificationPrefab.transform.rotation;
-            activePopup.transform.position = popupPosition;
-        }
+		//keep popup upright
+		if (activePopup != null) {
+			activePopup.transform.rotation = popupNotificationPrefab.transform.rotation;
+			activePopup.transform.position = popupPosition;
+		}
     }
 
 	public void ShowPopupNotification(string txt) {
