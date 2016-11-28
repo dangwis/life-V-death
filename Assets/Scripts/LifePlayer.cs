@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class LifePlayer : MonoBehaviour {
@@ -112,27 +113,54 @@ public class LifePlayer : MonoBehaviour {
                     disarmTimeStart = Time.time;
                     disarming = true;
                     Debug.Log("disarming");
+					ShowPopupNotification ("Disarming", true);
                 }
                 else
                 {
                     Debug.Log("not near trap");
                 }        
             }
-            else if(Vector3.Distance(disarmingTrap.transform.position, transform.position) > 1.5f)
+            else if(Vector3.Distance(disarmingTrap.transform.position, transform.position) < 3f)
             {
+				//update notification
+				float val = (Time.time - disarmTimeStart) / disarmTime;
+				float div = 1/8f;
+				string txt = "Disarming";
+				if (val / div > 1 && val / div < 2) {
+					txt = "Disarming.";
+				} else if (val / div > 2 && val / div < 3) {
+					txt = "Disarming..";
+				} else if (val / div > 3 && val / div < 4) {
+					txt = "Disarming...";
+				} 
+				// between 4 and 5 is "Disarming" which is default
+				else if (val / div > 5 && val / div < 6) {
+					txt = "Disarming.";
+				} else if (val / div > 6 && val / div < 7) {
+					txt = "Disarming..";
+				} else if (val / div > 7 && val / div < 8) {
+					txt = "Disarming..";
+				}
+				UpdatePopupNotification (txt, val);
+
                 if(Time.time - disarmTimeStart >= disarmTime)
                 {
                     disarmingTrap.GetComponent<DamageTrap>().Disarm();
                     disarming = false;
                     Debug.Log("Disarmed");
+					RemovePopupNotification ();
                 }
             }
             else
             {
                 disarming = false;
                 Debug.Log("Don't walk away");
+				RemovePopupNotification ();
             }
-        }
+		} else if (Input.GetButtonUp(XInput.XboxA(playerNum)) && disarming) {
+			disarming = false;
+			RemovePopupNotification ();
+		}
 
         // Attack Handlers
         if (XInput.x.RTDown(playerNum) && hasWeapon && !attacking && !disarming && releasedRT) {
@@ -157,7 +185,7 @@ public class LifePlayer : MonoBehaviour {
 
     GameObject IsNearTrap()
     {
-        Collider[] traps = Physics.OverlapSphere(this.transform.position, 1f);
+        Collider[] traps = Physics.OverlapSphere(this.transform.position, 2f);
         for (int i = 0; i < traps.Length; i++)
         {
             if (traps[i].tag == "Trap")
@@ -267,14 +295,20 @@ public class LifePlayer : MonoBehaviour {
 		}
     }
 
-	public void ShowPopupNotification(string txt) {
+	public void ShowPopupNotification(string txt, bool showBar = false) {
 		Vector3 pos = transform.position;
 		pos.y = 6;
 		pos.z += 2;
 		Destroy (activePopup);
 		activePopup = Instantiate (popupNotificationPrefab, pos, popupNotificationPrefab.transform.rotation, transform) as GameObject;
 		activePopup.transform.FindChild ("Panel").FindChild ("Text").GetComponent<TextMesh> ().text = txt;
+		activePopup.transform.FindChild ("Panel").FindChild ("Slider").gameObject.SetActive (showBar);
 		popupPosition = pos;
+	}
+
+	public void UpdatePopupNotification(string txt, float barVal = 0) {
+		activePopup.transform.FindChild ("Panel").FindChild ("Text").GetComponent<TextMesh> ().text = txt;
+		activePopup.transform.FindChild ("Panel").FindChild ("Slider").GetComponent<Slider> ().value = barVal;
 	}
 
 	void RemovePopupNotification() {
