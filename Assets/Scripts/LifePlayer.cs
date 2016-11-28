@@ -45,6 +45,10 @@ public class LifePlayer : MonoBehaviour {
     float disarmTimeStart;
     GameObject disarmingTrap;
 
+    void Awake () {
+        WinCondition.NumLivingPlayers++;
+    }
+
     // Use this for initialization
     void Start () {
         charController = this.transform.GetComponent<CharacterController>();
@@ -67,8 +71,8 @@ public class LifePlayer : MonoBehaviour {
 	}
 
 	void OnDestory() {
-		
-	}
+
+    }
 	
     void Update() {
         if (state == 2 || state == 3) {
@@ -336,7 +340,7 @@ public class LifePlayer : MonoBehaviour {
             weaponPickupObj = col.gameObject;
 			ShowPopupNotification ("Press A to pick up Bow");
         } else if (col.tag == "LifeFountain") {
-            Debug.Log("You found the fountain of youth!");
+            WinCondition.FountainFound = true;
         } else if (col.tag == "Skeleton" && col.gameObject.layer == 13 && state != 2 && state != 3) {
             state = 2;
             health -= 10;
@@ -382,6 +386,7 @@ public class LifePlayer : MonoBehaviour {
     }
 
     void Death() {
+        WinCondition.NumLivingPlayers--;
         Destroy(this.gameObject);
     }
 
