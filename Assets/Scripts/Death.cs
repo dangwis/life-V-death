@@ -289,7 +289,7 @@ public class Death : MonoBehaviour {
                         if (manaLeft >= 35 && curBigEn < totalBigEnemyAllowed)
                         {
                             UseMana(35f);
-                            EnemySkel skel = Instantiate(skeletonPrefab).GetComponent<EnemySkel>();
+							EnemySkel skel = Instantiate(skeletonPrefab).transform.FindChild("Skeleton").GetComponent<EnemySkel>();
                             skel.transform.position = placement.transform.position + new Vector3(0, 1.6f, 0);
                             Destroy(placement.gameObject);
                             activeAbility = AbilityType.Interact;
@@ -307,7 +307,7 @@ public class Death : MonoBehaviour {
                         if (manaLeft >= 40 && curBigEn < totalBigEnemyAllowed)
                         {
                             UseMana(40f);
-                            EnemyMin min = Instantiate(minotaurPrefab).GetComponent<EnemyMin>();
+							EnemyMin min = Instantiate(minotaurPrefab).transform.FindChild("Minotaur").GetComponent<EnemyMin>();
                             min.transform.position = placement.transform.position;
                             Destroy(placement.gameObject);
                             activeAbility = AbilityType.Interact;

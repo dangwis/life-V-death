@@ -28,7 +28,6 @@ public class LifePlayer : MonoBehaviour {
 
 	public GameObject popupNotificationPrefab;
 	private GameObject activePopup;
-	private Vector3 popupPosition;
 
     public float cooldown = 1.5f;
     private float lastattacktime;
@@ -295,7 +294,10 @@ public class LifePlayer : MonoBehaviour {
 		//keep popup upright
 		if (activePopup != null) {
 			activePopup.transform.rotation = popupNotificationPrefab.transform.rotation;
-			activePopup.transform.position = popupPosition;
+			Vector3 pos = transform.position;
+			pos.y = 6;
+			pos.z += 2;
+			activePopup.transform.position = pos;
 		}
     }
 
@@ -307,7 +309,6 @@ public class LifePlayer : MonoBehaviour {
 		activePopup = Instantiate (popupNotificationPrefab, pos, popupNotificationPrefab.transform.rotation, transform) as GameObject;
 		activePopup.transform.FindChild ("Panel").FindChild ("Text").GetComponent<TextMesh> ().text = txt;
 		activePopup.transform.FindChild ("Panel").FindChild ("Slider").gameObject.SetActive (showBar);
-		popupPosition = pos;
 	}
 
 	public void UpdatePopupNotification(string txt, float barVal = 0) {

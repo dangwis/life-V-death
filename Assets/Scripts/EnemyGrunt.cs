@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -13,12 +14,18 @@ public class EnemyGrunt : MonoBehaviour {
     public GameObject sword;
     public CapsuleCollider swordCollider;
 
-
+	public GameObject popupNotificationPrefab;
+	private GameObject activePopup; //health bar
+	private Vector3 popupPosition;
+	private float maxHealth;
     // Use this for initialization
     void Start() {
         swordCollider = sword.GetComponent<CapsuleCollider>();
         gruntAnimator = transform.Find("Character Forest Guard").GetComponent<Animator>();
         swordCollider.enabled = (false);
+		ShowPopupNotification ("", true);
+		UpdatePopupNotification ("", 1);
+		maxHealth = health;
     }
 
     void FixedUpdate() {
@@ -68,6 +75,15 @@ public class EnemyGrunt : MonoBehaviour {
                 transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.fixedDeltaTime);
                 break;
         }
+
+		//fix health bar above head
+		if (activePopup != null) {
+			activePopup.transform.rotation = popupNotificationPrefab.transform.rotation;
+			Vector3 pos = transform.position;
+			pos.y = 2;
+			pos.z += 2;
+			activePopup.transform.position = pos;
+		}
     }
 
     void OnCollisionEnter(Collision col) {
@@ -80,7 +96,7 @@ public class EnemyGrunt : MonoBehaviour {
             } else if (col.gameObject.tag == "Sword") {
                 health -= 1.5f;
             }
-
+			UpdatePopupNotification ("", health / maxHealth);
             state = 3;
         }
     }
@@ -93,6 +109,7 @@ public class EnemyGrunt : MonoBehaviour {
 
     void StartDeath() {
         Death.S.DecrementBigEnemy();
+		RemovePopupNotification ();
         Destroy(this.gameObject);
     }
 
@@ -104,6 +121,27 @@ public class EnemyGrunt : MonoBehaviour {
     void FinishDamage() {
         transform.Find("Character Forest Guard").transform.Find("low_body").GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, 1f);
     }
+
+	public void ShowPopupNotification(string txt, bool showBar = false) {
+		Vector3 pos = transform.position;
+		pos.y = 6;
+		pos.z += 2;
+		Destroy (activePopup);
+		activePopup = Instantiate (popupNotificationPrefab, pos, popupNotificationPrefab.transform.rotation, transform.parent) as GameObject;
+		activePopup.transform.FindChild ("Panel").FindChild ("Text").GetComponent<TextMesh> ().text = txt;
+		activePopup.transform.FindChild ("Panel").FindChild ("Slider").gameObject.SetActive (showBar);
+		popupPosition = pos;
+	}
+
+	public void UpdatePopupNotification(string txt, float barVal = 0) {
+		activePopup.transform.FindChild ("Panel").FindChild ("Text").GetComponent<TextMesh> ().text = txt;
+		activePopup.transform.FindChild ("Panel").FindChild ("Slider").GetComponent<Slider> ().value = barVal;
+	}
+
+	void RemovePopupNotification() {
+		Debug.Log ("remove popup");
+		Destroy (activePopup);
+	}
 
     public int state {
         get { return _state; }

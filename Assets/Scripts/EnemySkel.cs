@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -13,11 +14,18 @@ public class EnemySkel : MonoBehaviour {
     public GameObject foreArm;
     public CapsuleCollider forearmCollider;
 
+	public GameObject popupNotificationPrefab;
+	private GameObject activePopup; //health bar
+	private Vector3 popupPosition;
+	private float maxHealth;
 
 	// Use this for initialization
 	void Start () {
         skelAnimator = GetComponent<Animator>();
         forearmCollider.enabled = (false);
+		ShowPopupNotification ("", true);
+		UpdatePopupNotification ("", 1);
+		maxHealth = health;
 	}
 
     void FixedUpdate() {
@@ -67,7 +75,37 @@ public class EnemySkel : MonoBehaviour {
                 transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.fixedDeltaTime);
                 break;
         }
+
+		//fix health bar above head
+		if (activePopup != null) {
+			activePopup.transform.rotation = popupNotificationPrefab.transform.rotation;
+			Vector3 pos = transform.position;
+			pos.y = 2;
+			pos.z += 2;
+			activePopup.transform.position = pos;
+		}
     }
+
+	public void ShowPopupNotification(string txt, bool showBar = false) {
+		Vector3 pos = transform.position;
+		pos.y = 6;
+		pos.z += 2;
+		Destroy (activePopup);
+		activePopup = Instantiate (popupNotificationPrefab, pos, popupNotificationPrefab.transform.rotation, transform.parent) as GameObject;
+		activePopup.transform.FindChild ("Panel").FindChild ("Text").GetComponent<TextMesh> ().text = txt;
+		activePopup.transform.FindChild ("Panel").FindChild ("Slider").gameObject.SetActive (showBar);
+		popupPosition = pos;
+	}
+
+	public void UpdatePopupNotification(string txt, float barVal = 0) {
+		activePopup.transform.FindChild ("Panel").FindChild ("Text").GetComponent<TextMesh> ().text = txt;
+		activePopup.transform.FindChild ("Panel").FindChild ("Slider").GetComponent<Slider> ().value = barVal;
+	}
+
+	void RemovePopupNotification() {
+		Debug.Log ("remove popup");
+		Destroy (activePopup);
+	}
 
     void OnCollisionEnter(Collision col) {
         if (col.gameObject.layer == 10) {
@@ -79,7 +117,7 @@ public class EnemySkel : MonoBehaviour {
             } else if (col.gameObject.tag == "Sword") {
                 health -= 1.5f;
             }
-
+			UpdatePopupNotification ("", health / maxHealth);
             state = 3;
         }
     }
@@ -92,6 +130,7 @@ public class EnemySkel : MonoBehaviour {
 
     void StartDeath() {
         Death.S.DecrementBigEnemy();
+		RemovePopupNotification ();
         Destroy(this.gameObject);
     }
 
