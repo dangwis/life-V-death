@@ -6,10 +6,13 @@ public class DeathHUD : MonoBehaviour {
 	public static DeathHUD inst;
 
 	public Slider manaSlider;
+	public GameObject manaCostSlider;
     public Sprite minimapUL, minimapUR, minimapBL, minimapBR;
     public GameObject[] selectionImages;
     public GameObject[] abilityImages;
     public GameObject deathWins, lifeWins;
+
+	private int selectedAbility = -1;
 
 	// Use this for initialization
 	void Start () {
@@ -34,6 +37,7 @@ public class DeathHUD : MonoBehaviour {
 
 	public void fixOne() {
 		manaSlider.maxValue = Death.S.totalMana;
+		manaCostSlider.GetComponent<Slider>().maxValue = Death.S.totalMana;
 	}
 
 
@@ -46,7 +50,13 @@ public class DeathHUD : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		manaSlider.value = Death.S.manaLeft;
-        if (WinCondition.lifeWon) {
+		if (selectedAbility != -1) {
+			manaCostSlider.GetComponent<Slider> ().value = manaSlider.value - Death.S.manaCosts [selectedAbility];
+		} else {
+            manaCostSlider.GetComponent<Slider>().value = manaSlider.value;
+        }
+        Debug.Log(selectedAbility);
+		if (WinCondition.lifeWon) {
             lifeWins.SetActive(true);
         }
         if (WinCondition.deathWon) {
@@ -94,11 +104,15 @@ public class DeathHUD : MonoBehaviour {
 	public void selectAbility(int num) {
 		deselectAllAbilities ();
 		selectionImages [num - 1].SetActive(true);
+
+		//display mana cost for ability
+		selectedAbility = num - 1;
 	}
 
 	public void deselectAllAbilities() {
 		foreach (GameObject I in selectionImages) {
 			I.SetActive(false);
 		}
+		selectedAbility = -1;
 	}
 }

@@ -27,6 +27,7 @@ public class Death : MonoBehaviour {
     public float totalMana;
     public float timeToRegen, manaRegenRate;
     public float manaLeft;
+	public float[] manaCosts = { 50f, 35f, 40f, 25f, 40f, 30f }; //[gruntSpawn, Skeleton, Minotaur, Spike Trap, Teleporter, Shrooms]
     float timeSinceLastUse;
     public float _1080pWidth, _1080pHeight;
     public float scrollSpeed;
@@ -270,9 +271,9 @@ public class Death : MonoBehaviour {
                 {
                     if(currentPlacing == Placing.GruntSpawn)
                     {
-                        if (manaLeft >= 50f && curSpawner < totalSpawnerAllowed)
+                        if (manaLeft >= manaCosts[0] && curSpawner < totalSpawnerAllowed)
                         {
-                            UseMana(50f);
+                            UseMana(manaCosts[0]);
                             GameObject spawn = Instantiate(gruntSpawnPrefab);
                             spawn.transform.position = placement.transform.position;
                             Destroy(placement.gameObject);
@@ -289,9 +290,9 @@ public class Death : MonoBehaviour {
                     }
                     if(currentPlacing == Placing.Damage)
                     {
-                        if (manaLeft >= 25f && curTrap < totalTrapAllowed)
+                        if (manaLeft >= manaCosts[3] && curTrap < totalTrapAllowed)
                         {
-                            UseMana(25f);
+							UseMana(manaCosts[3]);
                             GameObject trap = Instantiate(damageTrapPrefab);
                             trap.transform.position = placement.transform.position;
                             Destroy(placement.gameObject);
@@ -308,9 +309,9 @@ public class Death : MonoBehaviour {
                     }
                     else if(currentPlacing == Placing.Skeleton)
                     {
-                        if (manaLeft >= 35 && curBigEn < totalBigEnemyAllowed)
+						if (manaLeft >= manaCosts[1] && curBigEn < totalBigEnemyAllowed)
                         {
-                            UseMana(35f);
+							UseMana(manaCosts[1]);
 							EnemySkel skel = Instantiate(skeletonPrefab).transform.FindChild("Skeleton").GetComponent<EnemySkel>();
                             skel.transform.position = placement.transform.position + new Vector3(0, 1.6f, 0);
                             Destroy(placement.gameObject);
@@ -327,9 +328,9 @@ public class Death : MonoBehaviour {
                     }
                     else if(currentPlacing == Placing.Minotaur)
                     {
-                        if (manaLeft >= 35 && curBigEn < totalBigEnemyAllowed)
+						if (manaLeft >= manaCosts[2] && curBigEn < totalBigEnemyAllowed)
                         {
-                            UseMana(35f);
+							UseMana(manaCosts[2]);
 							EnemyMin min = Instantiate(minotaurPrefab).transform.FindChild("Minotaur").GetComponent<EnemyMin>();
                             min.transform.position = placement.transform.position;
                             Destroy(placement.gameObject);
@@ -370,9 +371,9 @@ public class Death : MonoBehaviour {
                     }
                     else if(currentPlacing == Placing.Teleport2)
                     {
-                        if (manaLeft >= 40 && curTrap < totalTrapAllowed)
+						if (manaLeft >= manaCosts[4] && curTrap < totalTrapAllowed)
                         {
-                            UseMana(40);
+							UseMana(manaCosts[4]);
                             TeleportPad tp = Instantiate(teleporterPrefab).GetComponent<TeleportPad>();
                             tp.transform.position = teleportIntermediary;
                             tp.endingUpPosition = placement.transform.position;
