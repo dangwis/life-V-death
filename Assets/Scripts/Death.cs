@@ -27,7 +27,6 @@ public class Death : MonoBehaviour {
     public float totalMana;
     public float timeToRegen, manaRegenRate;
     public float manaLeft;
-	public float[] manaCosts = { 50f, 35f, 40f, 25f, 40f, 30f }; //[gruntSpawn, Skeleton, Minotaur, Spike Trap, Teleporter, Shrooms]
     float timeSinceLastUse;
     public float _1080pWidth, _1080pHeight;
     public float scrollSpeed;
@@ -271,9 +270,9 @@ public class Death : MonoBehaviour {
                 {
                     if(currentPlacing == Placing.GruntSpawn)
                     {
-                        if (manaLeft >= manaCosts[0] && curSpawner < totalSpawnerAllowed)
+                        if (manaLeft >= abilityMana[currentPlacing] && curSpawner < totalSpawnerAllowed)
                         {
-                            UseMana(manaCosts[0]);
+                            UseMana(abilityMana[currentPlacing]);
                             GameObject spawn = Instantiate(gruntSpawnPrefab);
                             spawn.transform.position = placement.transform.position;
                             Destroy(placement.gameObject);
@@ -290,9 +289,9 @@ public class Death : MonoBehaviour {
                     }
                     if(currentPlacing == Placing.Damage)
                     {
-                        if (manaLeft >= manaCosts[3] && curTrap < totalTrapAllowed)
+                        if (manaLeft >= abilityMana[currentPlacing] && curTrap < totalTrapAllowed)
                         {
-							UseMana(manaCosts[3]);
+							UseMana(abilityMana[currentPlacing]);
                             GameObject trap = Instantiate(damageTrapPrefab);
                             trap.transform.position = placement.transform.position;
                             Destroy(placement.gameObject);
@@ -309,9 +308,9 @@ public class Death : MonoBehaviour {
                     }
                     else if(currentPlacing == Placing.Skeleton)
                     {
-						if (manaLeft >= manaCosts[1] && curBigEn < totalBigEnemyAllowed)
+						if (manaLeft >= abilityMana[currentPlacing] && curBigEn < totalBigEnemyAllowed)
                         {
-							UseMana(manaCosts[1]);
+							UseMana(abilityMana[currentPlacing]);
 							EnemySkel skel = Instantiate(skeletonPrefab).transform.FindChild("Skeleton").GetComponent<EnemySkel>();
                             skel.transform.position = placement.transform.position + new Vector3(0, 1.6f, 0);
                             Destroy(placement.gameObject);
@@ -328,9 +327,9 @@ public class Death : MonoBehaviour {
                     }
                     else if(currentPlacing == Placing.Minotaur)
                     {
-						if (manaLeft >= manaCosts[2] && curBigEn < totalBigEnemyAllowed)
+						if (manaLeft >= abilityMana[currentPlacing] && curBigEn < totalBigEnemyAllowed)
                         {
-							UseMana(manaCosts[2]);
+							UseMana(abilityMana[currentPlacing]);
 							EnemyMin min = Instantiate(minotaurPrefab).transform.FindChild("Minotaur").GetComponent<EnemyMin>();
                             min.transform.position = placement.transform.position;
                             Destroy(placement.gameObject);
@@ -347,9 +346,9 @@ public class Death : MonoBehaviour {
                     }
                     else if (currentPlacing == Placing.Slow)
                     {
-                        if (manaLeft >= 30 && curTrap < totalTrapAllowed)
+                        if (manaLeft >= abilityMana[currentPlacing] && curTrap < totalTrapAllowed)
                         {
-                            UseMana(30f);
+                            UseMana(abilityMana[currentPlacing]);
                             SlowTrap st = Instantiate(slowTrapPrefab).GetComponent<SlowTrap>();
                             st.transform.position = placement.transform.position;
                             Destroy(placement.gameObject);
@@ -371,9 +370,9 @@ public class Death : MonoBehaviour {
                     }
                     else if(currentPlacing == Placing.Teleport2)
                     {
-						if (manaLeft >= manaCosts[4] && curTrap < totalTrapAllowed)
+						if (manaLeft >= abilityMana[currentPlacing] && curTrap < totalTrapAllowed)
                         {
-							UseMana(manaCosts[4]);
+							UseMana(abilityMana[currentPlacing]);
                             TeleportPad tp = Instantiate(teleporterPrefab).GetComponent<TeleportPad>();
                             tp.transform.position = teleportIntermediary;
                             tp.endingUpPosition = placement.transform.position;
