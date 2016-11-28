@@ -6,7 +6,7 @@ public class GruntSpawn : MonoBehaviour {
 	public GameObject gruntPrefab;
 	public float maxSpawnTime = 5f;
     public int health = 3;
-    private float spawnTimer = 0f;
+    private float spawnTimer = 5f;
     public int maxSpawned = 1;
     int curSpawned;
 

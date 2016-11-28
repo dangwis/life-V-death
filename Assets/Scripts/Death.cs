@@ -64,6 +64,7 @@ public class Death : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         S = this;
+        totalMana *= (SetupCameras.PlayerCount - 1);
         Cursor.lockState = lockState;
         Cursor.visible = false;
         deathCursor = Instantiate(deathCursor);
