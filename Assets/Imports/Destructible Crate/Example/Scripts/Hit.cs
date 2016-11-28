@@ -2,8 +2,10 @@ using UnityEngine;
 using System.Collections;
 
 public class Hit : MonoBehaviour {
-
-	public GameObject DestroyedObject;
+    public int healthRegen;
+    public float percentChance;
+    public GameObject healthPowerPrefab;
+    public GameObject DestroyedObject;
     public int health = 3;
 
     void ShowDamage() {
@@ -32,4 +34,14 @@ public class Hit : MonoBehaviour {
 		}
 		Destroy(gameObject);
 	}
+
+    void DestoryBarrel() {
+        if (Random.value > percentChance) {
+            Instantiate(DestroyedObject, transform.position, transform.rotation);
+            GameObject hp = Instantiate(healthPowerPrefab);
+            hp.transform.position = transform.position;
+            hp.GetComponent<HealthPowerup>().healthToRestore = healthRegen;
+        }
+        Destroy(this.gameObject);
+    }
 }
