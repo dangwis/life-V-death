@@ -54,11 +54,30 @@ public class LifePlayer : MonoBehaviour {
         charController = this.transform.GetComponent<CharacterController>();
         hasWeapon = false;
         lastattacktime = Time.time;
-        sword = transform.Find("Weapon Sword").gameObject;
+        //sword = transform.Find("Weapon Sword").gameObject;
+
+        Transform[] children = GetComponentsInChildren<Transform>();
+        foreach (Transform child in children)
+        {
+            if (child.gameObject.name == "Weapon Sword")
+            {
+                    sword = child.gameObject;
+            }
+            else if (child.gameObject.name == "Weapon Hammer")
+            {
+                hammer = child.gameObject;
+            }
+            else if (child.gameObject.name == "Weapon Bow")
+            {
+                bow = child.gameObject;
+            }
+        }
+
+
         swordStart = sword.transform.localRotation;
-        hammer = transform.Find("Weapon Hammer").gameObject;
+        //hammer = transform.Find("Weapon Hammer").gameObject;
         hammerStart = hammer.transform.localRotation;
-        bow = transform.Find("Weapon Bow").gameObject;
+        //bow = transform.Find("Weapon Bow").gameObject;
         arrow = bow.transform.Find("Arrow").gameObject;
         bowStart = bow.transform.localRotation;
         sword.SetActive(false);
@@ -169,6 +188,7 @@ public class LifePlayer : MonoBehaviour {
 
         // Attack Handlers
         if (XInput.x.RTDown(playerNum) && hasWeapon && !attacking && !disarming && releasedRT) {
+            lastattacktime = Time.time;
             attacking = true;
             releasedRT = false;
         }
@@ -179,7 +199,7 @@ public class LifePlayer : MonoBehaviour {
         }
 
         // Set state
-            if (state != 3 && state != 4) {
+            if (state != 3 && state != 4 && state != 5 && state != 6) {
             if (Mathf.Abs(Input.GetAxis(XInput.XboxLStickX(playerNum))) > 0.1f || Mathf.Abs(Input.GetAxis(XInput.XboxLStickY(playerNum))) > 0.1f) {
                 state = 1;
             } else {
@@ -204,10 +224,12 @@ public class LifePlayer : MonoBehaviour {
 
     void SwordAttack() {
         if (attackFinishing) return;
+        state = 4;
         sword.layer = 10;
         weaponTime += Time.fixedDeltaTime;
-        sword.transform.localRotation = Quaternion.Lerp(swordStart, Quaternion.Euler(0, -20, -90), 10 * weaponTime);
-        if (sword.transform.localRotation == Quaternion.Euler(0, -20, -90)) {
+        //sword.transform.localRotation = Quaternion.Lerp(swordStart, Quaternion.Euler(0, -20, -90), 10 * weaponTime);
+        //if (sword.transform.localRotation == Quaternion.Euler(0, -20, -90)) {
+        if(Time.time - lastattacktime > 0.6f){ 
             attackFinishing = true;
             sword.layer = 8;
             Invoke("FinishSword", 0.2f);
@@ -217,16 +239,20 @@ public class LifePlayer : MonoBehaviour {
     void FinishSword() {
         attacking = false;
         attackFinishing = false;
-        sword.transform.localRotation = swordStart;
+        //sword.transform.localRotation = swordStart;
         weaponTime = 0;
+        state = 0;
     }
 
     void HammerAttack() {
         if (attackFinishing) return;
+        state = 5;
         hammer.layer = 10;
         weaponTime += Time.fixedDeltaTime;
-        hammer.transform.localRotation = Quaternion.Lerp(hammerStart, Quaternion.Euler(0, 0, 90), 10f * Mathf.Pow(weaponTime, 8));
-        if (hammer.transform.localRotation == Quaternion.Euler(0, 0, 90)) {
+        //hammer.transform.localRotation = Quaternion.Lerp(hammerStart, Quaternion.Euler(0, 0, 90), 10f * Mathf.Pow(weaponTime, 8));
+        //if (hammer.transform.localRotation == Quaternion.Euler(0, 0, 90)) {
+        if (Time.time - lastattacktime > 1.2f)
+        {
             attackFinishing = true;
             hammer.layer = 8;
             Invoke("FinishHammer", 0.25f);
@@ -236,16 +262,19 @@ public class LifePlayer : MonoBehaviour {
     void FinishHammer() {
         attacking = false;
         attackFinishing = false;
-        hammer.transform.localRotation = hammerStart;
+        //hammer.transform.localRotation = hammerStart;
         weaponTime = 0;
+        state = 0;
     }
 
     void BowAttack() {
         if (attackFinishing) return;
+        state = 6;
         attackFinishing = true;
         GameObject go = Instantiate<GameObject>(arrowPrefab);
         go.transform.position = bow.transform.position;
-        go.transform.rotation = bow.transform.rotation;
+        go.transform.rotation = this.transform.rotation;
+        //go.transform.rotation = bow.transform.rotation;
         arrow.SetActive(false);
         Invoke("FinishBow", 0.5f);
     }
@@ -254,6 +283,7 @@ public class LifePlayer : MonoBehaviour {
         attackFinishing = false;
         attacking = false;
         arrow.SetActive(true);
+        state = 0;
     }
 
 	// Update is called once per frame
@@ -380,12 +410,12 @@ public class LifePlayer : MonoBehaviour {
     }
 
     void ShowDamage() {
-        transform.Find("body").transform.Find("mesh_1").GetComponent<Renderer>().material.color = new Color(1f, 0f, 0f, 1f);
+        transform.Find("body").transform.Find("armor_").GetComponent<Renderer>().material.color = new Color(1f, 0f, 0f, 1f);
         Invoke("FinishDamage", 0.5f);
     }
 
     void FinishDamage() {
-        transform.Find("body").transform.Find("mesh_1").GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, 1f);
+        transform.Find("body").transform.Find("armor_").GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, 1f);
     }
 
     void Death() {
@@ -420,6 +450,15 @@ public class LifePlayer : MonoBehaviour {
                 case 3: // death
                     lifeAnimator.SetInteger("State", 3);
                     Invoke("Death", 3f);
+                    break;
+                case 4:
+                    lifeAnimator.SetInteger("State", 4);
+                    break;
+                case 5:
+                    lifeAnimator.SetInteger("State", 5);
+                    break;
+                case 6:
+                    lifeAnimator.SetInteger("State", 6);
                     break;
             }
             _state = value;
