@@ -27,6 +27,7 @@ public class Death : MonoBehaviour {
     public float totalMana;
     public float timeToRegen, manaRegenRate;
     public float manaLeft;
+	public float[] manaCosts = { 50f, 35f, 40f, 25f, 40f, 30f }; //[gruntSpawn, Skeleton, Minotaur, Spike Trap, Teleporter, Shrooms]
     float timeSinceLastUse;
     public float _1080pWidth, _1080pHeight;
     public float scrollSpeed;
