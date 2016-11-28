@@ -55,8 +55,8 @@ public class DeathHUD : MonoBehaviour {
 		} else {
             manaCostSlider.GetComponent<Slider>().value = manaSlider.value;
         }
-        Debug.Log(selectedAbility);
-		if (WinCondition.lifeWon) {
+
+        if (WinCondition.lifeWon) {
             lifeWins.SetActive(true);
         }
         if (WinCondition.deathWon) {
