@@ -17,6 +17,8 @@ public class Death : MonoBehaviour {
     public GameObject minotaurPrefab;
     public GameObject teleporterPrefab;
     public GameObject gruntSpawnPrefab;
+    public GameObject slowPlacementPrefab;
+    public GameObject slowTrapPrefab;
     public Material ableToPlace, notAbleToPlace;
     public Material firstTeleporterPlace;
     public float movementSpeed;
@@ -323,6 +325,25 @@ public class Death : MonoBehaviour {
                         }
                         DeathHUD.inst.deselectAllAbilities();
                     }
+                    else if (currentPlacing == Placing.Slow)
+                    {
+                        if (manaLeft >= 30 && curTrap < totalTrapAllowed)
+                        {
+                            UseMana(30f);
+                            SlowTrap st = Instantiate(slowTrapPrefab).GetComponent<SlowTrap>();
+                            st.transform.position = placement.transform.position;
+                            Destroy(placement.gameObject);
+                            activeAbility = AbilityType.Interact;
+                            curTrap++;
+                        }
+                        else
+                        {
+                            //show that not enough mana
+                            Destroy(placement.gameObject);
+                            activeAbility = AbilityType.Interact;
+                        }
+                        DeathHUD.inst.deselectAllAbilities();
+                    }
                     else if(currentPlacing == Placing.Teleport1)
                     {
                         teleportIntermediary = placement.transform.position;
@@ -379,7 +400,7 @@ public class Death : MonoBehaviour {
             {
                 if (!GameManager.S.gameStart && WithinStartingRoom(pos))
                 {
-                    if (currentPlacing == Placing.Damage || currentPlacing == Placing.GruntSpawn)
+                    if (currentPlacing == Placing.Damage || currentPlacing == Placing.GruntSpawn || currentPlacing == Placing.Slow)
                     {
                         foreach (Transform child in placement.transform)
                             child.GetComponent<Renderer>().material = notAbleToPlace;
@@ -396,7 +417,7 @@ public class Death : MonoBehaviour {
                     {
                         placement.GetComponent<Renderer>().material = firstTeleporterPlace;
                     }
-                    else if (currentPlacing == Placing.Damage || currentPlacing == Placing.GruntSpawn)
+                    else if (currentPlacing == Placing.Damage || currentPlacing == Placing.GruntSpawn || currentPlacing == Placing.Slow)
                     {
                         foreach (Transform child in placement.transform)
                             child.GetComponent<Renderer>().material = ableToPlace;
@@ -410,7 +431,7 @@ public class Death : MonoBehaviour {
             }
             else
             {
-                if (currentPlacing == Placing.Damage || currentPlacing == Placing.GruntSpawn)
+                if (currentPlacing == Placing.Damage || currentPlacing == Placing.GruntSpawn || currentPlacing == Placing.Slow)
                 {
                     foreach (Transform child in placement.transform)
                         child.GetComponent<Renderer>().material = notAbleToPlace;
@@ -565,6 +586,30 @@ public class Death : MonoBehaviour {
                 activeAbility = AbilityType.Place;
                 currentPlacing = Placing.Teleport1;
 				DeathHUD.inst.selectAbility (5);
+            }
+        }
+        else if(Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            if (activeAbility == AbilityType.Interact)
+            {
+                placement = Instantiate(slowPlacementPrefab);
+                activeAbility = AbilityType.Place;
+                currentPlacing = Placing.Slow;
+                DeathHUD.inst.selectAbility(6);
+            }
+            else if (activeAbility == AbilityType.Place && currentPlacing == Placing.Slow)
+            {
+                activeAbility = AbilityType.Interact;
+                Destroy(placement.gameObject);
+                DeathHUD.inst.deselectAllAbilities();
+            }
+            else
+            {
+                Destroy(placement.gameObject);
+                placement = Instantiate(slowPlacementPrefab);
+                activeAbility = AbilityType.Place;
+                currentPlacing = Placing.Slow;
+                DeathHUD.inst.selectAbility(6);
             }
         }
     }

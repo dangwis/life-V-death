@@ -41,6 +41,7 @@ public class LifePlayer : MonoBehaviour {
 
     bool disarming;
     bool releasedRT;
+    float slowedAmount;
     public float disarmTime;
     float disarmTimeStart;
     GameObject disarmingTrap;
@@ -68,6 +69,7 @@ public class LifePlayer : MonoBehaviour {
         lifeAnimator = transform.Find("body").GetComponent<Animator>();
         disarming = false;
         releasedRT = true;
+        slowedAmount = 1;
 	}
 
 	void OnDestory() {
@@ -268,7 +270,7 @@ public class LifePlayer : MonoBehaviour {
         float Yinput = -Input.GetAxis(XInput.XboxLStickY(playerNum));
 		Vector3 movementDir = new Vector3 (Xinput, 0, Yinput).normalized;
 		if (movementDir != Vector3.zero) {
-			charController.SimpleMove (movementDir * speed);
+			charController.SimpleMove (movementDir * speed / slowedAmount);
 			transform.rotation = Quaternion.LookRotation (movementDir);
 		}
         Xinput = Input.GetAxis(XInput.XboxRStickX(playerNum));
@@ -388,6 +390,11 @@ public class LifePlayer : MonoBehaviour {
     void Death() {
         WinCondition.NumLivingPlayers--;
         Destroy(this.gameObject);
+    }
+
+    public void SlowPlayer(float amountSlow)
+    {
+        slowedAmount = amountSlow;
     }
 
     public int state {
