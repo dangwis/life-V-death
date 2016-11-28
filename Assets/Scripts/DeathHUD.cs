@@ -8,6 +8,7 @@ public class DeathHUD : MonoBehaviour {
 	public Slider manaSlider;
     public Sprite minimapUL, minimapUR, minimapBL, minimapBR;
     public GameObject[] selectionImages;
+    public GameObject[] abilityImages;
     public GameObject deathWins, lifeWins;
 
 	// Use this for initialization
@@ -51,7 +52,44 @@ public class DeathHUD : MonoBehaviour {
         if (WinCondition.deathWon) {
             deathWins.SetActive(true);
         }
-	}
+
+        // Grunt
+        if (Death.S.manaLeft >= 50f && Death.S.curSpawner < Death.S.totalSpawnerAllowed) {
+            abilityImages[0].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        } else {
+            abilityImages[0].GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f, 1f);
+        }
+        // Skeleton
+        if (Death.S.manaLeft >= 35 && Death.S.curBigEn < Death.S.totalBigEnemyAllowed) {
+            abilityImages[1].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        } else {
+            abilityImages[1].GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f, 1f);
+        }
+        // Minotaur
+        if (Death.S.manaLeft >= 40 && Death.S.curBigEn < Death.S.totalBigEnemyAllowed) {
+            abilityImages[2].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        } else {
+            abilityImages[2].GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f, 1f);
+        }
+        // Damange
+        if (Death.S.manaLeft >= 25f && Death.S.curTrap < Death.S.totalTrapAllowed) {
+            abilityImages[3].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        } else {
+            abilityImages[3].GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f, 1f);
+        }
+        // Teleport
+        if (Death.S.manaLeft >= 40 && Death.S.curTrap < Death.S.totalTrapAllowed) {
+            abilityImages[4].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        } else {
+            abilityImages[4].GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f, 1f);
+        }
+        // Mushroom
+        if (Death.S.manaLeft >= 30 && Death.S.curTrap < Death.S.totalTrapAllowed) {
+            abilityImages[5].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        } else {
+            abilityImages[5].GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f, 1f);
+        }
+    }
 
 	public void selectAbility(int num) {
 		deselectAllAbilities ();

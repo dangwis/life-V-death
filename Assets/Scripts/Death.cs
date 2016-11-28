@@ -32,7 +32,7 @@ public class Death : MonoBehaviour {
     public int totalTrapAllowed;
     public int totalBigEnemyAllowed;
     public int totalSpawnerAllowed;
-    int curTrap, curBigEn, curSpawner;
+    public int curTrap, curBigEn, curSpawner;
 
     Vector3 teleportIntermediary;
 
