@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager S;
 
-    public float setupTime;
+    public float setupTime, firstTip, secondTip, thirdTip;
     float startTime;
 
     public bool gameStart;
@@ -23,5 +23,17 @@ public class GameManager : MonoBehaviour {
         {
             gameStart = true;
         }
-	}
+        if(Time.time - startTime > firstTip)
+        {
+
+        }
+        if (Time.time - startTime > secondTip)
+        {
+
+        }
+        if (Time.time - startTime > thirdTip)
+        {
+
+        }
+    }
 }
