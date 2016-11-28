@@ -52,7 +52,10 @@ public class DeathHUD : MonoBehaviour {
 		manaSlider.value = Death.S.manaLeft;
 		if (selectedAbility != -1) {
 			manaCostSlider.GetComponent<Slider> ().value = manaSlider.value - Death.S.manaCosts [selectedAbility];
-		}
+		} else {
+            manaCostSlider.GetComponent<Slider>().value = manaSlider.value;
+        }
+        Debug.Log(selectedAbility);
 		if (WinCondition.lifeWon) {
             lifeWins.SetActive(true);
         }
@@ -104,7 +107,6 @@ public class DeathHUD : MonoBehaviour {
 
 		//display mana cost for ability
 		selectedAbility = num - 1;
-		manaCostSlider.SetActive(true);
 	}
 
 	public void deselectAllAbilities() {
@@ -112,6 +114,5 @@ public class DeathHUD : MonoBehaviour {
 			I.SetActive(false);
 		}
 		selectedAbility = -1;
-		manaCostSlider.SetActive (false);
 	}
 }
