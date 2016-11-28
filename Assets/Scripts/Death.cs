@@ -69,8 +69,10 @@ public class Death : MonoBehaviour {
         Cursor.visible = false;
         deathCursor = Instantiate(deathCursor);
         Vector3 tempPos = GameObject.Find("Static Objects").GetComponent<SetupCameras>().deathCamStart;
-        tempPos.y = 5.6f;
+        tempPos.y = 11.9f;
         cursorPos = tempPos;
+        tempPos.y = 23f;
+        deathCam.transform.position = tempPos;
         deathCursor.transform.position = cursorPos;
         activeAbility = AbilityType.Interact;
         SetAllScrollsFalse();
