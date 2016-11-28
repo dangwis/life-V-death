@@ -11,6 +11,9 @@ public class MapGenerator : MonoBehaviour {
     public GameObject TileDeadFountain;
     public GameObject TileLivingFountain;
     public GameObject TileFallingBlock;
+    public GameObject TilePregame;
+    public GameObject TileCrate;
+    public GameObject TileVase;
     public TextAsset textFile;
     public static int fountLoc;
 
@@ -59,6 +62,16 @@ public class MapGenerator : MonoBehaviour {
                         case ('B'): // Falling block
                             Instantiate(TileFloor, tilePos, Quaternion.identity);
                             Instantiate(TileFallingBlock, tilePos, Quaternion.identity);
+                            break;
+                        case ('P'): // Pregame Wall
+                            Instantiate(TileFloor, tilePos, Quaternion.identity);
+                            Instantiate(TilePregame, tilePos, Quaternion.identity);
+                            break;
+                        case ('C'): // Crate Tile
+                            Instantiate(TileCrate, tilePos, Quaternion.identity);
+                            break;
+                        case ('V'): // Vase Tile
+                            Instantiate(TileVase, tilePos, Quaternion.identity);
                             break;
                     }
                 }

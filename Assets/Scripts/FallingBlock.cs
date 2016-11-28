@@ -3,26 +3,36 @@ using System.Collections;
 
 public class FallingBlock : MonoBehaviour {
 
-    bool onGround, dropping;
+    bool onGround;
     public int damageToPlayer;
-    int groundLayerMask;
+    public float lifespan;
+    float startOnGround;
 
 	// Use this for initialization
 	void Start () {
         onGround = false;
-        
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (transform.position.y <= 1) onGround = true;
+        if (transform.position.y <= 1 && !onGround)
+        {
+            onGround = true;
+            startOnGround = Time.time;
+        }
+        if (onGround)
+        {
+            if(Time.time - startOnGround > lifespan)
+            {
+                Destroy(this.gameObject);
+            }
+        }
 	}
 
     public void DropBlocks()
     {
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
         transform.Find("Sprite").GetComponent<SpriteRenderer>().enabled = false;
-        dropping = true;
         Collider[] otherBlocks = Physics.OverlapSphere(this.transform.position, 2f);
         for(int i = 0; i < otherBlocks.Length; i++)
         {
@@ -35,7 +45,6 @@ public class FallingBlock : MonoBehaviour {
 
     void DropOthers()
     {
-        dropping = true;
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
         transform.Find("Sprite").GetComponent<SpriteRenderer>().enabled = false;
     }
