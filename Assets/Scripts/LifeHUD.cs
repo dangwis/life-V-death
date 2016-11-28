@@ -6,8 +6,9 @@ public class LifeHUD : MonoBehaviour {
 
 	public Slider healthSlider;
     public Sprite minimapUL, minimapUR, minimapBL, minimapBR;
+    public GameObject deathWins, lifeWins;
 
-	public bool ______________________;
+    public bool ______________________;
 
 	public LifePlayer player;
 
@@ -33,5 +34,11 @@ public class LifeHUD : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		healthSlider.value = player.health;
-	}
+        if (WinCondition.lifeWon) {
+            lifeWins.SetActive(true);
+        }
+        if (WinCondition.deathWon) {
+            deathWins.SetActive(true);
+        }
+    }
 }
