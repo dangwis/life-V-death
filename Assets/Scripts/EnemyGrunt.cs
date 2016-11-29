@@ -175,6 +175,7 @@ public class EnemyGrunt : MonoBehaviour {
                 case 4: // dead
                     gruntAnimator.SetInteger("State", 4);
                     Invoke("StartDeath", 3f);
+                    transform.GetComponent<CapsuleCollider>().enabled = false;
                     break;
             }
 

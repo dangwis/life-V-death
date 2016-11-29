@@ -166,6 +166,7 @@ public class EnemySkel : MonoBehaviour {
                 case 4: // dead
                     skelAnimator.SetInteger("State", 4);
                     Invoke("StartDeath", 3f);
+                    transform.GetComponent<CapsuleCollider>().enabled = false;
                     break;
             }
 

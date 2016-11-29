@@ -111,6 +111,7 @@ public class EnemyMin : MonoBehaviour {
                     break;
                 case 2: // death
                     minAnimator.SetInteger("State", 2);
+                    transform.GetComponent<CapsuleCollider>().enabled = false;
                     Invoke("FinishDeath", 3f);
                     break;
             }
