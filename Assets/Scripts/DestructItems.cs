@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Hit : MonoBehaviour {
+public class DestructItems : MonoBehaviour {
     public int healthRegen;
     public float percentChance;
     public GameObject healthPowerPrefab;
@@ -22,7 +22,7 @@ public class Hit : MonoBehaviour {
             health--;
             ShowDamage();
             if (health <= 0) {
-                DestroyIt();
+                DestroyBarrel();
             }
             Debug.Log("test2");
         }
@@ -39,10 +39,10 @@ public class Hit : MonoBehaviour {
 		Destroy(gameObject);
 	}
 
-    void DestoryBarrel() {
+    void DestroyBarrel() {
         if (DestroyedObject != null)
         {
-            if (Random.value > percentChance)
+            if (Random.value < percentChance)
             {
                 Instantiate(DestroyedObject, transform.position, transform.rotation);
                 GameObject hp = Instantiate(healthPowerPrefab);
