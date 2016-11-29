@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour {
 			if (hit.gameObject.tag == "Life") {
                 RaycastHit hitObj;
                 //Debug.DrawRay(enemy.transform.position, hit.gameObject.transform.position - enemy.transform.position, Color.green);
-                if (Physics.Raycast(enemy.transform.position, hit.gameObject.transform.position - enemy.transform.position, out hitObj, detectRange, LayerMask.GetMask("Life", "Default")) && hitObj.transform.tag == "Life") {
+                if (Physics.Raycast(enemy.transform.position, hit.gameObject.transform.position - enemy.transform.position, out hitObj, detectRange, LayerMask.GetMask("Life", "Wall")) && hitObj.transform.tag == "Life") {
                     players.Add(hit.gameObject);
                 }
                 //Debug.Log(hitObj.transform.tag);
