@@ -56,7 +56,7 @@ public class SetupCameras : MonoBehaviour {
 			Player1 = Instantiate (LifeObj, playerStart + Vector3.right, LifeObj.transform.rotation) as GameObject;
 			Camera1.GetComponent<FollowCam> ().FollowObject = Player1;
 
-			Player2 = Instantiate (LifeObj, playerStart + Vector3.right * 2f, Player1.transform.rotation) as GameObject;
+			Player2 = Instantiate (LifeObj, playerStart + Vector3.right * 3f, Player1.transform.rotation) as GameObject;
 			Camera2.GetComponent<FollowCam> ().FollowObject = Player2;
 
 			Player1.name = "Player 1";
@@ -101,10 +101,10 @@ public class SetupCameras : MonoBehaviour {
 			Player1 = Instantiate (LifeObj, playerStart, LifeObj.transform.rotation) as GameObject;
 			Camera1.GetComponent<FollowCam> ().FollowObject = Player1;
 
-			Player2 = Instantiate (LifeObj, playerStart + Vector3.right * 2f, Player1.transform.rotation) as GameObject;
+			Player2 = Instantiate (LifeObj, playerStart + Vector3.right * 3f, Player1.transform.rotation) as GameObject;
 			Camera2.GetComponent<FollowCam> ().FollowObject = Player2;
 
-			Player3 = Instantiate (LifeObj, playerStart + Vector3.right * 4f, Player2.transform.rotation) as GameObject;
+			Player3 = Instantiate (LifeObj, playerStart + Vector3.right * 6f, Player2.transform.rotation) as GameObject;
 			Camera3.GetComponent<FollowCam> ().FollowObject = Player3;
 
 			Player1.name = "Player 1";

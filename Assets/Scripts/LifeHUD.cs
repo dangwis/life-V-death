@@ -29,6 +29,9 @@ public class LifeHUD : MonoBehaviour {
                 transform.Find("Panel").transform.Find("Map").GetComponent<Image>().sprite = minimapBR;
                 break;
         }
+
+        lifeWins.SetActive(false);
+        deathWins.SetActive(false);
 	}
 	
 	// Update is called once per frame

@@ -8,7 +8,7 @@ public class FogOfWar : MonoBehaviour {
 	void Start() {
 		for (int i = 0; i < xVal; i++) {
 			for (int j = 0; j < yVal; j++) {
-				//fog [i, j] = true;
+				fog [i, j] = false;
 			}
 		}
 	}

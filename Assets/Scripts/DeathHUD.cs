@@ -33,6 +33,9 @@ public class DeathHUD : MonoBehaviour {
                 transform.Find("Panel").transform.Find("Map").GetComponent<Image>().sprite = minimapBR;
                 break;
         }
+
+        lifeWins.SetActive(false);
+        deathWins.SetActive(false);
     }
 
 	public void fixOne() {

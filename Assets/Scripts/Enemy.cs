@@ -29,7 +29,12 @@ public class Enemy : MonoBehaviour {
 		List<GameObject> players = new List<GameObject>();
 		foreach (Collider hit in hits) {
 			if (hit.gameObject.tag == "Life") {
-				players.Add (hit.gameObject);
+                RaycastHit hitObj;
+                //Debug.DrawRay(enemy.transform.position, hit.gameObject.transform.position - enemy.transform.position, Color.green);
+                if (Physics.Raycast(enemy.transform.position, hit.gameObject.transform.position - enemy.transform.position, out hitObj, detectRange, LayerMask.GetMask("Life", "Default")) && hitObj.transform.tag == "Life") {
+                    players.Add(hit.gameObject);
+                }
+                //Debug.Log(hitObj.transform.tag);
 			}
 		}
 		return players;

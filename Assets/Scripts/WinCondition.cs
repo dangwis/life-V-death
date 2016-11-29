@@ -11,6 +11,8 @@ public class WinCondition : MonoBehaviour {
 
     // Use this for initialization
     void Awake() {
+        NumLivingPlayers = 0;
+        FountainFound = false;
         deathWon = false;
         lifeWon = false;
     }
