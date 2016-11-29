@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GruntSpawn : MonoBehaviour {
@@ -10,9 +11,16 @@ public class GruntSpawn : MonoBehaviour {
     public int maxSpawned = 1;
     int curSpawned;
 
+	public GameObject popupNotificationPrefab;	
+	private GameObject activePopup; //health bar
+	private float maxHealth;
+
 	// Use this for initialization
 	void Start () {
         curSpawned = 0;
+		ShowPopupNotification ("", true);
+		UpdatePopupNotification ("", 1);
+		maxHealth = health;
 	}
 	
 	// Update is called once per frame
@@ -51,11 +59,27 @@ public class GruntSpawn : MonoBehaviour {
             child.GetComponent<Renderer>().material.color = new Color(150f / 255f, 150f / 255f, 150f / 255f, 1f);
     }
 
+	public void ShowPopupNotification(string txt, bool showBar = false) {
+		Vector3 pos = transform.position;
+		pos.y = 6;
+		pos.z += 2;
+		Destroy (activePopup);
+		activePopup = Instantiate (popupNotificationPrefab, pos, popupNotificationPrefab.transform.rotation, transform.parent) as GameObject;
+		activePopup.transform.FindChild ("Panel").FindChild ("Text").GetComponent<TextMesh> ().text = txt;
+		activePopup.transform.FindChild ("Panel").FindChild ("Slider").gameObject.SetActive (showBar);
+	}
+
+	public void UpdatePopupNotification(string txt, float barVal = 0) {
+		activePopup.transform.FindChild ("Panel").FindChild ("Text").GetComponent<TextMesh> ().text = txt;
+		activePopup.transform.FindChild ("Panel").FindChild ("Slider").GetComponent<Slider> ().value = barVal;
+	}
+
     void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.layer == 10)
         {
             health--;
+			UpdatePopupNotification ("", health / maxHealth);
             ShowDamage();
             if (health <= 0)
             {

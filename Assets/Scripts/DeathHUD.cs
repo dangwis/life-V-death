@@ -11,6 +11,7 @@ public class DeathHUD : MonoBehaviour {
     public GameObject[] selectionImages;
     public GameObject[] abilityImages;
     public GameObject deathWins, lifeWins;
+    public GameObject popupMenu;
 
 	private int selectedAbility = -1;
 
@@ -48,7 +49,18 @@ public class DeathHUD : MonoBehaviour {
 		transform.Find ("Panel").transform.Find ("Map").GetComponent<AspectRatioFitter> ().aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
 		transform.Find ("Panel").transform.Find ("Map").GetComponent<AspectRatioFitter> ().aspectMode = AspectRatioFitter.AspectMode.WidthControlsHeight;
 		transform.Find ("Panel").transform.Find ("Map").GetComponent<AspectRatioFitter> ().aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
-	}
+        RectTransform tracker = transform.Find("Panel").transform.Find("Map").transform.Find ("Tracker Death").GetComponent<RectTransform> ();
+        if (tracker != null) {
+            Rect temp = GetComponent<RectTransform>().rect;
+            float scaler = tracker.rect.height / temp.height;
+            Vector3 vec = tracker.localScale;
+            vec.y *= 0.07f / scaler;
+            vec.x = GameObject.Find("Camera 0").GetComponent<Camera>().aspect * vec.y;
+            tracker.localScale = vec;
+            //tracker.localScale.x;
+            //GetComponent<AspectRatioFitter>().as;
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -101,6 +113,12 @@ public class DeathHUD : MonoBehaviour {
             abilityImages[5].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
         } else {
             abilityImages[5].GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f, 1f);
+        }
+
+        if (Input.GetKey(KeyCode.Tab)) {
+            popupMenu.SetActive(true);
+        } else {
+            popupMenu.SetActive(false);
         }
     }
 
