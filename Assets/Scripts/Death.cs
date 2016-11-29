@@ -105,33 +105,6 @@ public class Death : MonoBehaviour {
 
         float x = Input.GetAxis("Mouse X");
         float y = Input.GetAxis("Mouse Y");
-
-        Vector3 newCamPos = deathCam.transform.position;
-        cursorPos = deathCursor.transform.position;
-
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D) && dEnabled)
-        {
-            newCamPos.x += scrollSpeed;
-            cursorPos.x += scrollSpeed;
-        }
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) && aEnabled)
-        {
-            newCamPos.x -= scrollSpeed;
-            cursorPos.x -= scrollSpeed;
-        }
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W) && wEnabled)
-        {
-            newCamPos.z += scrollSpeed;
-            cursorPos.z += scrollSpeed;
-        }
-        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S) && sEnabled)
-        {
-            newCamPos.z -= scrollSpeed;
-            cursorPos.z -= scrollSpeed;
-        }
-
-        deathCursor.transform.position = cursorPos;
-        deathCam.transform.position = newCamPos;
         
         if (x != 0) {
             cursorPos.x = cursorPos.x + x * movementSpeed;
@@ -200,6 +173,31 @@ public class Death : MonoBehaviour {
             sEnabled = true;
         }
 
+    }
+
+    void FixedUpdate() {
+        Vector3 newCamPos = deathCam.transform.position;
+        cursorPos = deathCursor.transform.position;
+
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D) && dEnabled) {
+            newCamPos.x += scrollSpeed * Time.fixedDeltaTime;
+            cursorPos.x += scrollSpeed * Time.fixedDeltaTime;
+        }
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) && aEnabled) {
+            newCamPos.x -= scrollSpeed * Time.fixedDeltaTime;
+            cursorPos.x -= scrollSpeed * Time.fixedDeltaTime;
+        }
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W) && wEnabled) {
+            newCamPos.z += scrollSpeed * Time.fixedDeltaTime;
+            cursorPos.z += scrollSpeed * Time.fixedDeltaTime;
+        }
+        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S) && sEnabled) {
+            newCamPos.z -= scrollSpeed * Time.fixedDeltaTime;
+            cursorPos.z -= scrollSpeed * Time.fixedDeltaTime;
+        }
+
+        deathCursor.transform.position = cursorPos;
+        deathCam.transform.position = newCamPos;
     }
 
     void setUpMana()
@@ -648,7 +646,7 @@ public class Death : MonoBehaviour {
             else
             {
                 newCamPos = deathCam.transform.position;
-                newCamPos.z += scrollSpeed;
+                newCamPos.z += scrollSpeed * Time.deltaTime;
                 deathCam.transform.position = newCamPos;
                 cursorPos.z = deathCam.transform.position.z + _1080pHeight;
                 deathCursor.transform.position = cursorPos;
@@ -664,7 +662,7 @@ public class Death : MonoBehaviour {
             else
             {
                 newCamPos = deathCam.transform.position;
-                newCamPos.z -= scrollSpeed;
+                newCamPos.z -= scrollSpeed * Time.deltaTime;
                 deathCam.transform.position = newCamPos;
                 cursorPos.z = deathCam.transform.position.z - _1080pHeight + 0.3f;
                 deathCursor.transform.position = cursorPos;
@@ -682,7 +680,7 @@ public class Death : MonoBehaviour {
             else
             {
                 newCamPos = deathCam.transform.position;
-                newCamPos.x -= scrollSpeed;
+                newCamPos.x -= scrollSpeed * Time.deltaTime;
                 deathCam.transform.position = newCamPos;
                 cursorPos.x = deathCam.transform.position.x - _1080pWidth;
                 deathCursor.transform.position = cursorPos;
@@ -698,7 +696,7 @@ public class Death : MonoBehaviour {
             else
             {
                 newCamPos = deathCam.transform.position;
-                newCamPos.x += scrollSpeed;
+                newCamPos.x += scrollSpeed * Time.deltaTime;
                 deathCam.transform.position = newCamPos;
                 cursorPos.x = deathCam.transform.position.x + _1080pWidth - 0.4f;
                 deathCursor.transform.position = cursorPos;

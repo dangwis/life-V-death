@@ -20,7 +20,7 @@ public class SetupCameras : MonoBehaviour {
 		Canvas lifeOverlay = Instantiate (lifeUI);
 		switch (PlayerCount) {
 		case 2:
-			Camera1 = Instantiate (LifeCam, Camera0.transform.position, Camera0.transform.rotation) as GameObject;
+            Camera1 = Instantiate (LifeCam) as GameObject;
 			Camera1.name = "Camera 1";
 
 			Player1 = Instantiate (LifeObj, playerStart, LifeObj.transform.rotation) as GameObject;
@@ -47,8 +47,8 @@ public class SetupCameras : MonoBehaviour {
 
 			break;
 		case 3:
-			Camera1 = Instantiate (LifeCam, Camera0.transform.position, Camera0.transform.rotation) as GameObject;
-			Camera2 = Instantiate (LifeCam, Camera1.transform.position, Camera1.transform.rotation) as GameObject;
+			Camera1 = Instantiate (LifeCam) as GameObject;
+			Camera2 = Instantiate (LifeCam) as GameObject;
 
 			Camera1.name = "Camera 1";
 			Camera2.name = "Camera 2";
@@ -90,9 +90,9 @@ public class SetupCameras : MonoBehaviour {
 			}
 			break;
 		case 4:
-			Camera1 = Instantiate (LifeCam, Camera0.transform.position, Camera0.transform.rotation) as GameObject;
-			Camera2 = Instantiate (LifeCam, Camera1.transform.position, Camera1.transform.rotation) as GameObject;
-			Camera3 = Instantiate (LifeCam, Camera2.transform.position, Camera2.transform.rotation) as GameObject;
+			Camera1 = Instantiate (LifeCam) as GameObject;
+			Camera2 = Instantiate (LifeCam) as GameObject;
+			Camera3 = Instantiate (LifeCam) as GameObject;
 
 			Camera1.name = "Camera 1";
 			Camera2.name = "Camera 2";
