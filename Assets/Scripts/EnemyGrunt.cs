@@ -17,7 +17,6 @@ public class EnemyGrunt : MonoBehaviour {
     public GruntSpawn mySpawn;
 	public GameObject popupNotificationPrefab;
 	private GameObject activePopup; //health bar
-	private Vector3 popupPosition;
 	private float maxHealth;
     // Use this for initialization
     void Start() {
@@ -139,7 +138,6 @@ public class EnemyGrunt : MonoBehaviour {
 		activePopup = Instantiate (popupNotificationPrefab, pos, popupNotificationPrefab.transform.rotation, transform.parent) as GameObject;
 		activePopup.transform.FindChild ("Panel").FindChild ("Text").GetComponent<TextMesh> ().text = txt;
 		activePopup.transform.FindChild ("Panel").FindChild ("Slider").gameObject.SetActive (showBar);
-		popupPosition = pos;
 	}
 
 	public void UpdatePopupNotification(string txt, float barVal = 0) {
