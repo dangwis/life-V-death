@@ -107,20 +107,19 @@ public class LifePlayer : MonoBehaviour {
             Destroy (weaponPickupObj);
             hasWeapon = true;
             canPickupWeapon = false;
+			ShowPopupNotification ("Press RT to attack");
+			Invoke ("ChangePopTxtToStrafe", 5f);
             weapontype = pickupType;
             switch (weapontype) {
                 case 1:
                     sword.SetActive(true);
-                    RemovePopupNotification();
                     break;
                 case 2:
                     hammer.SetActive(true);
-                    RemovePopupNotification();
                     break;
                 case 3:
                     bow.SetActive(true);
                     arrow.SetActive(true);
-                    RemovePopupNotification();
                     break;
             }
         }
@@ -136,12 +135,12 @@ public class LifePlayer : MonoBehaviour {
                 {
                     disarmTimeStart = Time.time;
                     disarming = true;
-                    Debug.Log("disarming");
+                    //Debug.Log("disarming");
 					ShowPopupNotification ("Disarming", true);
                 }
                 else
                 {
-                    Debug.Log("not near trap");
+                    //Debug.Log("not near trap");
                 }        
             }
             else if(Vector3.Distance(disarmingTrap.transform.position, transform.position) < 3f)
@@ -328,7 +327,7 @@ public class LifePlayer : MonoBehaviour {
 			activePopup.transform.rotation = popupNotificationPrefab.transform.rotation;
 			Vector3 pos = transform.position;
 			pos.y = 6;
-			pos.z += 2;
+			pos.z += 1;
 			activePopup.transform.position = pos;
 		}
     }
@@ -336,7 +335,7 @@ public class LifePlayer : MonoBehaviour {
 	public void ShowPopupNotification(string txt, bool showBar = false) {
 		Vector3 pos = transform.position;
 		pos.y = 6;
-		pos.z += 2;
+		pos.z += 1;
 		Destroy (activePopup);
 		activePopup = Instantiate (popupNotificationPrefab, pos, popupNotificationPrefab.transform.rotation, transform) as GameObject;
 		activePopup.transform.FindChild ("Panel").FindChild ("Text").GetComponent<TextMesh> ().text = txt;
@@ -348,8 +347,18 @@ public class LifePlayer : MonoBehaviour {
 		activePopup.transform.FindChild ("Panel").FindChild ("Slider").GetComponent<Slider> ().value = barVal;
 	}
 
+	void ChangePopTxtToStrafe() {
+		ShowPopupNotification ("Use the right stick to strafe");
+		Invoke ("ChangePopTxtToObj", 5f);
+	}
+
+	void ChangePopTxtToObj() {
+		ShowPopupNotification ("Find the fountain of youth\nbefore death finds you!");
+		Invoke ("RemovePopupNotification", 5f);
+	}
+
 	void RemovePopupNotification() {
-		Debug.Log ("remove popup");
+		//Debug.Log ("remove popup");
 		Destroy (activePopup);
 	}
 
@@ -389,14 +398,20 @@ public class LifePlayer : MonoBehaviour {
     void OnTriggerExit(Collider col) {
         if (col.tag == "Hammer") {
             canPickupWeapon = false;
-			RemovePopupNotification ();
+			if (!hasWeapon) {
+				RemovePopupNotification ();
+			}
         } else if (col.tag == "Bow") {
             canPickupWeapon = false;
-			RemovePopupNotification ();
-        } else if (col.tag == "Sword") {
+			if (!hasWeapon) {
+				RemovePopupNotification ();
+			}       
+		} else if (col.tag == "Sword") {
             canPickupWeapon = false;
-			RemovePopupNotification ();
-        }
+			if (!hasWeapon) {
+				RemovePopupNotification ();
+			}  
+		}
     }
 
     void GotHit() {
