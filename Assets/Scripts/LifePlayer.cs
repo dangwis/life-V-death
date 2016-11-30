@@ -228,11 +228,21 @@ public class LifePlayer : MonoBehaviour {
         weaponTime += Time.fixedDeltaTime;
         //sword.transform.localRotation = Quaternion.Lerp(swordStart, Quaternion.Euler(0, -20, -90), 10 * weaponTime);
         //if (sword.transform.localRotation == Quaternion.Euler(0, -20, -90)) {
-        if(Time.time - lastattacktime > 0.6f){ 
+
+        if (this.lifeAnimator.GetCurrentAnimatorStateInfo(0).IsName("anim_attack_1h (4)"))
+        {
             attackFinishing = true;
             sword.layer = 8;
             Invoke("FinishSword", 0.2f);
+            this.lifeAnimator.SetInteger("State", 0);
+            print("aaaa");
         }
+
+        //if (Time.time - lastattacktime > 0.6f){ 
+        //    attackFinishing = true;
+        //    sword.layer = 8;
+        //    Invoke("FinishSword", 0.2f);
+        //}
     }
 
     void FinishSword() {
@@ -250,11 +260,20 @@ public class LifePlayer : MonoBehaviour {
         weaponTime += Time.fixedDeltaTime;
         //hammer.transform.localRotation = Quaternion.Lerp(hammerStart, Quaternion.Euler(0, 0, 90), 10f * Mathf.Pow(weaponTime, 8));
         //if (hammer.transform.localRotation == Quaternion.Euler(0, 0, 90)) {
-        if (Time.time - lastattacktime > 1.2f)
+        //if (Time.time - lastattacktime > 1.2f)
+        //{
+        //    attackFinishing = true;
+        //    hammer.layer = 8;
+        //    Invoke("FinishHammer", 0.25f);
+        //}
+
+        if (this.lifeAnimator.GetCurrentAnimatorStateInfo(0).IsName("anim_attack_2h (5)"))
         {
             attackFinishing = true;
             hammer.layer = 8;
             Invoke("FinishHammer", 0.25f);
+            print("aaaa");
+            this.lifeAnimator.SetInteger("State", 0);
         }
     }
 
@@ -269,13 +288,18 @@ public class LifePlayer : MonoBehaviour {
     void BowAttack() {
         if (attackFinishing) return;
         state = 6;
-        attackFinishing = true;
-        GameObject go = Instantiate<GameObject>(arrowPrefab);
-        go.transform.position = bow.transform.position;
-        go.transform.rotation = this.transform.rotation;
-        //go.transform.rotation = bow.transform.rotation;
-        arrow.SetActive(false);
-        Invoke("FinishBow", 0.5f);
+
+        if (this.lifeAnimator.GetCurrentAnimatorStateInfo(0).IsName("anim_attack_bow (6)"))
+        {
+            attackFinishing = true;
+            GameObject go = Instantiate<GameObject>(arrowPrefab);
+            go.transform.position = bow.transform.position;
+            go.transform.rotation = this.transform.rotation;
+            //go.transform.rotation = bow.transform.rotation;
+            arrow.SetActive(false);
+            Invoke("FinishBow", 0.5f);
+            this.lifeAnimator.SetInteger("State", 0);
+        }
     }
 
     void FinishBow() {

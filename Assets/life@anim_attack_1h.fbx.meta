@@ -186,7 +186,7 @@ ModelImporter:
     4300008: helmet_
     4300010: armor_
     4300012: hair_
-    7400000: Take 001
+    7400000: anim_attack_1h
     9500000: //RootNode
     13700000: armor_
     13700002: cornea
@@ -215,7 +215,209 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: anim_attack_1h
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 18
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Arm_L_ctrl
+        weight: 1
+      - path: Arm_L_ctrl/Shoulder_L_ctrl
+        weight: 1
+      - path: Arm_L_ctrl/Shoulder_L_ctrl/group4
+        weight: 1
+      - path: Arm_L_ctrl/Shoulder_L_ctrl/group4/Forearm_L_ctrl
+        weight: 1
+      - path: Arm_L_ctrl/Shoulder_L_ctrl/group4/Forearm_L_ctrl/group8
+        weight: 1
+      - path: Arm_L_ctrl/Shoulder_L_ctrl/group4/Forearm_L_ctrl/group8/Wrist_L_ctrl
+        weight: 1
+      - path: Arm_R_ctrl
+        weight: 1
+      - path: Arm_R_ctrl/Shoulder_R_ctrl
+        weight: 1
+      - path: Arm_R_ctrl/Shoulder_R_ctrl/group6
+        weight: 1
+      - path: Arm_R_ctrl/Shoulder_R_ctrl/group6/Forearm_R_ctrl
+        weight: 1
+      - path: Arm_R_ctrl/Shoulder_R_ctrl/group6/Forearm_R_ctrl/group9
+        weight: 1
+      - path: Arm_R_ctrl/Shoulder_R_ctrl/group6/Forearm_R_ctrl/group9/Wrist_R_ctrl
+        weight: 1
+      - path: armor_
+        weight: 1
+      - path: cornea
+        weight: 1
+      - path: eyeball
+        weight: 1
+      - path: eyelash
+        weight: 1
+      - path: group3
+        weight: 1
+      - path: group3/Waist_ctrl
+        weight: 1
+      - path: group7
+        weight: 1
+      - path: group7/nurbsCircle9
+        weight: 1
+      - path: group10
+        weight: 1
+      - path: group10/nurbsCircle14
+        weight: 1
+      - path: hair_
+        weight: 1
+      - path: head_
+        weight: 1
+      - path: helmet_
+        weight: 1
+      - path: pelvis
+        weight: 1
+      - path: pelvis/abdomen
+        weight: 1
+      - path: pelvis/abdomen/thorax
+        weight: 1
+      - path: pelvis/abdomen/thorax/neck
+        weight: 1
+      - path: pelvis/abdomen/thorax/neck/head__
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/index_1_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/index_1_L/index_2_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/index_1_L/index_2_L/index_3_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/index_1_L/index_2_L/index_3_L/index_4_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/middle_1_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/middle_1_L/middle_2_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/middle_1_L/middle_2_L/middle_3_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/middle_1_L/middle_2_L/middle_3_L/middle_4_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/pinky_1_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/pinky_1_L/pinky_2_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/pinky_1_L/pinky_2_L/pinky_3_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/pinky_1_L/pinky_2_L/pinky_3_L/pinky_4_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/ring_1_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/ring_1_L/ring_2_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/ring_1_L/ring_2_L/ring_3_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/ring_1_L/ring_2_L/ring_3_L/ring4_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/thumb_1_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/thumb_1_L/thumb_2_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_L/elbow_L/wrist_L/hand_L/thumb_1_L/thumb_2_L/thumb_3_L
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/index_1_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/index_1_R/index_2_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/index_1_R/index_2_R/index_3_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/index_1_R/index_2_R/index_3_R/index_4_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/middle_1_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/middle_1_R/middle_2_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/middle_1_R/middle_2_R/middle_3_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/middle_1_R/middle_2_R/middle_3_R/middle_4_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/pinky_1_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/pinky_1_R/pinky_2_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/pinky_1_R/pinky_2_R/pinky_3_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/pinky_1_R/pinky_2_R/pinky_3_R/pinky_4_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/ring_1_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/ring_1_R/ring_2_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/ring_1_R/ring_2_R/ring_3_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/ring_1_R/ring_2_R/ring_3_R/ring4_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/thumb_1_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/thumb_1_R/thumb_2_R
+        weight: 1
+      - path: pelvis/abdomen/thorax/shoulder_R/elbow_R/wrist_R/hand_R/thumb_1_R/thumb_2_R/thumb_3_R
+        weight: 1
+      - path: pelvis/hip_L
+        weight: 1
+      - path: pelvis/hip_L/knee_L
+        weight: 1
+      - path: pelvis/hip_L/knee_L/ankle_L
+        weight: 1
+      - path: pelvis/hip_L/knee_L/ankle_L/ball_L
+        weight: 1
+      - path: pelvis/hip_L/knee_L/ankle_L/ball_L/toe_L
+        weight: 1
+      - path: pelvis/hip_R
+        weight: 1
+      - path: pelvis/hip_R/knee_R
+        weight: 1
+      - path: pelvis/hip_R/knee_R/ankle_R
+        weight: 1
+      - path: pelvis/hip_R/knee_R/ankle_R/ball_R
+        weight: 1
+      - path: pelvis/hip_R/knee_R/ankle_R/ball_R/toe_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
     isReadable: 1
   meshes:
     lODScreenPercentages: []
