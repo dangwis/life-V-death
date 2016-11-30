@@ -232,7 +232,7 @@ public class LifePlayer : MonoBehaviour {
         if (this.lifeAnimator.GetCurrentAnimatorStateInfo(0).IsName("anim_attack_1h (4)"))
         {
             attackFinishing = true;
-            sword.layer = 8;
+            
             Invoke("FinishSword", 0.2f);
             this.lifeAnimator.SetInteger("State", 0);
             print("aaaa");
@@ -251,6 +251,7 @@ public class LifePlayer : MonoBehaviour {
         //sword.transform.localRotation = swordStart;
         weaponTime = 0;
         state = 0;
+        sword.layer = 8;
     }
 
     void HammerAttack() {
@@ -270,7 +271,7 @@ public class LifePlayer : MonoBehaviour {
         if (this.lifeAnimator.GetCurrentAnimatorStateInfo(0).IsName("anim_attack_2h (5)"))
         {
             attackFinishing = true;
-            hammer.layer = 8;
+            
             Invoke("FinishHammer", 0.25f);
             print("aaaa");
             this.lifeAnimator.SetInteger("State", 0);
@@ -283,6 +284,7 @@ public class LifePlayer : MonoBehaviour {
         //hammer.transform.localRotation = hammerStart;
         weaponTime = 0;
         state = 0;
+        hammer.layer = 8;
     }
 
     void BowAttack() {
