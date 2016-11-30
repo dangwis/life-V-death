@@ -237,7 +237,6 @@ public class LifePlayer : MonoBehaviour {
             
             Invoke("FinishSword", 0.2f);
             this.lifeAnimator.SetInteger("State", 0);
-            print("aaaa");
         }
 
         //if (Time.time - lastattacktime > 0.6f){ 
@@ -276,7 +275,6 @@ public class LifePlayer : MonoBehaviour {
             attackFinishing = true;
             
             Invoke("FinishHammer", 0.25f);
-            print("aaaa");
             this.lifeAnimator.SetInteger("State", 0);
         }
     }
