@@ -229,7 +229,9 @@ public class LifePlayer : MonoBehaviour {
         //sword.transform.localRotation = Quaternion.Lerp(swordStart, Quaternion.Euler(0, -20, -90), 10 * weaponTime);
         //if (sword.transform.localRotation == Quaternion.Euler(0, -20, -90)) {
 
-        if (this.lifeAnimator.GetCurrentAnimatorStateInfo(0).IsName("anim_attack_1h (4)"))
+        if (this.lifeAnimator.GetCurrentAnimatorStateInfo(0).IsName("anim_attack_1h (4)") &&
+            this.lifeAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f
+            )
         {
             attackFinishing = true;
             
@@ -268,7 +270,8 @@ public class LifePlayer : MonoBehaviour {
         //    Invoke("FinishHammer", 0.25f);
         //}
 
-        if (this.lifeAnimator.GetCurrentAnimatorStateInfo(0).IsName("anim_attack_2h (5)"))
+        if (this.lifeAnimator.GetCurrentAnimatorStateInfo(0).IsName("anim_attack_2h (5)") &&
+            this.lifeAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f)
         {
             attackFinishing = true;
             
@@ -291,7 +294,8 @@ public class LifePlayer : MonoBehaviour {
         if (attackFinishing) return;
         state = 6;
 
-        if (this.lifeAnimator.GetCurrentAnimatorStateInfo(0).IsName("anim_attack_bow (6)"))
+        if (this.lifeAnimator.GetCurrentAnimatorStateInfo(0).IsName("anim_attack_bow (6)") &&
+            this.lifeAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f)
         {
             attackFinishing = true;
             GameObject go = Instantiate<GameObject>(arrowPrefab);
