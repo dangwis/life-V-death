@@ -102,6 +102,23 @@ public class LifePlayer : MonoBehaviour {
             return;
         }
 
+        if(weaponTime > 1.0f && state > 3)
+        {
+            if(state == 4)
+            {
+                Invoke("FinishSword", 0.0f);
+            }
+            if (state == 5)
+            {
+                Invoke("FinishHammer", 0.0f);
+            }
+            if (state == 6)
+            {
+                Invoke("FinishBow", 0.0f);
+            }
+
+        }
+
         // Picking up your weapon
         if (Input.GetButtonDown(XInput.XboxA(playerNum)) && canPickupWeapon && !hasWeapon && weapontype == 0) {
             Destroy (weaponPickupObj);
