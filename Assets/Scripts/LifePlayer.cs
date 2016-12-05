@@ -308,6 +308,7 @@ public class LifePlayer : MonoBehaviour {
     void BowAttack() {
         if (attackFinishing) return;
         state = 6;
+        weaponTime += Time.fixedDeltaTime;
 
         if (this.lifeAnimator.GetCurrentAnimatorStateInfo(0).IsName("anim_attack_bow (6)") &&
             this.lifeAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f)
@@ -327,6 +328,7 @@ public class LifePlayer : MonoBehaviour {
         attackFinishing = false;
         attacking = false;
         arrow.SetActive(true);
+        weaponTime = 0;
         state = 0;
     }
 
