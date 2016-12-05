@@ -9,6 +9,11 @@ public class SetupCameras : MonoBehaviour {
     public Canvas deathUI;
 	public Canvas lifeUI;
 
+    public Material armor_blue;
+    public Material armor_purple;
+    public Material helmet_blue;
+    public Material helmet_purple;
+
 	public GameObject DeathCam, LifeCam, LifeObj;
 
 	void Start () {
@@ -29,7 +34,7 @@ public class SetupCameras : MonoBehaviour {
 			Player1.name = "Player 1";
             Player1.GetComponent<LifePlayer>().playerNum = 1;
 
-			lifeOverlay.worldCamera = Camera1.GetComponent<Camera> ();
+            lifeOverlay.worldCamera = Camera1.GetComponent<Camera> ();
 			lifeOverlay.planeDistance = 1;
 			lifeOverlay.GetComponent<LifeHUD> ().player = Player1.GetComponent<LifePlayer>();
 
@@ -63,6 +68,9 @@ public class SetupCameras : MonoBehaviour {
             Player1.GetComponent<LifePlayer>().playerNum = 1;
 			Player2.name = "Player 2";
             Player2.GetComponent<LifePlayer>().playerNum = 2;
+
+            Player2.transform.Find("body").transform.Find("armor_").GetComponent<Renderer>().material = armor_blue;
+            Player2.transform.Find("body").transform.Find("helmet_").GetComponent<Renderer>().material = helmet_blue;
 
 			lifeOverlay.worldCamera = Camera1.GetComponent<Camera> ();
 			lifeOverlay.planeDistance = 1;
@@ -113,6 +121,11 @@ public class SetupCameras : MonoBehaviour {
 			Player2.GetComponent<LifePlayer> ().playerNum = 2;
 			Player3.name = "Player 3";
 			Player3.GetComponent<LifePlayer> ().playerNum = 3;
+
+            Player2.transform.Find("body").transform.Find("armor_").GetComponent<Renderer>().material = armor_blue;
+            Player2.transform.Find("body").transform.Find("helmet_").GetComponent<Renderer>().material = helmet_blue;
+            Player3.transform.Find("body").transform.Find("armor_").GetComponent<Renderer>().material = armor_purple;
+            Player3.transform.Find("body").transform.Find("helmet_").GetComponent<Renderer>().material = helmet_purple;
 
 			lifeOverlay.worldCamera = Camera1.GetComponent<Camera> ();
 			lifeOverlay.planeDistance = 1;
