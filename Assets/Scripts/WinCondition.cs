@@ -8,7 +8,7 @@ public class WinCondition : MonoBehaviour {
     public static bool FountainFound = false;
     public static bool deathWon = false;
     public static bool lifeWon = false;
-    public static bool[] foundFountain;
+    public static List<bool> foundFountain;
     bool gameOver = false;
 
     // Use this for initialization
@@ -17,7 +17,15 @@ public class WinCondition : MonoBehaviour {
         FountainFound = false;
         deathWon = false;
         lifeWon = false;
-       
+    }
+
+    public static void CreateList(int numPlayers)
+    {
+        foundFountain = new List<bool>(numPlayers);
+        for(int i = 0; i < numPlayers; i++)
+        {
+            foundFountain[i] = false;
+        }
     }
 
     // Update is called once per frame
