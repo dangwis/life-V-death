@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 public class WinCondition : MonoBehaviour {
@@ -7,6 +8,7 @@ public class WinCondition : MonoBehaviour {
     public static bool FountainFound = false;
     public static bool deathWon = false;
     public static bool lifeWon = false;
+    public static bool[] foundFountain;
     bool gameOver = false;
 
     // Use this for initialization
@@ -15,6 +17,7 @@ public class WinCondition : MonoBehaviour {
         FountainFound = false;
         deathWon = false;
         lifeWon = false;
+       
     }
 
     // Update is called once per frame

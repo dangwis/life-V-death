@@ -37,7 +37,7 @@ public class Death : MonoBehaviour {
     public int curTrap, curBigEn, curSpawner;
     public Dictionary<Placing, float> abilityMana;
     Vector3 teleportIntermediary;
-
+    public Quaternion rotater = Quaternion.Euler(0, 90, 0);
     bool place;
     GameObject placement;
     AbilityType activeAbility;
@@ -274,6 +274,7 @@ public class Death : MonoBehaviour {
                             UseMana(abilityMana[currentPlacing]);
                             GameObject spawn = Instantiate(gruntSpawnPrefab);
                             spawn.transform.position = placement.transform.position;
+                            spawn.transform.rotation = placement.transform.rotation;
                             Destroy(placement.gameObject);
                             activeAbility = AbilityType.Interact;
                             curSpawner++;
@@ -497,9 +498,9 @@ public class Death : MonoBehaviour {
             }
             else if (activeAbility == AbilityType.Place && currentPlacing == Placing.GruntSpawn)
             {
-                activeAbility = AbilityType.Interact;
-                Destroy(placement.gameObject);
-                DeathHUD.inst.deselectAllAbilities();
+                var rotation = placement.transform.rotation;
+                rotation *= rotater;
+                placement.transform.rotation = rotation;
             }
             else
             {

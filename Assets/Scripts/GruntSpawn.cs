@@ -39,7 +39,14 @@ public class GruntSpawn : MonoBehaviour {
 
 	void SpawnEnemy() {
         Vector3 spawnpos = transform.position;
-        spawnpos.z += 2f;
+        if (transform.rotation == Quaternion.Euler(0, 0, 0))
+            spawnpos.z += 2f;
+        else if (transform.rotation == Quaternion.Euler(0, 90, 0))
+            spawnpos.x += 2f;
+        else if (transform.rotation == Quaternion.Euler(0, 180, 0))
+            spawnpos.z -= 2f;
+        else if (transform.rotation == Quaternion.Euler(0, 270, 0))
+            spawnpos.x -= 2f;
         curSpawned++;
 		GameObject grunt = Instantiate (gruntPrefab, spawnpos, transform.rotation) as GameObject;
         grunt.transform.Find("Grunt").GetComponent<EnemyGrunt>().setSpawn(this);
