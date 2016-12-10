@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 public class WinCondition : MonoBehaviour {
-    public static int NumLivingPlayers = 0;
-    public static bool FountainFound = false;
+    public static WinCondition S;
     public static bool deathWon = false;
     public static bool lifeWon = false;
     public static List<bool> foundFountain;
@@ -13,8 +12,7 @@ public class WinCondition : MonoBehaviour {
 
     // Use this for initialization
     void Awake() {
-        NumLivingPlayers = 0;
-        FountainFound = false;
+        S = this;
         deathWon = false;
         lifeWon = false;
     }
@@ -28,22 +26,26 @@ public class WinCondition : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
-    void Update() {
-        if (gameOver) return;
+    public void UpdateWinCondition(LifePlayer life)
+    {
+        foundFountain[life.playerNum] = true;
+        life.immortal = true;
+        for (int i = 0; i < foundFountain.Count; i++)
+        {
+            if (foundFountain[i] == false) return;
+        }
+        gameOver = true;
+        lifeWon = true;
+        Debug.Log("Life Wins!");
+        Invoke("RestartGame", 20f);
+    }
 
-        if (NumLivingPlayers == 0) {
-            gameOver = true;
-            deathWon = true;
-            Debug.Log("Death Wins!");
-            Invoke("RestartGame", 20f);
-        }
-        if (FountainFound) {
-            gameOver = true;
-            lifeWon = true;
-            Debug.Log("Life Wins!");
-            Invoke("RestartGame", 20f);
-        }
+    public void DeathWins()
+    {
+        gameOver = true;
+        deathWon = true;
+        Debug.Log("Death Wins!");
+        Invoke("RestartGame", 20f);
     }
 
     void RestartGame() {

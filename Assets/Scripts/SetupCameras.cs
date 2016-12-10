@@ -23,6 +23,7 @@ public class SetupCameras : MonoBehaviour {
 		deathOverlay.planeDistance = 1;
 		Camera0.name = "Camera 0";
 		Canvas lifeOverlay = Instantiate (lifeUI);
+        WinCondition.CreateList(PlayerCount);
 		switch (PlayerCount) {
 		case 2:
             Camera1 = Instantiate (LifeCam) as GameObject;

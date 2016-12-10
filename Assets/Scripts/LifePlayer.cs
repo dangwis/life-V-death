@@ -7,6 +7,7 @@ public class LifePlayer : MonoBehaviour {
 
 	CharacterController charController;
     public float speed;
+    public bool immortal = false;
     public int playerNum;
     public bool hasWeapon;
     public bool canPickupWeapon;
@@ -429,7 +430,7 @@ public class LifePlayer : MonoBehaviour {
             weaponPickupObj = col.gameObject;
 			ShowPopupNotification ("Press A to pick up Bow");
         } else if (col.tag == "LifeFountain") {
-            WinCondition.FountainFound = true;
+            WinCondition.S.UpdateWinCondition(this);
         } else if (col.tag == "Skeleton" && col.gameObject.layer == 13 && state != 2 && state != 3) {
             state = 2;
             health -= 10;
@@ -481,7 +482,7 @@ public class LifePlayer : MonoBehaviour {
     }
 
     void Death() {
-        WinCondition.NumLivingPlayers--;
+        WinCondition.S.DeathWins();
         Destroy(this.gameObject);
     }
 
