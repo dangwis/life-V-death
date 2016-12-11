@@ -19,10 +19,10 @@ public class DestructItems : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision col) {
-        if (col.gameObject.layer == 10) {
+		if (col.gameObject.layer == 10 || col.gameObject.tag == "Minotaur") {
             health--;
             ShowDamage();
-            if (health <= 0) {
+			if (health <= 0 || col.gameObject.tag == "Minotaur") {
                 DestroyBarrel();
                 if (crate) {
                     GameObject.Find("Audio").transform.Find("CrateDestroy").GetComponent<AudioSource>().Play();
