@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager S;
 
     public float setupTime;
-    float startTime;
+    public float startTime;
     public float showFountainTime, showLifeTime, numKeysTime, scrollTextTime, tabTime, endGo;
     public bool gameStart, endFountain, endShowLife;
     bool transitionStarted;
