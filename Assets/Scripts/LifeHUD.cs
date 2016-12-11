@@ -64,7 +64,7 @@ public class LifeHUD : MonoBehaviour {
         }
         
         grabWeapText.SetActive(true);
-        if (GameManager.S.showLifeTime - (Time.time - GameManager.S.startTime) < 0)
+        if (GameManager.S.showFountainTime - (Time.time - GameManager.S.startTime) < 0)
         {
             grabWeapText.SetActive(false);
         }
