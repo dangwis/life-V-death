@@ -30,9 +30,8 @@ public class GameManager : MonoBehaviour {
         {
             gameStart = true;
             DeathHUD.inst.countdownToStart.SetActive(false);
-<<<<<<< HEAD
             GameObject.Find("Audio").transform.Find("GameStart").GetComponent<AudioSource>().Play();
-=======
+
             if(!((Time.time - startTime) > endGo))
             {
                 DeathHUD.inst.goText.SetActive(true);
@@ -41,9 +40,8 @@ public class GameManager : MonoBehaviour {
             {
                 DeathHUD.inst.goText.SetActive(false);
             }
-            
->>>>>>> c6b7d4771e59195fb22935cc7ba0b09df2902d9d
         }
+
         if(Time.time - startTime > showFountainTime)
         {
             endFountain = true;
