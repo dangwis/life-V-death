@@ -207,7 +207,6 @@ public class LifePlayer : MonoBehaviour {
         }
         if (!XInput.x.RTDown(playerNum) && hasWeapon && !releasedRT)
         {
-            Debug.Log("Released");
             releasedRT = true;
         }
 
@@ -240,30 +239,22 @@ public class LifePlayer : MonoBehaviour {
         state = 4;
         sword.layer = 10;
         weaponTime += Time.fixedDeltaTime;
-        //sword.transform.localRotation = Quaternion.Lerp(swordStart, Quaternion.Euler(0, -20, -90), 10 * weaponTime);
-        //if (sword.transform.localRotation == Quaternion.Euler(0, -20, -90)) {
 
         if (this.lifeAnimator.GetCurrentAnimatorStateInfo(0).IsName("anim_attack_1h (4)") &&
             this.lifeAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f
             )
         {
             attackFinishing = true;
-            
+            GameObject.Find("Audio").transform.Find("AttackSword").GetComponent<AudioSource>().time = 0.1f;
+            GameObject.Find("Audio").transform.Find("AttackSword").GetComponent<AudioSource>().Play();
             Invoke("FinishSword", 0.2f);
             this.lifeAnimator.SetInteger("State", 0);
         }
-
-        //if (Time.time - lastattacktime > 0.6f){ 
-        //    attackFinishing = true;
-        //    sword.layer = 8;
-        //    Invoke("FinishSword", 0.2f);
-        //}
     }
 
     void FinishSword() {
         attacking = false;
         attackFinishing = false;
-        //sword.transform.localRotation = swordStart;
         weaponTime = 0;
         state = 0;
         sword.layer = 8;
@@ -274,20 +265,13 @@ public class LifePlayer : MonoBehaviour {
         state = 5;
         hammer.layer = 10;
         weaponTime += Time.fixedDeltaTime;
-        //hammer.transform.localRotation = Quaternion.Lerp(hammerStart, Quaternion.Euler(0, 0, 90), 10f * Mathf.Pow(weaponTime, 8));
-        //if (hammer.transform.localRotation == Quaternion.Euler(0, 0, 90)) {
-        //if (Time.time - lastattacktime > 1.2f)
-        //{
-        //    attackFinishing = true;
-        //    hammer.layer = 8;
-        //    Invoke("FinishHammer", 0.25f);
-        //}
 
         if (this.lifeAnimator.GetCurrentAnimatorStateInfo(0).IsName("anim_attack_2h (5)") &&
             this.lifeAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f)
         {
             attackFinishing = true;
-            
+            GameObject.Find("Audio").transform.Find("AttackHammer").GetComponent<AudioSource>().time = 0.1f;
+            GameObject.Find("Audio").transform.Find("AttackHammer").GetComponent<AudioSource>().Play();
             Invoke("FinishHammer", 0.25f);
             this.lifeAnimator.SetInteger("State", 0);
         }
@@ -296,7 +280,6 @@ public class LifePlayer : MonoBehaviour {
     void FinishHammer() {
         attacking = false;
         attackFinishing = false;
-        //hammer.transform.localRotation = hammerStart;
         weaponTime = 0;
         state = 0;
         hammer.layer = 8;
@@ -314,8 +297,8 @@ public class LifePlayer : MonoBehaviour {
             GameObject go = Instantiate<GameObject>(arrowPrefab);
             go.transform.position = bow.transform.position;
             go.transform.rotation = this.transform.rotation;
-            //go.transform.rotation = bow.transform.rotation;
             arrow.SetActive(false);
+            GameObject.Find("Audio").transform.Find("AttackArrow").GetComponent<AudioSource>().Play();
             Invoke("FinishBow", 0.5f);
             this.lifeAnimator.SetInteger("State", 0);
         }

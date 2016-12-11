@@ -26,10 +26,11 @@ public class EnemyMin : MonoBehaviour {
 		ShowPopupNotification ("", true);
 		UpdatePopupNotification ("", 1);
 		maxHealth = health;
-	}
-	
-	// Update is called once per frame
-	void FixedUpdate () {
+        GameObject.Find("Audio").transform.Find("MinAwake").GetComponent<AudioSource>().Play();
+    }
+
+    // Update is called once per frame
+    void FixedUpdate () {
         if (health <= 0 && state != 2) {
             state = 2;
         }
@@ -106,10 +107,12 @@ public class EnemyMin : MonoBehaviour {
                     break;
                 case 1: // walking
                     Invoke("SetIsRunning", 1.267f);
+                    GameObject.Find("Audio").transform.Find("MinRoar").GetComponent<AudioSource>().Play();
                     minAnimator.SetInteger("State", 1);
                     break;
                 case 2: // death
                     minAnimator.SetInteger("State", 2);
+                    GameObject.Find("Audio").transform.Find("MinDestroy").GetComponent<AudioSource>().Play();
                     transform.GetComponent<CapsuleCollider>().enabled = false;
                     Invoke("FinishDeath", 3f);
                     break;
@@ -183,7 +186,11 @@ public class EnemyMin : MonoBehaviour {
             } else if (col.gameObject.tag == "Sword") {
                 health -= 1.5f;
             }
-			UpdatePopupNotification ("", health / maxHealth);
+
+            if (health > 0) {
+                GameObject.Find("Audio").transform.Find("MinHit").GetComponent<AudioSource>().Play();
+            }
+            UpdatePopupNotification ("", health / maxHealth);
             ShowDamage();
         }
     }

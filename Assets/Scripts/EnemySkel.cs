@@ -115,7 +115,12 @@ public class EnemySkel : MonoBehaviour {
             } else if (col.gameObject.tag == "Sword") {
                 health -= 1.5f;
             }
-			UpdatePopupNotification ("", health / maxHealth);
+
+            if (health > 0 ) {
+                GameObject.Find("Audio").transform.Find("SkelHit").GetComponent<AudioSource>().Play();
+            }
+
+            UpdatePopupNotification ("", health / maxHealth);
             state = 3;
         }
     }
@@ -155,6 +160,7 @@ public class EnemySkel : MonoBehaviour {
                     break;
                 case 2: // attacking
                     skelAnimator.SetInteger("State", 2);
+                    GameObject.Find("Audio").transform.Find("SkelAttack").GetComponent<AudioSource>().Play();
                     break;
                 case 3: // hit
                     skelAnimator.SetInteger("State", 3);
@@ -163,6 +169,7 @@ public class EnemySkel : MonoBehaviour {
                     break;
                 case 4: // dead
                     skelAnimator.SetInteger("State", 4);
+                    GameObject.Find("Audio").transform.Find("SkelDeath").GetComponent<AudioSource>().Play();
                     Invoke("StartDeath", 3f);
                     transform.GetComponent<CapsuleCollider>().enabled = false;
                     break;

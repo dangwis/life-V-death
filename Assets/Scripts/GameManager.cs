@@ -26,10 +26,11 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Time.time - startTime > setupTime)
+        if (Time.time - startTime > setupTime && !gameStart)
         {
             gameStart = true;
             DeathHUD.inst.countdownToStart.SetActive(false);
+            GameObject.Find("Audio").transform.Find("GameStart").GetComponent<AudioSource>().Play();
         }
         if(Time.time - startTime > showFountainTime)
         {
