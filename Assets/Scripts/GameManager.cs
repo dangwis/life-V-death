@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour {
 
     public float setupTime;
     float startTime;
-    public float showFountainTime, showLifeTime;
+    public float showFountainTime, showLifeTime, numKeysTime, scrollTextTime, tabTime;
     public bool gameStart, endFountain, endShowLife;
     bool transitionStarted;
     Vector3 targetPlayer;
@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
                 transitionStarted = true;
                 targetPlayer = Death.S.deathCam.transform.position;
                 targetPlayer.x = 43f;
-                targetPlayer.z = -43f;
+                targetPlayer.z = -47f;
                 StartCoroutine(Transition());
             }
             
@@ -46,7 +46,21 @@ public class GameManager : MonoBehaviour {
         {
             endShowLife = true;
             DeathHUD.inst.killPlayersText.SetActive(false);
-
+            DeathHUD.inst.scrollText.SetActive(true);
+        }
+        if(Time.time - startTime > scrollTextTime)
+        {
+            DeathHUD.inst.scrollText.SetActive(false);
+            DeathHUD.inst.useNumKeysText.SetActive(true);
+        }
+        if(Time.time - startTime > numKeysTime)
+        {
+            DeathHUD.inst.useNumKeysText.SetActive(false);
+            DeathHUD.inst.tabText.SetActive(true);
+        }
+        if(Time.time - startTime > tabTime)
+        {
+            DeathHUD.inst.tabText.SetActive(false);
         }
         
     }

@@ -11,7 +11,7 @@ public class DeathHUD : MonoBehaviour {
     public GameObject[] selectionImages;
     public GameObject[] abilityImages;
     public GameObject deathWins, lifeWins;
-    public GameObject fountainText, killPlayersText;
+    public GameObject fountainText, killPlayersText, useNumKeysText, scrollText, tabText;
     public GameObject popupMenu;
 
 	private int selectedAbility = -1;
