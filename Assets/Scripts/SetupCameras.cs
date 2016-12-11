@@ -28,10 +28,10 @@ public class SetupCameras : MonoBehaviour {
 		case 2:
             Camera1 = Instantiate (LifeCam) as GameObject;
 			Camera1.name = "Camera 1";
-
+            
 			Player1 = Instantiate (LifeObj, playerStart, LifeObj.transform.rotation) as GameObject;
 			Camera1.GetComponent<FollowCam> ().FollowObject = Player1;
-
+            Camera1.GetComponent<FollowCam>().setCullingMask(1);
 			Player1.name = "Player 1";
             Player1.GetComponent<LifePlayer>().playerNum = 1;
 
@@ -58,10 +58,11 @@ public class SetupCameras : MonoBehaviour {
 
 			Camera1.name = "Camera 1";
 			Camera2.name = "Camera 2";
-
+    
 			Player1 = Instantiate (LifeObj, playerStart + Vector3.right, LifeObj.transform.rotation) as GameObject;
 			Camera1.GetComponent<FollowCam> ().FollowObject = Player1;
-
+            Camera1.GetComponent<FollowCam>().setCullingMask(1);
+            Camera2.GetComponent<FollowCam>().setCullingMask(2);
 			Player2 = Instantiate (LifeObj, playerStart + Vector3.right * 3f, Player1.transform.rotation) as GameObject;
 			Camera2.GetComponent<FollowCam> ().FollowObject = Player2;
 
@@ -106,9 +107,11 @@ public class SetupCameras : MonoBehaviour {
 			Camera1.name = "Camera 1";
 			Camera2.name = "Camera 2";
 			Camera3.name = "Camera 3";
-
 			Player1 = Instantiate (LifeObj, playerStart, LifeObj.transform.rotation) as GameObject;
 			Camera1.GetComponent<FollowCam> ().FollowObject = Player1;
+            Camera1.GetComponent<FollowCam>().setCullingMask(1);
+            Camera2.GetComponent<FollowCam>().setCullingMask(2);
+            Camera3.GetComponent<FollowCam>().setCullingMask(3);
 
 			Player2 = Instantiate (LifeObj, playerStart + Vector3.right * 3f, Player1.transform.rotation) as GameObject;
 			Camera2.GetComponent<FollowCam> ().FollowObject = Player2;

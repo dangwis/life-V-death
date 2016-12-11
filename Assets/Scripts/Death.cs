@@ -271,7 +271,8 @@ public class Death : MonoBehaviour {
             {
                 if (place)
                 {
-                    if(currentPlacing == Placing.GruntSpawn)
+                    GameObject.Find("Audio").transform.Find("DeathPlace").GetComponent<AudioSource>().Play();
+                    if (currentPlacing == Placing.GruntSpawn)
                     {
                         if (manaLeft >= abilityMana[currentPlacing] && curSpawner < totalSpawnerAllowed)
                         {
@@ -285,7 +286,6 @@ public class Death : MonoBehaviour {
                         }
                         else
                         {
-                            //show that not enough mana somehow
                             Destroy(placement.gameObject);
                             activeAbility = AbilityType.Interact;
                         }
@@ -393,6 +393,8 @@ public class Death : MonoBehaviour {
                         }
                         DeathHUD.inst.deselectAllAbilities();
                     }
+                } else {
+                    GameObject.Find("Audio").transform.Find("DeathFail").GetComponent<AudioSource>().Play();
                 }
             }
         }
