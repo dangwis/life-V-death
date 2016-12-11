@@ -11,6 +11,7 @@ public class DeathHUD : MonoBehaviour {
     public GameObject[] selectionImages;
     public GameObject[] abilityImages;
     public GameObject deathWins, lifeWins;
+    public GameObject fountainText, killPlayersText;
     public GameObject popupMenu;
 
 	private int selectedAbility = -1;
@@ -37,6 +38,8 @@ public class DeathHUD : MonoBehaviour {
 
         lifeWins.SetActive(false);
         deathWins.SetActive(false);
+        killPlayersText.SetActive(false);
+        fountainText.SetActive(true);
     }
 
 	public void fixOne() {
@@ -70,7 +73,6 @@ public class DeathHUD : MonoBehaviour {
 		} else {
             manaCostSlider.GetComponent<Slider>().value = manaSlider.value;
         }
-
         if (WinCondition.lifeWon) {
             lifeWins.SetActive(true);
         }

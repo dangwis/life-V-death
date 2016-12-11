@@ -74,6 +74,8 @@ public class Death : MonoBehaviour {
         deathCursor = Instantiate(deathCursor);
         Vector3 tempPos = GameObject.Find("Static Objects").GetComponent<SetupCameras>().deathCamStart;
         tempPos.y = 11.9f;
+        tempPos.x = 8f;
+        tempPos.z = -79f;
         cursorPos = tempPos;
         tempPos.y = 23f;
         deathCam.transform.position = tempPos;
@@ -94,85 +96,87 @@ public class Death : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        
-        ChooseAbility();
-        if(activeAbility == AbilityType.Place)
+        if (GameManager.S.endFountain == true && GameManager.S.endShowLife)
         {
-            ShowPlacement();
-        }
-        CheckClicks();
-        RegenMana();
+            ChooseAbility();
+            if (activeAbility == AbilityType.Place)
+            {
+                ShowPlacement();
+            }
+            CheckClicks();
+            RegenMana();
 
-        float x = Input.GetAxis("Mouse X");
-        float y = Input.GetAxis("Mouse Y");
-        
-        if (x != 0) {
-            cursorPos.x = cursorPos.x + x * movementSpeed;
-        }
-        if(y != 0)
-        {
-            cursorPos.z = cursorPos.z + y * movementSpeed;
-        }
+            float x = Input.GetAxis("Mouse X");
+            float y = Input.GetAxis("Mouse Y");
 
-        
+            if (x != 0)
+            {
+                cursorPos.x = cursorPos.x + x * movementSpeed;
+            }
+            if (y != 0)
+            {
+                cursorPos.z = cursorPos.z + y * movementSpeed;
+            }
 
-        if (IsOnDeathCam(cursorPos))
-        {
-            deathCursor.transform.position = cursorPos;
-        }
 
-        if (deathCursor.transform.position.x > 85)
-        {
-            Vector3 curbound = deathCursor.transform.position;
-            curbound.x = 85;
-            deathCursor.transform.position = curbound;
-            SetAllScrollsFalse();
-            dEnabled = false;
-        }
-        else if(deathCursor.transform.position.x != 85)
-        {
-            dEnabled = true;
-        }
 
-        if (deathCursor.transform.position.x < 0)
-        {
-            Vector3 curbound = deathCursor.transform.position;
-            curbound.x = 0;
-            deathCursor.transform.position = curbound;
-            SetAllScrollsFalse();
-            aEnabled = false;
-        }
-        else if (deathCursor.transform.position.x != 0)
-        {
-            aEnabled = true;
-        }
+            if (IsOnDeathCam(cursorPos))
+            {
+                deathCursor.transform.position = cursorPos;
+            }
 
-        if (deathCursor.transform.position.z > 0)
-        {
-            Vector3 curbound = deathCursor.transform.position;
-            curbound.z = 0;
-            deathCursor.transform.position = curbound;
-            SetAllScrollsFalse();
-            wEnabled = false;
-        }
-        else if (deathCursor.transform.position.z != 0)
-        {
-            wEnabled = true;
-        }
+            if (deathCursor.transform.position.x > 85)
+            {
+                Vector3 curbound = deathCursor.transform.position;
+                curbound.x = 85;
+                deathCursor.transform.position = curbound;
+                SetAllScrollsFalse();
+                dEnabled = false;
+            }
+            else if (deathCursor.transform.position.x != 85)
+            {
+                dEnabled = true;
+            }
 
-        if (deathCursor.transform.position.z < -85)
-        {
-            Vector3 curbound = deathCursor.transform.position;
-            curbound.z = -85;
-            deathCursor.transform.position = curbound;
-            SetAllScrollsFalse();
-            sEnabled = false;
-        }
-        else if (deathCursor.transform.position.z != -85)
-        {
-            sEnabled = true;
-        }
+            if (deathCursor.transform.position.x < 0)
+            {
+                Vector3 curbound = deathCursor.transform.position;
+                curbound.x = 0;
+                deathCursor.transform.position = curbound;
+                SetAllScrollsFalse();
+                aEnabled = false;
+            }
+            else if (deathCursor.transform.position.x != 0)
+            {
+                aEnabled = true;
+            }
 
+            if (deathCursor.transform.position.z > 0)
+            {
+                Vector3 curbound = deathCursor.transform.position;
+                curbound.z = 0;
+                deathCursor.transform.position = curbound;
+                SetAllScrollsFalse();
+                wEnabled = false;
+            }
+            else if (deathCursor.transform.position.z != 0)
+            {
+                wEnabled = true;
+            }
+
+            if (deathCursor.transform.position.z < -85)
+            {
+                Vector3 curbound = deathCursor.transform.position;
+                curbound.z = -85;
+                deathCursor.transform.position = curbound;
+                SetAllScrollsFalse();
+                sEnabled = false;
+            }
+            else if (deathCursor.transform.position.z != -85)
+            {
+                sEnabled = true;
+            }
+        }
     }
 
     void FixedUpdate() {

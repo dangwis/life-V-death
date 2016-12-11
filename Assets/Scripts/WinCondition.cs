@@ -28,7 +28,7 @@ public class WinCondition : MonoBehaviour {
 
     public void UpdateWinCondition(LifePlayer life)
     {
-        foundFountain[life.playerNum] = true;
+        foundFountain[life.playerNum - 1] = true;
         life.immortal = true;
         for (int i = 0; i < foundFountain.Count; i++)
         {

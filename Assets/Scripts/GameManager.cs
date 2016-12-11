@@ -8,15 +8,18 @@ public class GameManager : MonoBehaviour {
     public float setupTime;
     float startTime;
     public float showFountainTime, showLifeTime;
-    public bool gameStart, showFountain, showLife;
+    public bool gameStart, endFountain, endShowLife;
+    bool transitionStarted;
+    Vector3 targetPlayer;
 
 	// Use this for initialization
 	void Start () {
         S = this;
         startTime = Time.time;
         gameStart = false;
-        showLife = false;
-        showFountain = false;
+        endShowLife = false;
+        endFountain = false;
+        transitionStarted = false;
 	}
 	
 	// Update is called once per frame
@@ -27,11 +30,39 @@ public class GameManager : MonoBehaviour {
         }
         if(Time.time - startTime > showFountainTime)
         {
-            showFountain = true;
+            endFountain = true;
+            DeathHUD.inst.fountainText.SetActive(false);
+            DeathHUD.inst.killPlayersText.SetActive(true);
+            if (!transitionStarted) {
+                transitionStarted = true;
+                targetPlayer = Death.S.deathCam.transform.position;
+                targetPlayer.x = 43f;
+                targetPlayer.z = -43f;
+                StartCoroutine(Transition());
+            }
+            
         }
-        if (Time.time - startTime > showLifeTime)
+        if(Time.time - startTime > showLifeTime)
         {
-            showLife = true;
+            endShowLife = true;
+            DeathHUD.inst.killPlayersText.SetActive(false);
+
+        }
+        
+    }
+
+    IEnumerator Transition()
+    {
+        float t = 0.0f;
+        Vector3 startPos = Death.S.deathCam.transform.position;
+        while (t < 1.0f)
+        {
+            t += Time.deltaTime * (Time.timeScale / 2.0f);
+            Death.S.deathCam.transform.position = Vector3.Lerp(startPos, targetPlayer, t);
+            Vector3 cursor = Death.S.deathCam.transform.position;
+            cursor.y = Death.S.cursorPos.y;
+            Death.S.deathCursor.transform.position = cursor;
+            yield return 0;
         }
     }
 }
