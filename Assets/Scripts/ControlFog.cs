@@ -4,6 +4,7 @@ using System.Collections;
 public class ControlFog : MonoBehaviour {
 	public GameObject fogImage; 
 	public GameObject canvas;
+    public static bool fogCheck = false;
 
 	// Use this for initialization
 	void Start () {
@@ -27,6 +28,8 @@ public class ControlFog : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (!fogCheck) return;
+
 		for (int i = 0; i < FogOfWar.xVal; ++i) {
 			for (int j = 0; j < FogOfWar.yVal; j++) {
 				if (FogOfWar.fog [i, j]) {
@@ -34,6 +37,8 @@ public class ControlFog : MonoBehaviour {
 				}
 			}
 		}
+
+        fogCheck = false;
 	}
 
 	public void PlaceFog() {

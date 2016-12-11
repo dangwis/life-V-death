@@ -21,19 +21,28 @@ public class FogOfWar : MonoBehaviour {
 			x = (int)(p1.transform.position.x / 85 * (xVal));
 			y = (int)((- p1.transform.position.z / 85) * (yVal));
 
-			fog [x, y] = true;
+            if (fog[x, y] != true) {
+                fog[x, y] = true;
+                ControlFog.fogCheck = true;
+            }
 		}
 		if (p2 != null) {
 			x = (int)(p2.transform.position.x / 85 * xVal);
 			y = (int)((- p2.transform.position.z / 85) * yVal);
 
-			fog [x, y] = true;
-		}
+            if (fog[x, y] != true) {
+                fog[x, y] = true;
+                ControlFog.fogCheck = true;
+            }
+        }
 		if (p3 != null) {
 			x = (int)(p3.transform.position.x / 85 * xVal);
 			y = (int)((- p3.transform.position.z / 85) * yVal);
 
-			fog [x, y] = true;
-		}
+            if (fog[x, y] != true) {
+                fog[x, y] = true;
+                ControlFog.fogCheck = true;
+            }
+        }
 	}
 }
