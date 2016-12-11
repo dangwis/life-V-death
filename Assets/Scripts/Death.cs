@@ -94,7 +94,7 @@ public class Death : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+        
         ChooseAbility();
         if(activeAbility == AbilityType.Place)
         {

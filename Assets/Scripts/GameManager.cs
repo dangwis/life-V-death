@@ -5,16 +5,18 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager S;
 
-    public float setupTime, firstTip, secondTip, thirdTip;
+    public float setupTime;
     float startTime;
-
-    public bool gameStart;
+    public float showFountainTime, showLifeTime;
+    public bool gameStart, showFountain, showLife;
 
 	// Use this for initialization
 	void Start () {
         S = this;
         startTime = Time.time;
         gameStart = false;
+        showLife = false;
+        showFountain = false;
 	}
 	
 	// Update is called once per frame
@@ -23,17 +25,13 @@ public class GameManager : MonoBehaviour {
         {
             gameStart = true;
         }
-        if(Time.time - startTime > firstTip)
+        if(Time.time - startTime > showFountainTime)
         {
-
+            showFountain = true;
         }
-        if (Time.time - startTime > secondTip)
+        if (Time.time - startTime > showLifeTime)
         {
-
-        }
-        if (Time.time - startTime > thirdTip)
-        {
-
+            showLife = true;
         }
     }
 }

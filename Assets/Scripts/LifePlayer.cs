@@ -46,10 +46,6 @@ public class LifePlayer : MonoBehaviour {
     float disarmTimeStart;
     GameObject disarmingTrap;
 
-    void Awake () {
-        WinCondition.NumLivingPlayers++;
-    }
-
     // Use this for initialization
     void Start () {
         charController = this.transform.GetComponent<CharacterController>();

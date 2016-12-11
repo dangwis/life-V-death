@@ -7,7 +7,7 @@ public class WinCondition : MonoBehaviour {
     public static WinCondition S;
     public static bool deathWon = false;
     public static bool lifeWon = false;
-    public static List<bool> foundFountain;
+    public static List<bool> foundFountain = new List<bool>();
     bool gameOver = false;
 
     // Use this for initialization
@@ -19,10 +19,10 @@ public class WinCondition : MonoBehaviour {
 
     public static void CreateList(int numPlayers)
     {
-        foundFountain = new List<bool>(numPlayers);
-        for(int i = 0; i < numPlayers; i++)
+        for(int i = 0; i < numPlayers - 1; i++)
         {
-            foundFountain[i] = false;
+            bool temp = false;
+            foundFountain.Add(temp);
         }
     }
 
