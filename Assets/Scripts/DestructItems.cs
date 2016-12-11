@@ -7,6 +7,7 @@ public class DestructItems : MonoBehaviour {
     public GameObject healthPowerPrefab;
     public GameObject DestroyedObject;
     public int health = 3;
+    public bool crate = false;
 
     void ShowDamage() {
         GetComponent<Renderer>().material.color = new Color(200f / 255f, 0f, 0f, 1f);
@@ -23,8 +24,18 @@ public class DestructItems : MonoBehaviour {
             ShowDamage();
             if (health <= 0) {
                 DestroyBarrel();
+                if (crate) {
+                    GameObject.Find("Audio").transform.Find("CrateDestroy").GetComponent<AudioSource>().Play();
+                } else {
+                    GameObject.Find("Audio").transform.Find("VaseDestroy").GetComponent<AudioSource>().Play();
+                }
+            } else {
+                if (crate) {
+                    GameObject.Find("Audio").transform.Find("CrateHit").GetComponent<AudioSource>().Play();
+                } else {
+                    GameObject.Find("Audio").transform.Find("VaseHit").GetComponent<AudioSource>().Play();
+                }
             }
-            Debug.Log("test2");
         }
     }
 
@@ -42,9 +53,9 @@ public class DestructItems : MonoBehaviour {
     void DestroyBarrel() {
         if (DestroyedObject != null)
         {
+            Instantiate(DestroyedObject, transform.position, transform.rotation);
             if (Random.value < percentChance)
             {
-                Instantiate(DestroyedObject, transform.position, transform.rotation);
                 GameObject hp = Instantiate(healthPowerPrefab);
                 hp.transform.position = transform.position;
                 hp.GetComponent<HealthPowerup>().healthToRestore = healthRegen;

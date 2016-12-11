@@ -101,7 +101,10 @@ public class EnemyGrunt : MonoBehaviour {
             } else if (col.gameObject.tag == "Sword") {
                 health -= 1.5f;
             }
-			UpdatePopupNotification ("", health / maxHealth);
+            if (health > 0) {
+                GameObject.Find("Audio").transform.Find("GobHit").GetComponent<AudioSource>().Play();
+            }
+            UpdatePopupNotification("", health / maxHealth);
             state = 3;
         }
     }
@@ -116,8 +119,8 @@ public class EnemyGrunt : MonoBehaviour {
         if(mySpawn != null)
         {
             mySpawn.DecrementSpawned();
-        }       
-		RemovePopupNotification ();
+        }
+        RemovePopupNotification();
         Destroy(this.gameObject);
     }
 
@@ -164,6 +167,7 @@ public class EnemyGrunt : MonoBehaviour {
                     break;
                 case 2: // attacking
                     gruntAnimator.SetInteger("State", 2);
+                    GameObject.Find("Audio").transform.Find("GobAttack").GetComponent<AudioSource>().Play();
                     break;
                 case 3: // hit
                     gruntAnimator.SetInteger("State", 3);
@@ -173,6 +177,7 @@ public class EnemyGrunt : MonoBehaviour {
                 case 4: // dead
                     gruntAnimator.SetInteger("State", 4);
                     Invoke("StartDeath", 3f);
+                    GameObject.Find("Audio").transform.Find("GobDeath").GetComponent<AudioSource>().Play();
                     transform.GetComponent<CapsuleCollider>().enabled = false;
                     break;
             }
