@@ -24,16 +24,16 @@ public class DeathHUD : MonoBehaviour {
 		inst = this;
         switch (MapGenerator.fountLoc) {
             case 0:
-                transform.Find("Panel").transform.Find("Map").GetComponent<Image>().sprite = minimapUL;
+                transform.Find("Panel").transform.Find("Map").GetComponent<Image>().sprite = minimapBL;
                 break;
             case 1:
-                transform.Find("Panel").transform.Find("Map").GetComponent<Image>().sprite = minimapUR;
+                transform.Find("Panel").transform.Find("Map").GetComponent<Image>().sprite = minimapBL;
                 break;
             case 2:
                 transform.Find("Panel").transform.Find("Map").GetComponent<Image>().sprite = minimapBL;
                 break;
             case 3:
-                transform.Find("Panel").transform.Find("Map").GetComponent<Image>().sprite = minimapBR;
+                transform.Find("Panel").transform.Find("Map").GetComponent<Image>().sprite = minimapBL;
                 break;
         }
         countdownToStart.SetActive(true);
