@@ -359,13 +359,39 @@ public class LifePlayer : MonoBehaviour {
 		}
     }
 
+    void SetLayerRecursively(GameObject obj, string name)
+    {
+        if (obj == null) return;
+        obj.layer = LayerMask.NameToLayer(name);
+        foreach(Transform child in obj.transform)
+        {
+            if (child == null) continue;
+            SetLayerRecursively(child.gameObject, name);
+        }
+    }
+
 	public void ShowPopupNotification(string txt, bool showBar = false) {
 		Vector3 pos = transform.position;
 		pos.y = 6;
 		pos.z += 1;
 		Destroy (activePopup);
 		activePopup = Instantiate (popupNotificationPrefab, pos, popupNotificationPrefab.transform.rotation, transform) as GameObject;
-		activePopup.transform.FindChild ("Panel").FindChild ("Text").GetComponent<TextMesh> ().text = txt;
+        if(playerNum == 1)
+        {   
+            activePopup.layer = LayerMask.NameToLayer("Life1");
+            SetLayerRecursively(activePopup, "Life1");
+        }
+        if (playerNum == 2)
+        {
+            SetLayerRecursively(activePopup, "Life2");
+            activePopup.layer = LayerMask.NameToLayer("Life2");
+        }
+        if (playerNum == 3)
+        {
+            SetLayerRecursively(activePopup, "Life3");
+            activePopup.layer = LayerMask.NameToLayer("Life3");
+        }
+        activePopup.transform.FindChild ("Panel").FindChild ("Text").GetComponent<TextMesh> ().text = txt;
 		activePopup.transform.FindChild ("Panel").FindChild ("Slider").gameObject.SetActive (showBar);
 	}
 

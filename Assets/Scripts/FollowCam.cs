@@ -11,13 +11,8 @@ public class FollowCam : MonoBehaviour {
 
 	void Start () {
 		cam = transform.GetComponent<Camera>();
-
 		// Initially position the camera exactly over the poi - JB
 		transform.position = FollowObject.transform.position + CameraOffset;
-	}
-
-	void Update () {
-		
 	}
 
 	// Update is called once per frame
@@ -37,6 +32,37 @@ public class FollowCam : MonoBehaviour {
 		}
 	}
 
+    public void setCullingMask(int playerNum)
+    {
+        if(cam == null)
+        {
+            cam = transform.GetComponent<Camera>();
+        }
+        if(playerNum == 1)
+        {
+            cam.cullingMask |= 1 << LayerMask.NameToLayer("Life1");
+            cam.cullingMask &= ~(1 << LayerMask.NameToLayer("Life2"));
+            cam.cullingMask &= ~(1 << LayerMask.NameToLayer("Life3"));
+        }
+        else if (playerNum == 2)
+        {
+            cam.cullingMask |= 1 << LayerMask.NameToLayer("Life2");
+            cam.cullingMask &= ~(1 << LayerMask.NameToLayer("Life1"));
+            cam.cullingMask &= ~(1 << LayerMask.NameToLayer("Life3"));
+        }
+        else if (playerNum == 3)
+        {
+            cam.cullingMask |= 1 << LayerMask.NameToLayer("Life3");
+            cam.cullingMask &= ~(1 << LayerMask.NameToLayer("Life2"));
+            cam.cullingMask &= ~(1 << LayerMask.NameToLayer("Life1"));
+        }
+        else
+        {
+            cam.cullingMask &= ~(1 << LayerMask.NameToLayer("Life2"));
+            cam.cullingMask &= ~(1 << LayerMask.NameToLayer("Life1"));
+            cam.cullingMask &= ~(1 << LayerMask.NameToLayer("Life3"));
+        }
+    }
 
 	// From https://www.reddit.com/r/Unity3D/comments/34ip2j/gaps_between_tiled_sprites_help/ - JB
 	private float RoundToNearestPixel(float unityUnits, Camera viewingCamera)
