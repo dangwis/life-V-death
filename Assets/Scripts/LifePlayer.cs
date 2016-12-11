@@ -45,6 +45,7 @@ public class LifePlayer : MonoBehaviour {
     public float disarmTime;
     float disarmTimeStart;
     GameObject disarmingTrap;
+	public bool stunned = false;
 
     // Use this for initialization
     void Start () {
@@ -321,20 +322,22 @@ public class LifePlayer : MonoBehaviour {
             return;
         }
 
-        float Xinput = Input.GetAxis (XInput.XboxLStickX (playerNum));
-        float Yinput = -Input.GetAxis(XInput.XboxLStickY(playerNum));
-		Vector3 movementDir = new Vector3 (Xinput, 0, Yinput).normalized;
-		if (movementDir != Vector3.zero) {
-			charController.SimpleMove (movementDir * speed / slowedAmount);
-			transform.rotation = Quaternion.LookRotation (movementDir);
+		if (!stunned) {
+			//movement
+			float Xinput = Input.GetAxis (XInput.XboxLStickX (playerNum));
+			float Yinput = -Input.GetAxis (XInput.XboxLStickY (playerNum));
+			Vector3 movementDir = new Vector3 (Xinput, 0, Yinput).normalized;
+			if (movementDir != Vector3.zero) {
+				charController.SimpleMove (movementDir * speed / slowedAmount);
+				transform.rotation = Quaternion.LookRotation (movementDir);
+			}
+			Xinput = Input.GetAxis (XInput.XboxRStickX (playerNum));
+			Yinput = -Input.GetAxis (XInput.XboxRStickY (playerNum));
+			if (Xinput != 0 || Yinput != 0) {
+				Vector3 lookDir = new Vector3 (Xinput, 0, Yinput).normalized;
+				transform.rotation = Quaternion.LookRotation (lookDir);
+			}
 		}
-        Xinput = Input.GetAxis(XInput.XboxRStickX(playerNum));
-        Yinput = -Input.GetAxis(XInput.XboxRStickY(playerNum));
-        if (Xinput != 0 || Yinput != 0) {
-            Vector3 lookDir = new Vector3(Xinput, 0, Yinput).normalized;
-            transform.rotation = Quaternion.LookRotation(lookDir);
-        }
-
         // Call attack handlers
         if (attacking) {
             switch (weapontype) {
