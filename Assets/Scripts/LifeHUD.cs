@@ -7,6 +7,7 @@ public class LifeHUD : MonoBehaviour {
 	public Slider healthSlider;
     public Sprite minimapUL, minimapUR, minimapBL, minimapBR;
     public GameObject deathWins, lifeWins, gameCountdown, goText;
+    public GameObject grabWeapText, practiceText, fountainText;
 
     public bool ______________________;
 
