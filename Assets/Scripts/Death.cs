@@ -96,7 +96,7 @@ public class Death : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (GameManager.S.endFountain == true && GameManager.S.endShowLife)
+        if (GameManager.S.endFountain)
         {
             ChooseAbility();
             if (activeAbility == AbilityType.Place)

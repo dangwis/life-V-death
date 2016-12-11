@@ -12,6 +12,7 @@ public class DeathHUD : MonoBehaviour {
     public GameObject[] abilityImages;
     public GameObject deathWins, lifeWins;
     public GameObject fountainText, killPlayersText, useNumKeysText, scrollText, tabText;
+    public GameObject countdownToStart;
     public GameObject popupMenu;
 
 	private int selectedAbility = -1;
@@ -35,7 +36,7 @@ public class DeathHUD : MonoBehaviour {
                 transform.Find("Panel").transform.Find("Map").GetComponent<Image>().sprite = minimapBR;
                 break;
         }
-
+        countdownToStart.SetActive(true);
         lifeWins.SetActive(false);
         deathWins.SetActive(false);
         killPlayersText.SetActive(false);

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -7,7 +8,7 @@ public class GameManager : MonoBehaviour {
 
     public float setupTime;
     float startTime;
-    public float showFountainTime, showLifeTime, numKeysTime, scrollTextTime, tabTime;
+    public float showFountainTime, showLifeTime, numKeysTime, scrollTextTime, tabTime, endGo;
     public bool gameStart, endFountain, endShowLife;
     bool transitionStarted;
     Vector3 targetPlayer;
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour {
         endShowLife = false;
         endFountain = false;
         transitionStarted = false;
+        
 	}
 	
 	// Update is called once per frame
@@ -27,6 +29,7 @@ public class GameManager : MonoBehaviour {
         if (Time.time - startTime > setupTime)
         {
             gameStart = true;
+            DeathHUD.inst.countdownToStart.SetActive(false);
         }
         if(Time.time - startTime > showFountainTime)
         {
@@ -62,7 +65,12 @@ public class GameManager : MonoBehaviour {
         {
             DeathHUD.inst.tabText.SetActive(false);
         }
-        
+        UpdateCountDown();
+    }
+
+    void UpdateCountDown()
+    {
+        DeathHUD.inst.countdownToStart.GetComponent<Text>().text = "Game Start: " + (int)(setupTime - (Time.time - startTime));
     }
 
     IEnumerator Transition()
