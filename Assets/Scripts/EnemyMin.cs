@@ -158,11 +158,28 @@ public class EnemyMin : MonoBehaviour {
 		Destroy (activePopup);
 	}
 
+	void OnTriggerEnter(Collider col) {
+		if (col.gameObject.tag == "Life") {
+			if (isRunning) {
+				if (!col.gameObject.GetComponent<LifePlayer> ().stunned) {
+					col.gameObject.transform.parent = transform;
+					col.gameObject.GetComponent<LifePlayer> ().stunned = true;
+				}
+			}
+		}
+	}
+
     void OnCollisionEnter(Collision col) {
         if (col.gameObject.tag == "Wall" && state != 0) {
             state = 0;
             isRunning = false;
-
+			//detach players
+			foreach (Transform child in transform) {
+				if (child.tag == "Life") {
+					child.parent = null;
+					child.GetComponent<LifePlayer> ().stunned = false;
+				}
+			}
             // Bounce back
             Vector3 vec = transform.position;
             if (RunDir.x == -1) { // Bounce right
