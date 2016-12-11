@@ -6,7 +6,8 @@ public class LifeHUD : MonoBehaviour {
 
 	public Slider healthSlider;
     public Sprite minimapUL, minimapUR, minimapBL, minimapBR;
-    public GameObject deathWins, lifeWins;
+    public GameObject deathWins, lifeWins, gameCountdown, goText;
+    public GameObject grabWeapText, practiceText, fountainText;
 
     public bool ______________________;
 
@@ -29,7 +30,7 @@ public class LifeHUD : MonoBehaviour {
                 transform.Find("Panel").transform.Find("Map").GetComponent<Image>().sprite = minimapBR;
                 break;
         }
-
+        gameCountdown.SetActive(true);
         lifeWins.SetActive(false);
         deathWins.SetActive(false);
 	}
@@ -42,6 +43,24 @@ public class LifeHUD : MonoBehaviour {
         }
         if (WinCondition.deathWon) {
             deathWins.SetActive(true);
+        }
+        UpdateCountdown();
+    }
+
+    void UpdateCountdown()
+    {
+        if (GameManager.S.setupTime - (Time.time - GameManager.S.startTime) > 0)
+        {
+            gameCountdown.GetComponent<Text>().text = "Game Start: " + (int)(GameManager.S.setupTime - (Time.time - GameManager.S.startTime));
+        }
+        else
+        {
+            gameCountdown.SetActive(false);
+            goText.SetActive(true);
+        }
+        if(GameManager.S.endGo - (Time.time - GameManager.S.startTime) < 0)
+        {
+            goText.SetActive(false);
         }
     }
 }

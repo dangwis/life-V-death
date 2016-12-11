@@ -412,10 +412,10 @@ public class LifePlayer : MonoBehaviour {
             WinCondition.S.UpdateWinCondition(this);
         } else if (col.tag == "Skeleton" && col.gameObject.layer == 13 && state != 2 && state != 3) {
             state = 2;
-            health -= 10;
+            health -= 20;
         } else if (col.tag == "Minotaur" && col.gameObject.layer == 13 && state != 2 && state != 3) {
             state = 2;
-            health -= 20;
+            health -= 40;
         } else if (col.tag == "Grunt" && col.gameObject.layer == 13 && state != 2 && state != 3) {
             state = 2;
             health -= 15;

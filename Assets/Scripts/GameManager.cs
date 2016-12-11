@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager S;
 
     public float setupTime;
-    float startTime;
+    public float startTime;
     public float showFountainTime, showLifeTime, numKeysTime, scrollTextTime, tabTime, endGo;
     public bool gameStart, endFountain, endShowLife;
     bool transitionStarted;
@@ -30,7 +30,19 @@ public class GameManager : MonoBehaviour {
         {
             gameStart = true;
             DeathHUD.inst.countdownToStart.SetActive(false);
+<<<<<<< HEAD
             GameObject.Find("Audio").transform.Find("GameStart").GetComponent<AudioSource>().Play();
+=======
+            if(!((Time.time - startTime) > endGo))
+            {
+                DeathHUD.inst.goText.SetActive(true);
+            }
+            else
+            {
+                DeathHUD.inst.goText.SetActive(false);
+            }
+            
+>>>>>>> c6b7d4771e59195fb22935cc7ba0b09df2902d9d
         }
         if(Time.time - startTime > showFountainTime)
         {
