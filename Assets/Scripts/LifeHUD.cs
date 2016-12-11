@@ -6,7 +6,7 @@ public class LifeHUD : MonoBehaviour {
 
 	public Slider healthSlider;
     public Sprite minimapUL, minimapUR, minimapBL, minimapBR;
-    public GameObject deathWins, lifeWins, gameCountdown;
+    public GameObject deathWins, lifeWins, gameCountdown, goText;
 
     public bool ______________________;
 
@@ -48,6 +48,18 @@ public class LifeHUD : MonoBehaviour {
 
     void UpdateCountdown()
     {
-        gameCountdown.GetComponent<Text>().text = "Game Start: " + (int)(GameManager.S.setupTime - (Time.time - GameManager.S.startTime));
+        if (GameManager.S.setupTime - (Time.time - GameManager.S.startTime) > 0)
+        {
+            gameCountdown.GetComponent<Text>().text = "Game Start: " + (int)(GameManager.S.setupTime - (Time.time - GameManager.S.startTime));
+        }
+        else
+        {
+            gameCountdown.SetActive(false);
+            goText.SetActive(true);
+        }
+        if(GameManager.S.endGo - (Time.time - GameManager.S.startTime) < 0)
+        {
+            goText.SetActive(false);
+        }
     }
 }
