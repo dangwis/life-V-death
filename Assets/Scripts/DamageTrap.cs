@@ -31,13 +31,13 @@ public class DamageTrap : MonoBehaviour {
         {
             go.GetComponent<LifePlayer>().health -= damageDealt;
             go.GetComponent<LifePlayer>().state = 2;
+            go.GetComponent<LifePlayer>().ShowPopupNotification("Hold A to disarm trap");
             showing = true;
             this.gameObject.transform.Find("Trap_Needle").gameObject.layer = 0;
             //animate.Play("Anim_TrapNeedle_Show");
             foreach (ParticleSystem fire in flame) {
                 fire.Play();
             }
-
             armed = false;
             Invoke("SetArmed", 1f);
         }
@@ -57,6 +57,10 @@ public class DamageTrap : MonoBehaviour {
                 fire.Stop();
             }
             showing = false;
+        }
+        if(go.tag == "Life")
+        {
+            go.GetComponent<LifePlayer>().RemovePopupNotification();
         }
     }
 
