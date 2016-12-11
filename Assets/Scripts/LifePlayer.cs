@@ -122,7 +122,7 @@ public class LifePlayer : MonoBehaviour {
             hasWeapon = true;
             canPickupWeapon = false;
 			ShowPopupNotification ("Press RT to attack");
-			Invoke ("ChangePopTxtToStrafe", 5f);
+			Invoke ("ChangePopTxtToCrates", 7f);
             weapontype = pickupType;
             switch (weapontype) {
                 case 1:
@@ -393,15 +393,21 @@ public class LifePlayer : MonoBehaviour {
 
 	void ChangePopTxtToStrafe() {
 		ShowPopupNotification ("Use the right stick to strafe");
-		Invoke ("ChangePopTxtToObj", 5f);
+		Invoke ("ChangePopTxtToObj", 7f);
 	}
+
+    void ChangePopTxtToCrates()
+    {
+        ShowPopupNotification("Attack crates and vases!"+ '\n' + "They might drop health!");
+        Invoke("ChangePopTxtToStrafe", 7f);
+    }
 
 	void ChangePopTxtToObj() {
-		ShowPopupNotification ("Find the fountain of youth\nbefore death finds you!");
-		Invoke ("RemovePopupNotification", 5f);
+		ShowPopupNotification ("Find the fountain of youth" + '\n' + "before death finds you!");
+		Invoke ("RemovePopupNotification", 7f);
 	}
 
-	void RemovePopupNotification() {
+	public void RemovePopupNotification() {
 		//Debug.Log ("remove popup");
 		Destroy (activePopup);
 	}
