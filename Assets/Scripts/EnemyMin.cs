@@ -226,6 +226,17 @@ public class EnemyMin : MonoBehaviour {
                 health -= 1.5f;
             }
 
+			if (health <= 0) {
+				//detach players
+				foreach (Transform child in transform) {
+					if (child.tag == "Life") {
+						child.parent = null;
+						child.GetComponent<LifePlayer> ().stunned = false;
+						child.GetComponent<LifePlayer> ().canTakeDamage = true;
+					}
+				}
+			}
+
             if (health > 0) {
                 GameObject.Find("Audio").transform.Find("MinHit").GetComponent<AudioSource>().Play();
             }
