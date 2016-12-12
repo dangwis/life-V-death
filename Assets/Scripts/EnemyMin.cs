@@ -34,7 +34,7 @@ public class EnemyMin : MonoBehaviour {
         InvokeRepeating("CheckNearby", checkRate, checkRate);
     }
 
-	void OnDestory() {
+	void OnDestroy() {
 		//detach players
 		foreach (Transform child in transform) {
 			if (child.tag == "Life") {
