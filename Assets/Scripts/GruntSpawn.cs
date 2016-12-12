@@ -6,9 +6,10 @@ public class GruntSpawn : MonoBehaviour {
 	
 	public GameObject gruntPrefab;
 	public float maxSpawnTime = 5f;
-    public int health = 3;
+    public float health = 3;
     private float spawnTimer = 5f;
     public int maxSpawned = 1;
+    public float healthDecay;
     int curSpawned;
 
 	public GameObject popupNotificationPrefab;	
@@ -31,6 +32,19 @@ public class GruntSpawn : MonoBehaviour {
 			spawnTimer = 0f;
 		}
 	}
+
+    void FixedUpdate()
+    {
+        if (GameManager.S.gameStart)
+        {
+            health -= healthDecay;
+            UpdatePopupNotification("", health / maxHealth);
+            if (health <= 0)
+            {
+                DestroyIt();
+            }
+        }
+    }
 
     public void DecrementSpawned()
     {
@@ -98,5 +112,6 @@ public class GruntSpawn : MonoBehaviour {
     void DestroyIt()
     {
         Destroy(gameObject);
+        Death.S.curSpawner--;
     }
 }

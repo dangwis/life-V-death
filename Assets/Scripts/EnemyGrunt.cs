@@ -9,6 +9,7 @@ public class EnemyGrunt : MonoBehaviour {
     public float attackRange = 1f;
     public float moveSpeed = 1f;
     public float health = 3f;
+    public float healthDecay;
     int _state = 0; // 0 = idle, 1 = walking, 2 = attacking
     Animator gruntAnimator;
     public GameObject sword;
@@ -34,6 +35,16 @@ public class EnemyGrunt : MonoBehaviour {
     }
 
     void FixedUpdate() {
+        if (GameManager.S.gameStart)
+        {
+            health -= healthDecay;
+            UpdatePopupNotification("", health / maxHealth);
+            if (health <= 0)
+            {
+                state = 4;
+                return;
+            }
+        }
         if (state == 3 || state == 4) {
             if (health <= 0) {
                 state = 4;
