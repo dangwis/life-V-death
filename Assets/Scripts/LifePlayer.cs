@@ -329,7 +329,7 @@ public class LifePlayer : MonoBehaviour {
             return;
         }
 
-		if (!stunned && state < 3) {
+		if (!stunned && state != 3 && state != 4 && state != 5) {
 			//movement
 			float Xinput = Input.GetAxis (XInput.XboxLStickX (playerNum));
 			float Yinput = -Input.GetAxis (XInput.XboxLStickY (playerNum));
