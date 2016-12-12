@@ -4,6 +4,7 @@ using System.Collections;
 public class FogOfWar : MonoBehaviour {
 	public static int xVal = 8, yVal = 8;
 	public static bool[,] fog = new bool[xVal,yVal];
+    GameObject p1, p2, p3;
 
 	void Start() {
 		for (int i = 0; i < xVal; i++) {
@@ -11,11 +12,13 @@ public class FogOfWar : MonoBehaviour {
 				fog [i, j] = false;
 			}
 		}
-	}
+        p1 = GameObject.Find("Player 1");
+        p2 = GameObject.Find("Player 2");
+        p3 = GameObject.Find("Player 3");
+    }
 
 	// Update is called once per frame
 	void Update () {
-		GameObject p1 = GameObject.Find ("Player 1"), p2 = GameObject.Find ("Player 2"), p3 = GameObject.Find ("Player 3");
 		int x = 0, y = 0;
 		if (p1 != null) {
 			x = (int)(p1.transform.position.x / 85 * (xVal));

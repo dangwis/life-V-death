@@ -17,6 +17,7 @@ public class SetupCameras : MonoBehaviour {
 	public GameObject DeathCam, LifeCam, LifeObj;
 
 	void Start () {
+        Application.targetFrameRate = 30;
 		GameObject Camera0 = (GameObject)Instantiate (DeathCam, deathCamStart, DeathCam.transform.rotation), Camera1, Camera2, Camera3, Player1, Player2, Player3;
 		Canvas deathOverlay = Instantiate (deathUI);
 		deathOverlay.worldCamera = Camera0.GetComponent<Camera> ();
@@ -166,10 +167,5 @@ public class SetupCameras : MonoBehaviour {
 			}
 			break;
 		}
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

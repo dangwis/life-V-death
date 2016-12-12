@@ -17,15 +17,26 @@ public class EnemySkel : MonoBehaviour {
 	public GameObject popupNotificationPrefab;
 	private GameObject activePopup; //health bar
 	private float maxHealth;
+    List<GameObject> attackNearby = new List<GameObject>(), moveNearby = new List<GameObject>();
+    GameObject nearbyPlayer;
+    public float checkRate = 0.1f;
 
-	// Use this for initialization
-	void Start () {
+
+    // Use this for initialization
+    void Start () {
         skelAnimator = GetComponent<Animator>();
         forearmCollider.enabled = (false);
 		ShowPopupNotification ("", true);
 		UpdatePopupNotification ("", 1);
 		maxHealth = health;
-	}
+        InvokeRepeating("CheckNearby", checkRate, checkRate);
+    }
+
+    void CheckNearby() {
+        // Check if can attack
+        attackNearby = Enemy.DetectPlayers(this.gameObject, attackRange);
+        moveNearby = Enemy.DetectPlayers(this.gameObject, detectRange);
+    }
 
     void FixedUpdate() {
         if (state == 3 || state == 4) {
@@ -34,40 +45,34 @@ public class EnemySkel : MonoBehaviour {
             }
             return;
         }
-
-        // Check if can attack
-        List<GameObject> nearby = Enemy.DetectPlayers(this.gameObject, attackRange);
         
-        if (nearby.Count == 0) {
+        if (attackNearby.Count == 0) {
             // Check if can move
-            nearby = Enemy.DetectPlayers(this.gameObject, detectRange);
-
-            if (nearby.Count == 0) { // Idle
+            nearbyPlayer = Enemy.FindClosestPlayer(this.gameObject, moveNearby);
+            if (moveNearby.Count == 0) { // Idle
                 state = 0;
             } else { // Walk
                 state = 1;
             }
 
         } else { // Attack
+            nearbyPlayer = Enemy.FindClosestPlayer(this.gameObject, attackNearby);
             state = 2;
         }
-
-        // Get the closest player
-        GameObject player = Enemy.FindClosestPlayer(this.gameObject, nearby);
 
         switch (state) {
             case 0: // Idle
                 // Do nothing?
                 break;
             case 1: // Walking towards closest player
-                Vector3 vec1 = transform.position, vec2 = player.transform.position;
+                Vector3 vec1 = transform.position, vec2 = nearbyPlayer.transform.position;
                 vec1.y = 1.6f;
                 vec2.y = 1.6f;
                 transform.position = Vector3.MoveTowards(vec1, vec2, moveSpeed * Time.fixedDeltaTime);
                 transform.LookAt(vec2);
                 break;
             case 2: // Attacking closest player
-                Vector3 vec = player.transform.position - transform.position;
+                Vector3 vec = nearbyPlayer.transform.position - transform.position;
                 vec.y = 0;
                 Quaternion rotation = Quaternion.LookRotation(vec);
                 rotation *= Quaternion.Euler(0, -45, 0);

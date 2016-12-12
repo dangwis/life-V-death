@@ -18,6 +18,9 @@ public class EnemyMin : MonoBehaviour {
 	public GameObject popupNotificationPrefab;
 	private GameObject activePopup; //health bar
 	private float maxHealth;
+    List<GameObject> moveNearby = new List<GameObject>();
+    GameObject nearbyPlayer;
+    public float checkRate = 0.1f;
 
     // Use this for initialization
     void Start () {
@@ -27,6 +30,12 @@ public class EnemyMin : MonoBehaviour {
 		UpdatePopupNotification ("", 1);
 		maxHealth = health;
         GameObject.Find("Audio").transform.Find("MinAwake").GetComponent<AudioSource>().Play();
+        InvokeRepeating("CheckNearby", checkRate, checkRate);
+    }
+
+    void CheckNearby() {
+        // Check if can attack
+        moveNearby = Enemy.DetectPlayers(this.gameObject, detectRange);
     }
 
     // Update is called once per frame
@@ -35,12 +44,9 @@ public class EnemyMin : MonoBehaviour {
             state = 2;
         }
 
-        // Check if can run
-        List<GameObject> nearby = Enemy.DetectPlayers(this.gameObject, detectRange);
-
-        if (nearby.Count != 0 && canRun && state == 0) { // Run
+        if (moveNearby.Count != 0 && canRun && state == 0) { // Run
             // Get the closest player
-            GameObject player = Enemy.FindClosestPlayer(this.gameObject, nearby);
+            GameObject player = Enemy.FindClosestPlayer(this.gameObject, moveNearby);
 
             if (Mathf.Abs((player.transform.position - transform.position).x) > Mathf.Abs((player.transform.position - transform.position).z)) {
                 if ((player.transform.position - transform.position).x < 0) { // left

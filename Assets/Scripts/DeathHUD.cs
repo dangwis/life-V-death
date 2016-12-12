@@ -10,6 +10,7 @@ public class DeathHUD : MonoBehaviour {
     public Sprite minimapUL, minimapUR, minimapBL, minimapBR;
     public GameObject[] selectionImages;
     public GameObject[] abilityImages;
+    public Image[] abilitiesImage;
     public GameObject deathWins, lifeWins;
     public GameObject fountainText, killPlayersText, useNumKeysText, scrollText, tabText, goText;
     public GameObject countdownToStart;
@@ -41,6 +42,11 @@ public class DeathHUD : MonoBehaviour {
         deathWins.SetActive(false);
         killPlayersText.SetActive(false);
         fountainText.SetActive(true);
+
+        abilitiesImage = new Image[abilityImages.Length];
+        for (int i = 0; i < abilityImages.Length; ++i) {
+            abilitiesImage[i] = abilityImages[i].GetComponent<Image>();
+        }
     }
 
 	public void fixOne() {
@@ -83,39 +89,39 @@ public class DeathHUD : MonoBehaviour {
 
         // Grunt
         if (Death.S.manaLeft >= 50f && Death.S.curSpawner < Death.S.totalSpawnerAllowed) {
-            abilityImages[0].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            abilitiesImage[0].color = new Color(1f, 1f, 1f, 1f);
         } else {
-            abilityImages[0].GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f, 1f);
+            abilitiesImage[0].color = new Color(0.3f, 0.3f, 0.3f, 1f);
         }
         // Skeleton
         if (Death.S.manaLeft >= 35 && Death.S.curBigEn < Death.S.totalBigEnemyAllowed) {
-            abilityImages[1].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            abilitiesImage[1].color = new Color(1f, 1f, 1f, 1f);
         } else {
-            abilityImages[1].GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f, 1f);
+            abilitiesImage[1].color = new Color(0.3f, 0.3f, 0.3f, 1f);
         }
         // Minotaur
         if (Death.S.manaLeft >= 40 && Death.S.curBigEn < Death.S.totalBigEnemyAllowed) {
-            abilityImages[2].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            abilitiesImage[2].color = new Color(1f, 1f, 1f, 1f);
         } else {
-            abilityImages[2].GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f, 1f);
+            abilitiesImage[2].color = new Color(0.3f, 0.3f, 0.3f, 1f);
         }
         // Damange
         if (Death.S.manaLeft >= 25f && Death.S.curTrap < Death.S.totalTrapAllowed) {
-            abilityImages[3].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            abilitiesImage[3].color = new Color(1f, 1f, 1f, 1f);
         } else {
-            abilityImages[3].GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f, 1f);
+            abilitiesImage[3].color = new Color(0.3f, 0.3f, 0.3f, 1f);
         }
         // Teleport
         if (Death.S.manaLeft >= 40 && Death.S.curTrap < Death.S.totalTrapAllowed) {
-            abilityImages[4].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            abilitiesImage[4].color = new Color(1f, 1f, 1f, 1f);
         } else {
-            abilityImages[4].GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f, 1f);
+            abilitiesImage[4].color = new Color(0.3f, 0.3f, 0.3f, 1f);
         }
         // Mushroom
         if (Death.S.manaLeft >= 30 && Death.S.curTrap < Death.S.totalTrapAllowed) {
-            abilityImages[5].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            abilitiesImage[5].color = new Color(1f, 1f, 1f, 1f);
         } else {
-            abilityImages[5].GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f, 1f);
+            abilitiesImage[5].color = new Color(0.3f, 0.3f, 0.3f, 1f);
         }
 
         if (Input.GetKey(KeyCode.Tab)) {

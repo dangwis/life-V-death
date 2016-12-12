@@ -21,7 +21,10 @@ public class TrackPlayer : MonoBehaviour {
 
 		trans = GetComponent<RectTransform> ();
 		setup = true;
-	}
+        if (map.GetComponent<FixRatio>() != null) {
+            map.GetComponent<FixRatio>().Fix();
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -33,12 +36,6 @@ public class TrackPlayer : MonoBehaviour {
 		vec.x = vec.x / 85 * map.GetComponent<RectTransform>().rect.width;
 		vec.y = map.GetComponent<RectTransform>().rect.height + vec.z / 85 * map.GetComponent<RectTransform>().rect.height;
 		vec.z = 0;
-
-		if (map.GetComponent<RectTransform> ().rect.width != map.GetComponent<RectTransform> ().rect.height) {
-			if (map.GetComponent<FixRatio> () != null) {
-				map.GetComponent<FixRatio> ().Fix ();
-			}
-		}
 
 		trans.transform.localPosition = vec;
 	}

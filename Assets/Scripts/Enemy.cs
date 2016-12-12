@@ -24,8 +24,8 @@ public class Enemy : MonoBehaviour {
 	}*/
 
 	public static List<GameObject> DetectPlayers(GameObject enemy, float detectRange) {
-		// Detect players
-		Collider[] hits = Physics.OverlapSphere(enemy.transform.position, detectRange, LayerMask.GetMask("Life"));
+        // Detect players
+        Collider[] hits = Physics.OverlapSphere(enemy.transform.position, detectRange, LayerMask.GetMask("Life"));
 		List<GameObject> players = new List<GameObject>();
 		foreach (Collider hit in hits) {
 			if (hit.gameObject.tag == "Life") {

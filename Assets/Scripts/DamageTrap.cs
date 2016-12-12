@@ -18,11 +18,6 @@ public class DamageTrap : MonoBehaviour {
             fire.Stop();
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     void OnTriggerStay(Collider coll)
     {

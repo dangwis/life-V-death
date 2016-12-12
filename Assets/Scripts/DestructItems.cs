@@ -8,6 +8,16 @@ public class DestructItems : MonoBehaviour {
     public GameObject DestroyedObject;
     public int health = 3;
     public bool crate = false;
+    public static AudioSource CrateDestroy, VaseDestroy, CrateHit, VaseHit;
+
+    void Start () {
+        if (CrateDestroy == null) {
+            CrateDestroy = GameObject.Find("Audio").transform.Find("CrateDestroy").GetComponent<AudioSource>();
+            VaseDestroy = GameObject.Find("Audio").transform.Find("VaseDestroy").GetComponent<AudioSource>();
+            CrateHit = GameObject.Find("Audio").transform.Find("CrateHit").GetComponent<AudioSource>();
+            VaseHit = GameObject.Find("Audio").transform.Find("VaseHit").GetComponent<AudioSource>();
+        }
+    }
 
     void ShowDamage() {
         GetComponent<Renderer>().material.color = new Color(200f / 255f, 0f, 0f, 1f);
@@ -25,15 +35,15 @@ public class DestructItems : MonoBehaviour {
 			if (health <= 0 || col.gameObject.tag == "Minotaur") {
                 DestroyBarrel();
                 if (crate) {
-                    GameObject.Find("Audio").transform.Find("CrateDestroy").GetComponent<AudioSource>().Play();
+                    CrateDestroy.Play();
                 } else {
-                    GameObject.Find("Audio").transform.Find("VaseDestroy").GetComponent<AudioSource>().Play();
+                    VaseDestroy.Play();
                 }
             } else {
                 if (crate) {
-                    GameObject.Find("Audio").transform.Find("CrateHit").GetComponent<AudioSource>().Play();
+                    CrateHit.Play();
                 } else {
-                    GameObject.Find("Audio").transform.Find("VaseHit").GetComponent<AudioSource>().Play();
+                    VaseHit.Play();
                 }
             }
         }
