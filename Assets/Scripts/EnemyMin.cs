@@ -8,6 +8,7 @@ public class EnemyMin : MonoBehaviour {
     public float detectRange = 5f;
     public float attackRange = 1f;
     public float moveSpeed = 1f;
+    public float healthDecay;
     int _state = 0; // 0 = idle, 1 = running, 2 = death
     Animator minAnimator;
     Vector3 RunDir;
@@ -40,6 +41,11 @@ public class EnemyMin : MonoBehaviour {
 
     // Update is called once per frame
     void FixedUpdate () {
+        if (GameManager.S.gameStart)
+        {
+            health -= healthDecay;
+            UpdatePopupNotification("", health / maxHealth);
+        }
         if (health <= 0 && state != 2) {
             state = 2;
         }
@@ -170,9 +176,15 @@ public class EnemyMin : MonoBehaviour {
 				if (!col.gameObject.GetComponent<LifePlayer> ().stunned) {
 					col.gameObject.transform.parent = transform;
 					col.gameObject.GetComponent<LifePlayer> ().stunned = true;
+					col.gameObject.GetComponent<LifePlayer> ().canTakeDamage = false;
+					col.transform.position = transform.position;
 				}
 			}
 		}
+	}
+
+	void EnableHitBox() {
+		gameObject.GetComponent<CapsuleCollider> ().enabled = true;
 	}
 
     void OnCollisionEnter(Collision col) {
@@ -184,8 +196,12 @@ public class EnemyMin : MonoBehaviour {
 				if (child.tag == "Life") {
 					child.parent = null;
 					child.GetComponent<LifePlayer> ().stunned = false;
+					child.GetComponent<LifePlayer> ().canTakeDamage = true;
 				}
 			}
+
+			gameObject.GetComponent<CapsuleCollider> ().enabled = false;
+			Invoke ("EnableHitBox", 2f);
             // Bounce back
             Vector3 vec = transform.position;
             if (RunDir.x == -1) { // Bounce right

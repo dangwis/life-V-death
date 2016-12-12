@@ -9,6 +9,7 @@ public class EnemySkel : MonoBehaviour {
     public float attackRange = 1f;
     public float moveSpeed = 1f;
     public float health = 3f;
+    public float healthDecay;
     int _state = 0; // 0 = idle, 1 = walking, 2 = attacking
     Animator skelAnimator;
     public GameObject foreArm;
@@ -39,6 +40,16 @@ public class EnemySkel : MonoBehaviour {
     }
 
     void FixedUpdate() {
+        if (GameManager.S.gameStart)
+        {
+            health -= healthDecay;
+            UpdatePopupNotification("", health / maxHealth);
+            if (health <= 0)
+            {
+                state = 4;
+                return;
+            }
+        }
         if (state == 3 || state == 4) {
             if (health <= 0) {
                 state = 4;
