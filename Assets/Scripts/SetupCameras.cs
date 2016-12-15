@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using XboxCtrlrInput;
 
 public class SetupCameras : MonoBehaviour {
 	static public int PlayerCount = 2;
@@ -27,14 +28,15 @@ public class SetupCameras : MonoBehaviour {
         WinCondition.CreateList(PlayerCount);
 		switch (PlayerCount) {
 		case 2:
-            Camera1 = Instantiate (LifeCam) as GameObject;
+			Camera1 = Instantiate (LifeCam) as GameObject;
 			Camera1.name = "Camera 1";
             
 			Player1 = Instantiate (LifeObj, playerStart, LifeObj.transform.rotation) as GameObject;
 			Camera1.GetComponent<FollowCam> ().FollowObject = Player1;
-            Camera1.GetComponent<FollowCam>().setCullingMask(1);
+			Camera1.GetComponent<FollowCam> ().setCullingMask (1);
 			Player1.name = "Player 1";
-            Player1.GetComponent<LifePlayer>().playerNum = 1;
+			Player1.GetComponent<LifePlayer> ().playerNum = 1;
+			Player1.GetComponent<LifePlayer> ().controller = XboxController.First;
 
             lifeOverlay.worldCamera = Camera1.GetComponent<Camera> ();
 			lifeOverlay.planeDistance = 1;
@@ -69,8 +71,10 @@ public class SetupCameras : MonoBehaviour {
 
 			Player1.name = "Player 1";
             Player1.GetComponent<LifePlayer>().playerNum = 1;
+			Player1.GetComponent<LifePlayer> ().controller = XboxController.First;
 			Player2.name = "Player 2";
             Player2.GetComponent<LifePlayer>().playerNum = 2;
+			Player2.GetComponent<LifePlayer> ().controller = XboxController.Second;
 
             Player2.transform.Find("body").transform.Find("armor_").GetComponent<Renderer>().material = armor_blue;
             Player2.transform.Find("body").transform.Find("helmet_").GetComponent<Renderer>().material = helmet_blue;
@@ -122,10 +126,13 @@ public class SetupCameras : MonoBehaviour {
 
 			Player1.name = "Player 1";
 			Player1.GetComponent<LifePlayer> ().playerNum = 1;
+			Player1.GetComponent<LifePlayer> ().controller = XboxController.First;
 			Player2.name = "Player 2";
 			Player2.GetComponent<LifePlayer> ().playerNum = 2;
+			Player2.GetComponent<LifePlayer> ().controller = XboxController.Second;
 			Player3.name = "Player 3";
 			Player3.GetComponent<LifePlayer> ().playerNum = 3;
+			Player3.GetComponent<LifePlayer> ().controller = XboxController.Third;
 
             Player2.transform.Find("body").transform.Find("armor_").GetComponent<Renderer>().material = armor_blue;
             Player2.transform.Find("body").transform.Find("helmet_").GetComponent<Renderer>().material = helmet_blue;

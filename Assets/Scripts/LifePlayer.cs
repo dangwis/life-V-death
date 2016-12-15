@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using XboxCtrlrInput;
 
 public class LifePlayer : MonoBehaviour {
 
@@ -48,8 +49,11 @@ public class LifePlayer : MonoBehaviour {
     GameObject disarmingTrap;
 	public bool stunned = false;
 
+	public XboxController controller;
+
     // Use this for initialization
     void Start () {
+		
         charController = this.transform.GetComponent<CharacterController>();
         hasWeapon = false;
         lastattacktime = Time.time;
@@ -124,7 +128,7 @@ public class LifePlayer : MonoBehaviour {
         }
 
         // Picking up your weapon
-        if (Input.GetButtonDown(XInput.XboxA(playerNum)) && canPickupWeapon && !hasWeapon && weapontype == 0) {
+		if (XCI.GetButtonDown(XboxButton.A, controller) && canPickupWeapon && !hasWeapon && weapontype == 0) {
             Destroy (weaponPickupObj);
             hasWeapon = true;
             canPickupWeapon = false;
@@ -146,7 +150,7 @@ public class LifePlayer : MonoBehaviour {
             }
         }
 
-        if (Input.GetButton(XInput.XboxA(playerNum)))
+		if (XCI.GetButton(XboxButton.A, controller))
         {
 
             if (!disarming)
@@ -202,25 +206,25 @@ public class LifePlayer : MonoBehaviour {
                 Debug.Log("Don't walk away");
 				RemovePopupNotification ();
             }
-		} else if (Input.GetButtonUp(XInput.XboxA(playerNum)) && disarming) {
+		} else if (XCI.GetButtonUp(XboxButton.A, controller) && disarming) {
 			disarming = false;
 			RemovePopupNotification ();
 		}
 
         // Attack Handlers
-        if (XInput.x.RTDown(playerNum) && hasWeapon && !attacking && !disarming && releasedRT) {
+		if (XCI.GetAxis(XboxAxis.RightTrigger, controller) > 0.8f && hasWeapon && !attacking && !disarming && releasedRT) {
             lastattacktime = Time.time;
             attacking = true;
             releasedRT = false;
         }
-        if (!XInput.x.RTDown(playerNum) && hasWeapon && !releasedRT)
+		if (XCI.GetAxis(XboxAxis.RightTrigger, controller) <= 0.8f && hasWeapon && !releasedRT)
         {
             releasedRT = true;
         }
 
         // Set state
             if (state != 3 && state != 4 && state != 5 && state != 6) {
-            if (Mathf.Abs(Input.GetAxis(XInput.XboxLStickX(playerNum))) > 0.1f || Mathf.Abs(Input.GetAxis(XInput.XboxLStickY(playerNum))) > 0.1f) {
+			if (Mathf.Abs(XCI.GetAxis(XboxAxis.LeftStickX, controller)) > 0.1f || Mathf.Abs(XCI.GetAxis(XboxAxis.LeftStickY, controller)) > 0.1f) {
                 state = 1;
             } else {
                 state = 0;
@@ -331,15 +335,15 @@ public class LifePlayer : MonoBehaviour {
 
 		if (!stunned && state != 3 && state != 4 && state != 5) {
 			//movement
-			float Xinput = Input.GetAxis (XInput.XboxLStickX (playerNum));
-			float Yinput = -Input.GetAxis (XInput.XboxLStickY (playerNum));
+			float Xinput = XCI.GetAxis(XboxAxis.LeftStickX, controller);
+			float Yinput = XCI.GetAxis (XboxAxis.LeftStickY, controller);
 			Vector3 movementDir = new Vector3 (Xinput, 0, Yinput).normalized;
 			if (movementDir != Vector3.zero) {
 				charController.SimpleMove (movementDir * speed / slowedAmount);
 				transform.rotation = Quaternion.LookRotation (movementDir);
 			}
-			Xinput = Input.GetAxis (XInput.XboxRStickX (playerNum));
-			Yinput = -Input.GetAxis (XInput.XboxRStickY (playerNum));
+			Xinput = XCI.GetAxis (XboxAxis.RightStickX, controller);
+			Yinput = XCI.GetAxis (XboxAxis.RightStickY, controller);
 			if (Xinput != 0 || Yinput != 0) {
 				Vector3 lookDir = new Vector3 (Xinput, 0, Yinput).normalized;
 				transform.rotation = Quaternion.LookRotation (lookDir);
