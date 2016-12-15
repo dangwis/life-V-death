@@ -26,8 +26,9 @@ public class LifePlayer : MonoBehaviour {
     public Quaternion bowStart;
     public GameObject hammer;
     public Quaternion hammerStart;
+    public GameObject shield;
 
-	public GameObject popupNotificationPrefab;
+    public GameObject popupNotificationPrefab;
 	private GameObject activePopup;
 
     public float cooldown = 1.5f;
@@ -69,6 +70,10 @@ public class LifePlayer : MonoBehaviour {
             {
                 bow = child.gameObject;
             }
+            else if (child.gameObject.name == "Weapon Shield")
+            {
+                shield = child.gameObject;
+            }
         }
 
 
@@ -82,6 +87,7 @@ public class LifePlayer : MonoBehaviour {
         hammer.SetActive(false);
         bow.SetActive(false);
         arrow.SetActive(false);
+        shield.SetActive(false);
         lifeAnimator = transform.Find("body").GetComponent<Animator>();
         disarming = false;
         releasedRT = true;
@@ -128,6 +134,7 @@ public class LifePlayer : MonoBehaviour {
             switch (weapontype) {
                 case 1:
                     sword.SetActive(true);
+                    shield.SetActive(true);
                     break;
                 case 2:
                     hammer.SetActive(true);
@@ -322,7 +329,7 @@ public class LifePlayer : MonoBehaviour {
             return;
         }
 
-		if (!stunned) {
+		if (!stunned && state != 3 && state != 4 && state != 5) {
 			//movement
 			float Xinput = Input.GetAxis (XInput.XboxLStickX (playerNum));
 			float Yinput = -Input.GetAxis (XInput.XboxLStickY (playerNum));

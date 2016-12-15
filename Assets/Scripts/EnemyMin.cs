@@ -34,6 +34,17 @@ public class EnemyMin : MonoBehaviour {
         InvokeRepeating("CheckNearby", checkRate, checkRate);
     }
 
+	void OnDestroy() {
+		//detach players
+		foreach (Transform child in transform) {
+			if (child.tag == "Life") {
+				child.parent = null;
+				child.GetComponent<LifePlayer> ().stunned = false;
+				child.GetComponent<LifePlayer> ().canTakeDamage = true;
+			}
+		}
+	}
+
     void CheckNearby() {
         // Check if can attack
         moveNearby = Enemy.DetectPlayers(this.gameObject, detectRange);
@@ -225,17 +236,6 @@ public class EnemyMin : MonoBehaviour {
             } else if (col.gameObject.tag == "Sword") {
                 health -= 1.5f;
             }
-
-			if (health <= 0) {
-				//detach players
-				foreach (Transform child in transform) {
-					if (child.tag == "Life") {
-						child.parent = null;
-						child.GetComponent<LifePlayer> ().stunned = false;
-						child.GetComponent<LifePlayer> ().canTakeDamage = true;
-					}
-				}
-			}
 
             if (health > 0) {
                 GameObject.Find("Audio").transform.Find("MinHit").GetComponent<AudioSource>().Play();
