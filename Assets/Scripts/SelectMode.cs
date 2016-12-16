@@ -7,6 +7,7 @@ public class SelectMode : MonoBehaviour {
 	void Start () {
 		Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+		SetupCameras.multiDisplay = false;
     }
 	
 	// Update is called once per frame
