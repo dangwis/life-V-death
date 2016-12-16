@@ -48,12 +48,13 @@ public class LifePlayer : MonoBehaviour {
     float disarmTimeStart;
     GameObject disarmingTrap;
 	public bool stunned = false;
+    int totalReached;
 
 	public XboxController controller;
 
     // Use this for initialization
     void Start () {
-		
+        totalReached = 0;
         charController = this.transform.GetComponent<CharacterController>();
         hasWeapon = false;
         lastattacktime = Time.time;
@@ -95,10 +96,11 @@ public class LifePlayer : MonoBehaviour {
         lifeAnimator = transform.Find("body").GetComponent<Animator>();
         disarming = false;
         releasedRT = true;
+        immortal = false;
         slowedAmount = 1;
 	}
 
-	void OnDestory() {
+	void OnDestroy() {
 
     }
 	
@@ -109,7 +111,11 @@ public class LifePlayer : MonoBehaviour {
             }
             return;
         }
-
+        if(totalReached < WinCondition.S.totalReached)
+        {
+            Invoke("ShowTeammateFoundFountain", 5f);
+            totalReached = WinCondition.S.totalReached;
+        }
         if(weaponTime > 1.0f && state > 3)
         {
             if(state == 4)
@@ -416,19 +422,53 @@ public class LifePlayer : MonoBehaviour {
 
 	void ChangePopTxtToStrafe() {
 		ShowPopupNotification ("Use the right stick to strafe");
-		Invoke ("ChangePopTxtToObj", 7f);
+        if (SetupCameras.PlayerCount == 2)
+        {
+            Invoke("ChangePopTxtToObj", 5f);
+        }
+        else
+        {
+            Invoke("ChangePopTxtToImmortal", 5f);
+        }
 	}
 
     void ChangePopTxtToCrates()
     {
         ShowPopupNotification("Attack crates and vases!"+ '\n' + "They might drop health!");
-        Invoke("ChangePopTxtToStrafe", 7f);
+        
+        Invoke("ChangePopTxtToStrafe", 5f);
     }
 
 	void ChangePopTxtToObj() {
-		ShowPopupNotification ("Find the fountain of youth" + '\n' + "before death finds you!");
-		Invoke ("RemovePopupNotification", 7f);
+        if (SetupCameras.PlayerCount == 2)
+        {
+            ShowPopupNotification("Find the fountain of youth" + '\n' + "before death finds you!");
+            Invoke("RemovePopupNotification", 7f);
+        }
+        else
+        {
+            ShowPopupNotification("All of your friends must" + "\n" + "survive to win!");
+            Invoke("RemovePopupNotification", 5f);
+        }
 	}
+
+    void ChangePopTxtToImmortal()
+    {
+        ShowPopupNotification("Gain immortality by reaching" + "\n" + " the fountain of youth");
+        Invoke("ChangePopTxtToObj", 5f);
+    }
+
+    public void ShowPlayerImmortal()
+    {
+        ShowPopupNotification("You have gained immortality!" + "\n" + "Death cannot harm you!");
+        Invoke("RemovePopupNotification", 5f);
+    }
+
+    void ShowTeammateFoundFountain()
+    {
+        ShowPopupNotification("Someone has found the fountain!" + "\n" + (SetupCameras.PlayerCount - 1 - totalReached) + " more players need to reach it!");
+        Invoke("RemovePopupNotification", 5f);
+    }
 
 	public void RemovePopupNotification() {
 		//Debug.Log ("remove popup");
@@ -456,13 +496,13 @@ public class LifePlayer : MonoBehaviour {
 			ShowPopupNotification ("Press A to pick up Bow");
         } else if (col.tag == "LifeFountain") {
             WinCondition.S.UpdateWinCondition(this);
-        } else if (col.tag == "Skeleton" && col.gameObject.layer == 13 && state != 2 && state != 3) {
+        } else if (col.tag == "Skeleton" && col.gameObject.layer == 13 && state != 2 && state != 3 && !immortal) {
             state = 2;
             health -= 20;
-        } else if (col.tag == "Minotaur" && col.gameObject.layer == 13 && state != 2 && state != 3) {
+        } else if (col.tag == "Minotaur" && col.gameObject.layer == 13 && state != 2 && state != 3 && !immortal) {
             state = 2;
             health -= 40;
-        } else if (col.tag == "Grunt" && col.gameObject.layer == 13 && state != 2 && state != 3) {
+        } else if (col.tag == "Grunt" && col.gameObject.layer == 13 && state != 2 && state != 3 && !immortal) {
             state = 2;
             health -= 15;
         }

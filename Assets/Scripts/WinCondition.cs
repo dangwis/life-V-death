@@ -9,12 +9,14 @@ public class WinCondition : MonoBehaviour {
     public static bool lifeWon = false;
     public static List<bool> foundFountain = new List<bool>();
     bool gameOver = false;
+    public int totalReached;
 
     // Use this for initialization
     void Awake() {
         S = this;
         deathWon = false;
         lifeWon = false;
+        totalReached = 0;
     }
 
     public static void CreateList(int numPlayers)
@@ -28,16 +30,24 @@ public class WinCondition : MonoBehaviour {
 
     public void UpdateWinCondition(LifePlayer life)
     {
-        foundFountain[life.playerNum - 1] = true;
-        life.immortal = true;
-        for (int i = 0; i < foundFountain.Count; i++)
+        if(foundFountain[life.playerNum - 1] == false)
         {
-            if (foundFountain[i] == false) return;
+            foundFountain[life.playerNum - 1] = true;
+            totalReached++;
+            life.immortal = true;
+            if(totalReached == SetupCameras.PlayerCount - 1)
+            {
+                gameOver = true;
+                lifeWon = true;
+                Debug.Log("Life Wins!");
+                Invoke("RestartGame", 20f);
+            }
+            else
+            {
+                life.ShowPlayerImmortal();
+            }
+            
         }
-        gameOver = true;
-        lifeWon = true;
-        Debug.Log("Life Wins!");
-        Invoke("RestartGame", 20f);
     }
 
     public void DeathWins()

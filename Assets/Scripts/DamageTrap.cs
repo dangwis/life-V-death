@@ -24,8 +24,11 @@ public class DamageTrap : MonoBehaviour {
         GameObject go = coll.gameObject;
         if(go.tag == "Life" && armed == true)
         {
-            go.GetComponent<LifePlayer>().health -= damageDealt;
-            go.GetComponent<LifePlayer>().state = 2;
+            if (!go.GetComponent<LifePlayer>().immortal)
+            {
+                go.GetComponent<LifePlayer>().health -= damageDealt;
+                go.GetComponent<LifePlayer>().state = 2;
+            }
             go.GetComponent<LifePlayer>().ShowPopupNotification("Hold A to disarm trap");
             showing = true;
             this.gameObject.transform.Find("Trap_Needle").gameObject.layer = 0;
