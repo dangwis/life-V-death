@@ -39,10 +39,12 @@ public class EnemyMin : MonoBehaviour {
 		foreach (Transform child in transform) {
 			if (child.tag == "Life") {
 				child.parent = null;
+				child.GetComponent<LifePlayer> ().enabled = true;
 				child.GetComponent<LifePlayer> ().stunned = false;
 				child.GetComponent<LifePlayer> ().canTakeDamage = true;
 			}
 		}
+		Destroy (transform.parent.gameObject);
 	}
 
     void CheckNearby() {
